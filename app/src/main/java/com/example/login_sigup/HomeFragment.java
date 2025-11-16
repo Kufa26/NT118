@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,25 @@ public class HomeFragment extends Fragment {
         selectRange(Range.WEEK);
         tabWeek.setOnClickListener(v -> selectRange(Range.WEEK));
         tabMonth.setOnClickListener(v -> selectRange(Range.MONTH));
+
+        TextView transdetails = view.findViewById(R.id.report);
+        transdetails.setOnClickListener(v ->{
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new TransactionDetailsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+        TextView recent = view.findViewById(R.id.btn_recent_all);
+        recent.setOnClickListener(v ->{
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new TransactionDetailsFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         return view;
     }
     private void selectTab(Tab tab) {

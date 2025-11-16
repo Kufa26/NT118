@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
+    android:fitsSystemWindows="true"
     android:background="#F5F5F5">
 
     <LinearLayout
@@ -28,6 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Đóng"
+                    android:clickable="true"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"

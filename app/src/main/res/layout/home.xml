@@ -184,6 +184,7 @@
                             android:layout_weight="1"/>
 
                         <TextView
+                            android:id="@+id/report"
                             android:text="Xem báo cáo"
                             android:textStyle="bold"
                             android:textColor="#19A85B"

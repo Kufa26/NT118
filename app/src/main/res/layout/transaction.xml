@@ -36,13 +36,12 @@
                 android:layout_marginStart="40dp"
                 android:layout_marginBottom="4dp" />
 
-            <ImageView
-                android:id="@+id/btnCalendar"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_weight="0.5"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_search1" />
+            <ImageButton
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_search2"
+                android:contentDescription="search"/>
         </LinearLayout>
 
         <TextView

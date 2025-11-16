@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">login_sigup</string>
+    <string name="app_name">CashMate</string>
     <string name="text_have_budget">Bạn có ngân sách chưa?</string>
     <string name="text_intro">Bắt đầu tiết kiệm bằng cách tạo \nngân sách và chúng tôi sẽ giúp bạn \nkiểm soát chi tiêu!</string>
     <string name="btn_create_budget">Tạo mới ngân sách</string>
