@@ -18,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Hàng trên: Tổng số dư -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
                 android:includeFontPadding="false"/>
         </LinearLayout>
 
-        <!-- Hàng 1 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,7 +81,6 @@
                 android:includeFontPadding="false"/>
         </LinearLayout>
 
-        <!-- Hàng 2 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,7 +116,6 @@
                 android:includeFontPadding="false"/>
         </LinearLayout>
 
-        <!-- Hàng 3 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

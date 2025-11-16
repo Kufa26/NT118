@@ -17,8 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
-        <!-- Hàng 1 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,10 +42,8 @@
                 android:textSize="23sp"
                 android:textColor="@android:color/black"
                 android:includeFontPadding="false"/>
-
         </LinearLayout>
 
-        <!-- Hàng 2 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +71,6 @@
 
         </LinearLayout>
 
-        <!-- Hàng 3 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,9 +96,7 @@
                 android:textColor="@android:color/black"
                 android:includeFontPadding="false"/>
         </LinearLayout>
-
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/page1_text"

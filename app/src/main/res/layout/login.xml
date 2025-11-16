@@ -6,10 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="24dp"
-    android:id="@+id/main"
-    tools:ignore="MissingConstraints">
+    android:id="@+id/main">
 
-    <!-- Nút back -->
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="24dp"
@@ -19,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Tiêu đề -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -31,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
-    <!-- Nút Google -->
+
     <android.widget.Button
         android:id="@+id/btnGoogle"
         android:layout_width="0dp"
@@ -51,7 +48,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <!-- Nút Apple -->
     <android.widget.Button
         android:id="@+id/btnApple"
         android:layout_width="0dp"
@@ -71,7 +67,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
 
-    <!-- Ghi chú -->
     <TextView
         android:id="@+id/tvGhichu"
         android:layout_width="wrap_content"
@@ -85,7 +80,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnApple" />
 
-    <!-- Dòng phân cách HOẶC -->
     <LinearLayout
         android:id="@+id/tvOr"
         android:layout_width="match_parent"
@@ -133,7 +127,6 @@
         android:clipToOutline="true"
         app:layout_constraintTop_toBottomOf="@id/tvOr">
 
-        <!-- EditText Email -->
         <EditText
             android:id="@+id/edtEmail"
             android:layout_width="match_parent"
@@ -146,13 +139,11 @@
             android:textColorHint="#999999"
             android:textColor="#000000" />
 
-        <!-- Đường gạch phân cách -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#D0D0D0" />
 
-        <!-- Dòng mật khẩu -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -184,7 +175,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <!-- Nút Đăng nhập -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
@@ -198,7 +188,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/khunglogin"/>
 
-    <!-- Đăng ký + Quên mật khẩu -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
