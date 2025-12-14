@@ -10,16 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.login_sigup.database.User.User;
+import com.example.login_sigup.database.User.UserHandle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,146 +29,147 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
 
+    UserHandle userHandle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        userHandle = new UserHandle(this);
         showMainLayout();
     }
+
+    // ================= WELCOME =================
     private void showMainLayout() {
         setContentView(R.layout.activity_main);
+
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         TabLayout tabLayout = findViewById(R.id.tabIndicator);
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            View tabView = LayoutInflater.from(this).inflate(R.layout.item_tab_dot, null);
-            tab.setCustomView(tabView);
-        }).attach();
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setCustomView(
+                        LayoutInflater.from(this)
+                                .inflate(R.layout.item_tab_dot, null)
+                )
+        ).attach();
 
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                    View tabView = tabLayout.getTabAt(i).getCustomView();
-                    if (tabView instanceof ImageView) {
-                        ((ImageView) tabView).setImageResource(
-                                i == position ? R.drawable.dot_active : R.drawable.dot_inactive
-                        );
-                    }
-                }
-            }
-        });
+        Button btnSignup = findViewById(R.id.sign_up);
+        btnSignup.setOnClickListener(v -> showAuthLayout(R.layout.signup));
 
-        Button btnSignUp = findViewById(R.id.sign_up);
-        btnSignUp.setOnClickListener(v -> showAuthLayout(R.layout.signup));
-
-//        Button btnLogin = findViewById(R.id.login);
-//        btnLogin.setOnClickListener(v -> showAuthLayout(R.layout.login));
-
-        Button btnTestMenu = findViewById(R.id.login);
-        if (btnTestMenu != null) {
-            btnTestMenu.setOnClickListener(v -> showMenuLayout());
-        }
+        Button btnLogin = findViewById(R.id.login);
+        btnLogin.setOnClickListener(v -> showAuthLayout(R.layout.login));
     }
 
-    public void showAuthLayout(int layoutResId) {
+    // ================= AUTH (LOGIN / SIGNUP) =================
+    private void showAuthLayout(int layoutResId) {
         setContentView(layoutResId);
+
         ImageButton btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> showMainLayout());
         }
 
-        TextView btnSignup = findViewById(R.id.tv_Signup);
-        if (btnSignup != null) {
-            btnSignup.setOnClickListener(v -> showAuthLayout(R.layout.signup));
-        }
-
-        TextView btnLogin = findViewById(R.id.tv_login);
-        if (btnLogin != null) {
-            btnLogin.setOnClickListener(v -> showAuthLayout(R.layout.login));
-        }
-
-        EditText etPassword = findViewById(R.id.edtPassword);
+        EditText edtEmail = findViewById(R.id.edtEmail);
+        EditText edtPassword = findViewById(R.id.edtPassword);
         ImageView btnShowPassword = findViewById(R.id.btnShowPassword);
 
-        if (etPassword != null && btnShowPassword != null) {
-            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            btnShowPassword.setImageResource(R.drawable.ic_eye_close);
-
-            final boolean[] isPasswordVisible = {false};
-
+        // SHOW / HIDE PASSWORD
+        if (btnShowPassword != null && edtPassword != null) {
+            final boolean[] isShow = {false};
             btnShowPassword.setOnClickListener(v -> {
-                if (isPasswordVisible[0]) {
-                    etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                if (isShow[0]) {
+                    edtPassword.setInputType(
+                            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    );
                     btnShowPassword.setImageResource(R.drawable.ic_eye_close);
                 } else {
-                    etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    edtPassword.setInputType(
+                            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    );
                     btnShowPassword.setImageResource(R.drawable.ic_eye_open);
                 }
-                etPassword.setSelection(etPassword.getText().length());
-                isPasswordVisible[0] = !isPasswordVisible[0];
-            });
-        }
-    }
-
-    private void showAddTransactionSheet() {
-        View view = getLayoutInflater().inflate(R.layout.plus, null);
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-        dialog.setContentView(view);
-        View bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        if (bottomSheet != null) {
-            bottomSheet.setBackgroundResource(R.drawable.bg_bottomsheet_rounded);
-
-            bottomSheet.post(() -> {
-                com.google.android.material.bottomsheet.BottomSheetBehavior<View> behavior =
-                        com.google.android.material.bottomsheet.BottomSheetBehavior.from(bottomSheet);
-
-                int screenHeight = getResources().getDisplayMetrics().heightPixels;
-                int targetHeight = (int) (screenHeight * 0.9);
-                bottomSheet.getLayoutParams().height = targetHeight;
-                bottomSheet.requestLayout();
-
-                behavior.setPeekHeight(targetHeight);
-                behavior.setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED);
-                behavior.setSkipCollapsed(false);
+                edtPassword.setSelection(edtPassword.getText().length());
+                isShow[0] = !isShow[0];
             });
         }
 
-        Button btnSave = view.findViewById(R.id.btnSave);
-        if (btnSave != null) {
-            btnSave.setOnClickListener(v -> dialog.dismiss());
-        }
+        // ===== SIGN UP =====
+        Button btnSignup = findViewById(R.id.btnSignup);
+        if (btnSignup != null) {
+            btnSignup.setOnClickListener(v -> {
+                String email = edtEmail.getText().toString().trim();
+                String pass = edtPassword.getText().toString().trim();
 
-        Button btnShowDetails = view.findViewById(R.id.tvAddDetail);
-        ScrollView scrollDetails = view.findViewById(R.id.scrollDetails);
-
-        if (btnShowDetails != null && scrollDetails != null) {
-            scrollDetails.setVisibility(View.GONE);
-
-            Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-
-            final boolean[] isVisible = {false};
-
-            btnShowDetails.setOnClickListener(v -> {
-                if (isVisible[0]) {
-                    scrollDetails.startAnimation(slideUp);
-                    scrollDetails.setVisibility(View.GONE);
-                } else {
-                    scrollDetails.setVisibility(View.VISIBLE);
-                    scrollDetails.startAnimation(slideDown);
+                if (email.isEmpty() || pass.isEmpty()) {
+                    toast("Vui lòng nhập đầy đủ thông tin");
+                    return;
                 }
-                isVisible[0] = !isVisible[0];
+
+                if (userHandle.handleCheckEmailExists(email)) {
+                    toast("Email đã tồn tại");
+                    return;
+                }
+
+                User user = new User(
+                        "User",
+                        email,
+                        pass,
+                        "01/01/2000",
+                        "Unknown",
+                        "Vietnam",
+                        "",
+                        ""
+                );
+
+                if (userHandle.handleSignUp(user)) {
+                    toast("Đăng ký thành công");
+                    showAuthLayout(R.layout.login);
+                } else {
+                    toast("Đăng ký thất bại");
+                }
             });
         }
 
-        dialog.show();
+        // ===== LOGIN =====
+        Button btnLogin = findViewById(R.id.btnLogin);
+        if (btnLogin != null) {
+            btnLogin.setOnClickListener(v -> {
+                String email = edtEmail.getText().toString().trim();
+                String pass = edtPassword.getText().toString().trim();
+
+                if (email.isEmpty() || pass.isEmpty()) {
+                    toast("Vui lòng nhập đầy đủ thông tin");
+                    return;
+                }
+
+                User user = userHandle.handleLogin(email, pass);
+                if (user != null) {
+                    toast("Đăng nhập thành công");
+                    showMenuLayout(); // ✅ CHỈ VÀO HOME Ở ĐÂY
+                } else {
+                    toast("Sai email hoặc mật khẩu");
+                }
+            });
+        }
+
+        // SWITCH LOGIN <-> SIGNUP
+        TextView tvSignup = findViewById(R.id.tv_Signup);
+        if (tvSignup != null) {
+            tvSignup.setOnClickListener(v -> showAuthLayout(R.layout.signup));
+        }
+
+        TextView tvLogin = findViewById(R.id.tv_login);
+        if (tvLogin != null) {
+            tvLogin.setOnClickListener(v -> showAuthLayout(R.layout.login));
+        }
     }
+
+    // ================= HOME / MENU =================
     private void showMenuLayout() {
         setContentView(R.layout.menu);
+
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, new HomeFragment())
@@ -189,9 +191,43 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        FloatingActionButton btnAddTransaction = findViewById(R.id.btnAddTransaction);
-        if (btnAddTransaction != null) {
-            btnAddTransaction.setOnClickListener(v -> showAddTransactionSheet());
+        FloatingActionButton fab = findViewById(R.id.btnAddTransaction);
+        fab.setOnClickListener(v -> showAddTransactionSheet());
+    }
+
+    // ================= BOTTOM SHEET =================
+    private void showAddTransactionSheet() {
+        View view = getLayoutInflater().inflate(R.layout.plus, null);
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+
+        Button btnSave = view.findViewById(R.id.btnSave);
+        if (btnSave != null) btnSave.setOnClickListener(v -> dialog.dismiss());
+
+        Button btnDetail = view.findViewById(R.id.tvAddDetail);
+        ScrollView scroll = view.findViewById(R.id.scrollDetails);
+
+        if (btnDetail != null && scroll != null) {
+            scroll.setVisibility(View.GONE);
+            Animation down = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            Animation up = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            final boolean[] show = {false};
+
+            btnDetail.setOnClickListener(v -> {
+                if (show[0]) {
+                    scroll.startAnimation(up);
+                    scroll.setVisibility(View.GONE);
+                } else {
+                    scroll.setVisibility(View.VISIBLE);
+                    scroll.startAnimation(down);
+                }
+                show[0] = !show[0];
+            });
         }
+        dialog.show();
+    }
+
+    private void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 }
