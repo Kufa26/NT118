@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Chọn nhóm"
+            android:text="Nhóm"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -56,12 +56,15 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/btnAddGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@drawable/white_border"
-            android:layout_marginBottom="6dp">
+            android:layout_marginBottom="6dp"
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="24dp"
@@ -86,7 +89,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@drawable/white_border"
-            android:padding="10dp"/>
+            android:padding="10dp" />
 
     </LinearLayout>
 

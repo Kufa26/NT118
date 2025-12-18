@@ -102,7 +102,6 @@
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/ic_google" />
-
             </LinearLayout>
 
             <LinearLayout
