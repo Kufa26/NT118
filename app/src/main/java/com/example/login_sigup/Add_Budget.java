@@ -4,7 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 import androidx.fragment.app.Fragment;
 
@@ -15,9 +17,14 @@ public class Add_Budget extends Fragment {
     {
         View view = inflater.inflate(R.layout.create_a_budget, container, false);
 
-        TextView btnClose = view.findViewById(R.id.btnBack);
-        btnClose.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().popBackStack();
+        LinearLayout layoutGroup = view.findViewById(R.id.layoutWallet);
+
+        layoutGroup.setOnClickListener(v -> {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new Group())
+                    .addToBackStack(null)
+                    .commit();
         });
         return view;
     }

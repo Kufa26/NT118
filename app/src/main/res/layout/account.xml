@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F0F0F0">
+    android:background="@color/background_color">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_acc_info"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#F6F6F8"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/background_color"        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,7 +23,7 @@
             android:layout_gravity="center"
             android:fontFamily="sans-serif"
             android:text="Tài khoản"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textcolor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -68,7 +67,7 @@
                 android:id="@+id/accountInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_border"
+                android:background="@color/background_color"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -84,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:hint="Nhom 4"
+                    android:textColor="@color/textcolor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -91,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:textColor="@color/textcolor"
                     android:gravity="center_horizontal"
                     android:hint="NT118@gmail.com"
                     android:textSize="14sp" />
@@ -109,8 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/white_border"
-                android:clickable="true"
+                android:background="@color/background_color"                android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Thông tin cá nhân"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/textcolor"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -147,8 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/white_border"
-                android:gravity="center_horizontal"
+                android:background="@color/background_color"                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -158,8 +157,7 @@
                     android:id="@+id/My_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
-                    android:clickable="true"
+                    android:background="@color/background_color"                    android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -180,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Ví của tôi"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -194,7 +192,7 @@
                     android:id="@+id/Wallet_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -216,7 +214,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Nhóm"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -233,8 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/white_border"
-                android:gravity="center_horizontal"
+                android:background="@color/background_color"                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -244,7 +241,7 @@
                     android:id="@+id/debt_book"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -266,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Sổ nợ"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -280,7 +277,7 @@
                     android:id="@+id/tool"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -302,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Công cụ"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -320,8 +317,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="100dp"
-                android:background="@drawable/white_border"
-                android:gravity="center_horizontal"
+                android:background="@color/background_color"                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -331,7 +327,7 @@
                     android:id="@+id/support"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -353,7 +349,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Hỗ trợ"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -367,7 +363,7 @@
                     android:id="@+id/setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -389,7 +385,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Cài đặt"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
@@ -403,7 +399,7 @@
                     android:id="@+id/introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/white"
+                    android:background="@color/background_color"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -425,7 +421,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Giới thiệu"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
                     <ImageView
