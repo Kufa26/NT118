@@ -1,7 +1,7 @@
 package com.example.login_sigup.database.User;
 
 public class User {
-    private Long id;
+    private Long idUser;
     private String fullName;
     private String email;
     private String password;
@@ -11,9 +11,9 @@ public class User {
     private String phoneNumber;
     private String avatarUrl;
 
-    public User(Long id, String fullName, String email, String password, String dob, String gender, String country, String phoneNumber, String avatarUrl) {
+    public User(Long idUser, String fullName, String email, String password, String dob, String gender, String country, String phoneNumber, String avatarUrl) {
         super();
-        this.id = id;
+        this.idUser = idUser;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
@@ -36,12 +36,12 @@ public class User {
         this.avatarUrl = avatarUrl;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getFullName() {

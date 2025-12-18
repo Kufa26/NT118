@@ -5,14 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.login_sigup.database.User.UserHelper;
+import com.example.login_sigup.database.DatabaseHelper;
 
 public class UserHandle {
 
     private SQLiteDatabase db;
 
     public UserHandle(Context context) {
-        UserHelper helper = new UserHelper(context);
+        DatabaseHelper helper = new DatabaseHelper(context);
         db = helper.getWritableDatabase();
     }
 

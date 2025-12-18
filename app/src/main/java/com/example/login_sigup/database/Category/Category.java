@@ -1,28 +1,35 @@
 package com.example.login_sigup.database.Category;
 
 public class Category {
-    private Long id;
+    private Long idCategory;
     private String nameCategory;
     private String typeCategory;
     private String iconCategory;
     private String idParent;
 
 
-    public Category(Long id, String nameCategory, String typeCategory,
-                    String iconCategory, String idParent) {
-        this.id = id;
+    public Category(Long idCategory, String nameCategory, String typeCategory, String iconCategory, String idParent) {
+        this.idCategory = idCategory;
         this.nameCategory = nameCategory;
         this.typeCategory = typeCategory;
         this.iconCategory = iconCategory;
         this.idParent = idParent;
     }
 
-    public Long getId() {
-        return id;
+    public Category(String nameCategory, String typeCategory, String iconCategory, String idParent) {
+        this.nameCategory = nameCategory;
+        this.typeCategory = typeCategory;
+        this.iconCategory = iconCategory;
+        this.idParent = idParent;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+
+    public Long getIdCategory() {
+        return idCategory;
+    }
+
+    public void setIdCategory(Long idCategory) {
+        this.idCategory = idCategory;
     }
 
     public String getNameCategory() {

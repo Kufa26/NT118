@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.login_sigup.Transaction.TransactionFragment;
+import com.example.login_sigup.account.AccountFragment;
+import com.example.login_sigup.budget.BudgetFragment;
 import com.example.login_sigup.database.User.User;
 import com.example.login_sigup.database.User.UserHandle;
+import com.example.login_sigup.home.HomeFragment;
+import com.example.login_sigup.home.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -202,32 +204,18 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(view);
 
         Button btnSave = view.findViewById(R.id.btnSave);
-        if (btnSave != null) btnSave.setOnClickListener(v -> dialog.dismiss());
-
-        Button btnDetail = view.findViewById(R.id.tvAddDetail);
-        ScrollView scroll = view.findViewById(R.id.scrollDetails);
-
-        if (btnDetail != null && scroll != null) {
-            scroll.setVisibility(View.GONE);
-            Animation down = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-            Animation up = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            final boolean[] show = {false};
-
-            btnDetail.setOnClickListener(v -> {
-                if (show[0]) {
-                    scroll.startAnimation(up);
-                    scroll.setVisibility(View.GONE);
-                } else {
-                    scroll.setVisibility(View.VISIBLE);
-                    scroll.startAnimation(down);
-                }
-                show[0] = !show[0];
+        if (btnSave != null) {
+            btnSave.setOnClickListener(v -> {
+                // TODO: xử lý lưu transaction ở đây nếu muốn
+                dialog.dismiss();
             });
         }
+
         dialog.show();
     }
 
     private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
 }
