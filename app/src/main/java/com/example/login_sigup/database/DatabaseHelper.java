@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "login_signup.db";
-    private static final int DB_VERSION = 2; // 🔴 TĂNG VERSION
+    private static final int DB_VERSION = 3;
+    // 🔴 TĂNG VERSION
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -35,9 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE Category (" +
                         "idCategory INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "nameCategory TEXT, " +
-                        "typeCategory TEXT, " +        // INCOME / EXPENSE
-                        "iconCategory TEXT, " +
-                        "idParent TEXT)";
+                        "typeCategory TEXT, " +
+                        "iconCategory TEXT)";
+
         db.execSQL(CREATE_CATEGORY_TABLE);
 
         // ================= TRANSACTION =================

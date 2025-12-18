@@ -22,11 +22,6 @@
             </intent-filter>
         </activity>
 
-        <!-- ADD GROUP -->
-        <activity
-            android:name=".group.AddGroup"
-            android:exported="false" />
-
     </application>
 
 </manifest>

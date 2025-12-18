@@ -4,57 +4,61 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.login_sigup.R;
-import com.example.login_sigup.group.Group;
+import com.example.login_sigup.group.GroupFragment;
 
 public class AccountFragment extends Fragment {
+
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         View view = inflater.inflate(R.layout.account, container, false);
 
-        LinearLayout layoutProfile = view.findViewById(R.id.profile);
+        // ===== Thông tin cá nhân =====
+        view.findViewById(R.id.profile).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileFragment())
+                        .addToBackStack(null)
+                        .commit()
+        );
 
-        layoutProfile.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new ProfileFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        // ===== NHÓM (Wallet_group) =====
+        view.findViewById(R.id.Wallet_group).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new GroupFragment())
+                        .addToBackStack(null) // ⭐ để back quay lại
+                        .commit()
+        );
 
-        LinearLayout layoutSetting = view.findViewById(R.id.setting);
+        // ===== Cài đặt =====
+        view.findViewById(R.id.setting).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SettingFragment())
+                        .addToBackStack(null)
+                        .commit()
+        );
 
-        layoutSetting.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new SettingFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        // ===== Giới thiệu =====
+        view.findViewById(R.id.introduce).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new IntroduceFragment())
+                        .addToBackStack(null)
+                        .commit()
+        );
 
-        LinearLayout layoutIntroduce = view.findViewById(R.id.introduce);
-
-        layoutIntroduce.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new IntroduceFragment())
-                    .addToBackStack(null)
-                    .commit();
-        });
-
-        LinearLayout layoutGroup = view.findViewById(R.id.Wallet_group);
-
-        layoutGroup.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new Group())
-                    .addToBackStack(null)
-                    .commit();
-        });
         return view;
     }
-
 }

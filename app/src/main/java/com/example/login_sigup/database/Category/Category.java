@@ -5,22 +5,19 @@ public class Category {
     private String nameCategory;
     private String typeCategory;
     private String iconCategory;
-    private String idParent;
 
 
-    public Category(Long idCategory, String nameCategory, String typeCategory, String iconCategory, String idParent) {
+    public Category(Long idCategory, String nameCategory, String typeCategory, String iconCategory) {
         this.idCategory = idCategory;
         this.nameCategory = nameCategory;
         this.typeCategory = typeCategory;
         this.iconCategory = iconCategory;
-        this.idParent = idParent;
     }
 
-    public Category(String nameCategory, String typeCategory, String iconCategory, String idParent) {
+    public Category(String nameCategory, String typeCategory, String iconCategory) {
         this.nameCategory = nameCategory;
         this.typeCategory = typeCategory;
         this.iconCategory = iconCategory;
-        this.idParent = idParent;
     }
 
 
@@ -56,11 +53,4 @@ public class Category {
         this.iconCategory = iconCategory;
     }
 
-    public String getIdParent() {
-        return idParent;
-    }
-
-    public void setIdParent(String idParent) {
-        this.idParent = idParent;
-    }
 }

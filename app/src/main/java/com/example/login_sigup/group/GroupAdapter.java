@@ -1,5 +1,7 @@
 package com.example.login_sigup.group;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,48 +12,79 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login_sigup.R;
+import com.example.login_sigup.database.Category.Category;
+import com.example.login_sigup.database.Category.CategoryHandle;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder> {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
 
-    private ArrayList<GroupItem> list;
-    private OnGroupClickListener listener;
+    private final Context context;
+    private final List<Category> list;
 
-    public interface OnGroupClickListener {
-        void onClick(GroupItem item);
-    }
-
-    public GroupAdapter(ArrayList<GroupItem> list, OnGroupClickListener listener) {
+    public GroupAdapter(Context context, List<Category> list) {
+        this.context = context;
         this.list = list;
-        this.listener = listener;
     }
+
     @NonNull
     @Override
-    public GroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.item_group, parent, false);
-        return new GroupHolder(v);
+        return new ViewHolder(view);
     }
+
     @Override
-    public void onBindViewHolder(@NonNull GroupHolder holder, int i) {
-        GroupItem item = list.get(i);
-        holder.title.setText(item.getName());
-        holder.icon.setImageResource(item.getIcon());
-        holder.itemView.setOnClickListener(v -> listener.onClick(item));
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Category category = list.get(position);
+
+        holder.tvName.setText(category.getNameCategory());
+
+        int iconRes = context.getResources().getIdentifier(
+                category.getIconCategory(),
+                "drawable",
+                context.getPackageName()
+        );
+
+        holder.imgIcon.setImageResource(
+                iconRes != 0 ? iconRes : R.drawable.ic_food
+        );
+
+        holder.itemView.setOnLongClickListener(v -> {
+            showDeleteDialog(category, position);
+            return true;
+        });
     }
+
+    private void showDeleteDialog(Category category, int position) {
+        new AlertDialog.Builder(context)
+                .setTitle("Xóa nhóm")
+                .setMessage("Bạn có chắc chắn muốn xóa nhóm này?")
+                .setPositiveButton("Xóa", (d, w) -> {
+                    CategoryHandle handle = new CategoryHandle(context);
+                    if (handle.deleteCategory(category.getIdCategory())) {
+                        list.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    public static class GroupHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        ImageView icon;
-        public GroupHolder(@NonNull View itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgIcon;
+        TextView tvName;
+
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.tvGroupName);
-            icon = itemView.findViewById(R.id.imgIcon);
+            imgIcon = itemView.findViewById(R.id.imgIcon);
+            tvName = itemView.findViewById(R.id.tvName);
         }
     }
 }

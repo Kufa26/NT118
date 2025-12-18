@@ -10,46 +10,43 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.login_sigup.R;
 
-import java.util.List;
+public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder> {
 
-public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
+    private final int[] icons;
+    private final OnIconClick listener;
 
-    public interface OnIconClickListener {
-        void onIconClick(int icon);
+    public interface OnIconClick {
+        void onClick(int iconRes);
     }
 
-    private final List<Integer> icons;
-    private final OnIconClickListener listener;
-
-    public IconAdapter(List<Integer> icons, OnIconClickListener listener) {
+    public IconAdapter(int[] icons, OnIconClick listener) {
         this.icons = icons;
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+    public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_icon, parent, false);
-        return new ViewHolder(view);
+        return new IconViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int icon = icons.get(position);
-        holder.imgIcon.setImageResource(icon);
-        holder.imgIcon.setOnClickListener(v -> listener.onIconClick(icon));
+    public void onBindViewHolder(@NonNull IconViewHolder holder, int position) {
+        int iconRes = icons[position];
+        holder.imgIcon.setImageResource(iconRes);
+        holder.itemView.setOnClickListener(v -> listener.onClick(iconRes));
     }
 
     @Override
     public int getItemCount() {
-        return icons.size();
+        return icons.length;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class IconViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
-
-        ViewHolder(@NonNull View itemView) {
+        IconViewHolder(@NonNull View itemView) {
             super(itemView);
             imgIcon = itemView.findViewById(R.id.imgIcon);
         }
