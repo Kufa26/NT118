@@ -102,6 +102,7 @@
                     android:textSize="14sp"></TextView>
 
                 <TextView
+                    android:id="@+id/txtFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -119,6 +120,7 @@
                     android:textSize="14sp"></TextView>
 
                 <TextView
+                    android:id="@+id/txtDob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -143,7 +145,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/Male"
+                        android:id="@+id/rbMale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
@@ -151,7 +153,7 @@
                         android:text="Nam" />
 
                     <RadioButton
-                        android:id="@+id/Female"
+                        android:id="@+id/rbFemale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -168,6 +170,7 @@
                     android:textSize="14sp"></TextView>
 
                 <TextView
+                    android:id="@+id/txtCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -175,80 +178,63 @@
                     android:hint="Việt Nam"
                     android:inputType="text"
                     android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Số điện thoại"
+                android:textStyle="bold"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical"
+                android:hint="Phone number"
+                android:inputType="text"
+                android:textSize="16sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textSize="14sp"></TextView>
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:hint="Email"
+                android:inputType="text"
+                android:textSize="16sp"></TextView>
             </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_details"
+    <Button
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="20dp"
-        android:text="Thông tin liên hệ"
-        android:textColor="@color/greenbutton"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/body_profile">
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/contact_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/green_border"
+        android:backgroundTint="@color/greenbutton"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:paddingTop="10dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tv_details">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="Số điện thoại"
-            android:textStyle="bold"
-            android:textSize="14sp"></TextView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:hint="Phone number"
-            android:inputType="text"
-            android:textSize="16sp"></TextView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="Email"
-            android:textStyle="bold"
-            android:textSize="14sp"></TextView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:hint="Email"
-            android:inputType="text"
-            android:textSize="16sp"></TextView>
-    </LinearLayout>
-
-        <Button
-            android:id="@+id/changepass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/greenbutton"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Đổi mật khẩu"
-            app:layout_constraintTop_toBottomOf="@id/contact_detail"/>
+        android:text="Sửa thông tin"
+        app:layout_constraintTop_toBottomOf="@id/body_profile"/>
+    <Button
+        android:id="@+id/changepass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/greenbutton"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Đổi mật khẩu"
+        app:layout_constraintTop_toBottomOf="@id/edit"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
