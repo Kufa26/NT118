@@ -104,6 +104,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/txtFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -123,6 +124,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/txtDob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -149,7 +151,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/Male"
+                        android:id="@+id/rbMale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
@@ -157,7 +159,7 @@
                         android:text="Nam" />
 
                     <RadioButton
-                        android:id="@+id/Female"
+                        android:id="@+id/rbFemale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
@@ -175,6 +177,7 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/txtCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

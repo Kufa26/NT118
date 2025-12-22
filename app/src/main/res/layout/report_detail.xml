@@ -459,7 +459,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_income"
+                        android:src="@drawable/ic_income1"
                         app:tint="#2196F3" />
                 </RelativeLayout>
 
