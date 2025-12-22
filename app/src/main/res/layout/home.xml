@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/background_color">
+    android:background="#F6F6F8">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_content"
@@ -46,7 +46,7 @@
                         <TextView
                             android:text="0 đ"
                             android:textStyle="bold"
-                            android:textColor="#000000"
+                            android:textColor="#111318"
                             android:textSize="28sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -87,7 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardUseCompatPadding="true">
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -166,7 +167,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/background_color"
                     android:padding="16dp">
 
                     <LinearLayout
@@ -268,7 +268,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginTop="4dp"
-                        android:background="@color/background_color"
+                        android:background="#F7F8FA"
                         android:gravity="center">
 
                         <TextView
@@ -296,23 +296,18 @@
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardUseCompatPadding="true"
-                android:background="@color/background_color">
-                <!-- app:cardBackgroundColor="@android:color/white"> -->
+                app:cardBackgroundColor="@android:color/white">
 
-
-
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/background_color"
                     android:padding="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:background="@color/background_color"
                         android:orientation="horizontal">
 
                         <TextView
@@ -338,8 +333,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="12dp"
+                        android:background="#F3F4F6"
                         android:orientation="horizontal"
-                        android:background="@color/background_color"
                         android:padding="4dp">
 
                         <TextView
@@ -349,7 +344,6 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="Tuần"
-                            android:textColor="#9AA0AE"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -383,7 +377,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/background_color"
                     android:padding="16dp">
 
                     <LinearLayout

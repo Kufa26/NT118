@@ -1,4 +1,4 @@
-package com.example.login_sigup.budget;
+package com.example.login_sigup;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
