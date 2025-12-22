@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
-    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_plus"
+    <LinearLayout
+        android:id="@+id/head"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center_vertical"
@@ -16,36 +14,27 @@
         android:background="@color/background_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Back button -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/ic_back"
-                android:layout_marginEnd="6dp"/>
-        </LinearLayout>
-
-        <!-- Title center -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:text="Hủy"
+            android:textSize="20sp"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
             android:text="Thêm giao dịch"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
-    </androidx.appcompat.widget.Toolbar>
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/khung"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
@@ -59,12 +48,9 @@
             android:id="@+id/layoutWallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
             android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginTop="8dp"
-            android:foreground="?attr/selectableItemBackground">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="25dp"
@@ -78,7 +64,9 @@
                 android:layout_weight="1"
                 android:layout_marginStart="16dp"
                 android:hint="Tiền mặt"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <ImageView
                 android:layout_width="26dp"
@@ -135,15 +123,11 @@
             android:id="@+id/layoutGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
-                android:id="@+id/imgGroupIcon"
                 android:layout_width="25dp"
                 android:layout_height="32dp"
                 android:src="@drawable/ic_circle" />
@@ -153,7 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="16dp"
                 android:text="Chọn nhóm"
                 android:textColor="#AAA"
                 android:textSize="18sp" />
@@ -175,12 +159,9 @@
             android:id="@+id/layoutNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:layout_width="25dp"
@@ -188,16 +169,16 @@
                 android:src="@drawable/ic_note" />
 
             <TextView
-                android:id="@+id/tvNote"
+                android:id="@+id/etNote"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="8dp"
                 android:text="Ghi chú"
-                android:textColor="#AAA"
-                android:textSize="16sp"
-                android:maxLines="3"
-                android:ellipsize="end"/>
+                android:textSize="18dp"
+                android:paddingStart="8dp"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <ImageView
                 android:layout_width="26dp"
@@ -224,23 +205,19 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/ic_calendar" />
-
             <ImageButton
-                android:layout_marginStart="18dp"
                 android:id="@+id/btnPrevDate"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_leftarrow"
-                android:background="@null"
-                android:padding="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:background="@drawable/ic_leftarrow"
+                android:layout_marginStart="25dp" />
 
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
+                android:text="Thứ Sáu, 10/10/2025"
                 android:background="@drawable/gray_border"
                 android:textColor="@color/lightgreen"
                 android:textSize="16sp"
@@ -250,11 +227,7 @@
                 android:id="@+id/btnNextDate"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_rightarrow"
-                android:background="@null"
-                android:padding="4dp"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:background="@drawable/ic_rightarrow" />
         </LinearLayout>
 
         <Button
@@ -272,4 +245,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

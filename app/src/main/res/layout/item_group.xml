@@ -12,10 +12,11 @@
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="28dp"
-        android:layout_height="28dp"/>
+        android:layout_height="28dp"
+        android:src="@drawable/ic_food"/>
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvGroupName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

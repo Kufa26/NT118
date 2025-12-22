@@ -173,19 +173,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/tvVerify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xác thực email"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/khunglogin"
-        ></TextView>
-
     <Button
         android:id="@+id/btnSignup"
         android:layout_width="0dp"
@@ -198,7 +185,7 @@
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvVerify"/>
+        app:layout_constraintTop_toBottomOf="@id/khunglogin"/>
 
     <TextView
         android:id="@+id/tv_login"

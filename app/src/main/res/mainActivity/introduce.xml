@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView_introduce"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_divider">
+
+        <LinearLayout
+            android:id="@+id/body_Acc_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Ứng dụng Quản lý Tài chính Cá nhân \nDễ dàng, thông minh, hiệu quả"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="start"
+                android:text="1.    GIỚI THIỆU"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="
+    - Ứng dụng Quản lý Tài chính Cá nhân là công cụ giúp người dùng theo dõi, kiểm soát và tối ưu hóa việc chi tiêu hằng ngày một cách dễ dàng và hiệu quả. Với giao diện thân thiện, dễ sử dụng và các tính năng trực quan, ứng dụng phù hợp cho mọi đối tượng – từ sinh viên, nhân viên văn phòng đến người nội trợ. \n
+    - Mục tiêu của ứng dụng là giúp người dùng hiểu rõ hơn về thói quen chi tiêu, lập kế hoạch tiết kiệm và hướng tới một cuộc sống tài chính cân bằng, bền vững."
+                android:textColor="@color/black"
+                android:textSize="18sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="start"
+                android:text="2.    CÁC CHỨC NĂNG CHÍNH"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="
+    - Ghi chép thu – chi: Nhập nhanh các khoản thu, chi hằng ngày. \n
+    - Phân loại chi tiêu: Theo dõi tiền theo nhóm như ăn uống, đi lại, giải trí…\n
+    - Báo cáo và thống kê: Biểu đồ và tổng hợp chi tiêu theo ngày, tuần, tháng.\n
+    - Mục tiêu tài chính: Tạo kế hoạch tiết kiệm hoặc giới hạn chi tiêu.\n
+    - Nhắc nhở giao dịch: Thông báo để không bỏ sót khoản quan trọng.\n
+    - Nhắc nhở giao dịch: Thông báo để không bỏ sót khoản quan trọng."
+                android:textColor="@color/black"
+                android:textSize="18sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="start"
+                android:text="3.    TÀI KHOẢN NGƯỜI DÙNG"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="
+    - Mỗi người dùng có thể tạo tài khoản cá nhân bằng email hoặc đăng nhập qua tài khoản Google.\n
+    - Sau khi đăng nhập, dữ liệu tài chính của bạn sẽ được lưu trữ trên hệ thống và có thể đồng bộ trên nhiều thiết bị khác nhau.\n
+    - Tài khoản cũng cho phép bạn sao lưu và khôi phục dữ liệu khi cần thiết."
+                android:textColor="@color/black"
+                android:textSize="18sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="start"
+                android:text="4.    HƯỚNG DẪN SỬ DỤNG"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="
+    - Đăng ký hoặc đăng nhập: Chọn “Tạo tài khoản mới” hoặc “Đăng nhập” trên màn hình chính.\n
+    - Thêm giao dịch: Nhấn nút “+” để ghi lại khoản thu hoặc chi, nhập số tiền, loại giao dịch và ghi chú nếu cần.\n
+    - Xem báo cáo: Chọn mục “Thống kê” để xem biểu đồ chi tiêu theo thời gian.\n
+    - Tạo mục tiêu tài chính: Vào phần “Kế hoạch” để đặt ra mục tiêu tiết kiệm hoặc giới hạn chi tiêu.\n
+    - Cài đặt cá nhân: Trong phần “Cài đặt”, bạn có thể thay đổi ngôn ngữ, chủ đề giao diện hoặc sao lưu dữ liệu."
+                android:textColor="@color/black"
+                android:textSize="18sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="start"
+                android:text="5.    LỜI CẢM ƠN"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                android:gravity="start"
+                android:text="
+    - Nhóm phát triển xin chân thành cảm ơn người dùng đã tin tưởng và lựa chọn Quản lý Tài chính Cá Nhân.\n
+    - Chúng tôi luôn lắng nghe ý kiến đóng góp để cải thiện và hoàn thiện ứng dụng hơn nữa, nhằm mang đến trải nghiệm tốt nhất cho mọi người.\n
+    - Chúc bạn có một hành trình quản lý tài chính thông minh, hiệu quả và bền vững!"
+                android:textColor="@color/black"
+                android:textSize="18sp"></TextView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_introduce"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_back"
+                android:layout_marginEnd="6dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_introduce"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:text="Giới thiệu"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/toolbar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_introduce"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
