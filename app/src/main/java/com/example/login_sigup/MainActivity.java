@@ -10,7 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Context;
+import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -33,12 +36,54 @@ public class MainActivity extends AppCompatActivity {
 
     UserHandle userHandle;
 
+    private static final String KEY_IS_IN_SETTINGS = "is_in_settings";
+    private boolean isInSettings = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 1. Áp dụng Dark Mode (Giữ nguyên như trước)
+        SharedPreferences prefs = getSharedPreferences("SettingsPrefs", Context.MODE_PRIVATE);
+        boolean isDarkMode = prefs.getBoolean("isDarkMode", false);
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         userHandle = new UserHandle(this);
-        showMainLayout();
+
+        // 2. KIỂM TRA TRẠNG THÁI KHI RECREATE
+        if (savedInstanceState != null) {
+            isInSettings = savedInstanceState.getBoolean(KEY_IS_IN_SETTINGS, false);
+        }
+
+        if (savedInstanceState == null) {
+            showMainLayout(); // Lần đầu mở app
+        } else if (isInSettings) {
+            // Nếu đang ở Setting khi nhấn Switch, nạp lại Menu và nhảy thẳng vào SettingFragment
+            showMenuLayout();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new com.example.login_sigup.account.SettingFragment())
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            showMenuLayout();
+        }
+    }
+
+    // 3. LƯU TRẠNG THÁI TRƯỚC KHI RECREATE
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Kiểm tra xem Fragment hiện tại có phải là SettingFragment không
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof com.example.login_sigup.account.SettingFragment) {
+            outState.putBoolean(KEY_IS_IN_SETTINGS, true);
+        } else {
+            outState.putBoolean(KEY_IS_IN_SETTINGS, false);
+        }
     }
 
     // ================= WELCOME =================

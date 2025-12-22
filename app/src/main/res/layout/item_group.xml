@@ -6,7 +6,8 @@
     android:gravity="center_vertical"
     android:paddingVertical="8dp"
     android:paddingStart="10dp"
-    android:paddingEnd="10dp">
+    android:paddingEnd="10dp"
+    android:background="@color/background_color">
 
     <ImageView
         android:id="@+id/imgIcon"

@@ -5,14 +5,14 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral90">
+    android:background="@color/background_color">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_slgroup"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF"
+        android:background="@color/background_color1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Nhóm"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textcolor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@drawable/white_border"
+            android:background="@color/background_color"
             android:layout_marginBottom="6dp"
             android:clickable="true"
             android:focusable="true">

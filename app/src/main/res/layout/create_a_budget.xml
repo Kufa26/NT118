@@ -6,13 +6,13 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral90">
+    android:background="@color/background_color">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#FFFFFF"
+        android:textColor="@color/background_color1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Đóng"
                 android:textStyle="bold"
+                android:textColor="@color/textcolor1"
                 android:layout_marginEnd="6dp" />
 
         </LinearLayout>
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Thêm ngân sách"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textcolor"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
@@ -53,7 +54,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/white_border"
+        android:textColor="@color/background_color1"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_profile">
 
         <!-- Nhóm: Ví + Tiền mặt -->
@@ -215,7 +216,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        android:background="@drawable/white_border"
+        android:textColor="@color/background_color"
         android:layout_marginTop="30dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"

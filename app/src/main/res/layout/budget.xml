@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F0F0F0">
+    android:background="@color/background_color">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_acc_info"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#F6F6F8"
+        android:background="@color/background_color1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:fontFamily="sans-serif"
             android:text="Ngân sách"
-            android:textColor="@android:color/black"
+            android:textColor="@color/textcolor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:text="@string/text_have_budget"
-        android:textColor="@color/black"
+        android:textColor="@color/textcolor"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="420dp"
+        android:textColor="@color/textcolor1"
         android:text="@string/text_intro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
