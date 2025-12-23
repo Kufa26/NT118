@@ -137,7 +137,7 @@
                             app:srcCompat="@drawable/ic_wallet"/>
 
                         <TextView
-                            android:text="Tien mat"
+                            android:text="Tiền mặt"
                             android:textSize="15sp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
