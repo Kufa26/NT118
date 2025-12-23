@@ -92,4 +92,70 @@ public class TransactionHandle {
                 new String[]{String.valueOf(idTransaction)}
         );
     }
+
+    // ================= RECENT (LIMIT) =================
+    public Cursor getRecentCursor(String userId, int limit) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String where = "";
+        String[] args = null;
+
+        if (userId != null) {
+            where = " WHERE t.idUser = ?";
+            args = new String[]{userId};
+        }
+
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        where +
+                        " ORDER BY t.createdAt DESC " +
+                        "LIMIT " + limit,
+                args
+        );
+    }
+
+    public static class Totals {
+        public double income;
+        public double expense;
+
+        public double getBalance() {
+            return income - expense;
+        }
+    }
+
+    public Totals getTotalsForUser(String userId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String where = "";
+        String[] args = null;
+        if (userId != null) {
+            where = " WHERE idUser = ?";
+            args = new String[]{userId};
+        }
+
+        Cursor cursor = db.rawQuery(
+                "SELECT typeTransaction, SUM(amount) AS total " +
+                        "FROM TransactionTable" +
+                        where +
+                        " GROUP BY typeTransaction",
+                args
+        );
+
+        Totals totals = new Totals();
+        if (cursor.moveToFirst()) {
+            do {
+                String type = cursor.getString(cursor.getColumnIndexOrThrow("typeTransaction"));
+                double total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+                if ("INCOME".equalsIgnoreCase(type)) {
+                    totals.income = total;
+                } else {
+                    totals.expense += total;
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return totals;
+    }
 }
