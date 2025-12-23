@@ -268,10 +268,16 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="160dp"
+                        android:layout_height="220dp"
                         android:layout_marginTop="4dp"
                         android:background="#F7F8FA"
                         android:gravity="center">
+
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/chart_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp" />
 
                         <TextView
                             android:id="@+id/tv_empty_report"

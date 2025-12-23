@@ -158,4 +158,30 @@ public class TransactionHandle {
         cursor.close();
         return totals;
     }
+
+    // ================= MONTHLY TOTALS (group by month/year) =================
+    public Cursor getMonthlyTotals(String userId, String type, int limitMonths) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT substr(t.date,4,2) AS month, substr(t.date,7,4) AS year, " +
+                        "SUM(t.amount) AS total " +
+                        "FROM TransactionTable t " +
+                        "WHERE t.typeTransaction = ? "
+        );
+
+        if (userId != null) {
+            sql.append("AND t.idUser = ? ");
+        }
+
+        sql.append("GROUP BY year, month ");
+        sql.append("ORDER BY CAST(year AS INTEGER) DESC, CAST(month AS INTEGER) DESC ");
+        sql.append("LIMIT ").append(limitMonths);
+
+        if (userId != null) {
+            return db.rawQuery(sql.toString(), new String[]{type, userId});
+        } else {
+            return db.rawQuery(sql.toString(), new String[]{type});
+        }
+    }
 }
