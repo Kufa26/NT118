@@ -22,6 +22,9 @@ import com.example.cashmate.R;
 import com.example.cashmate.database.transaction.Transaction;
 import com.example.cashmate.database.transaction.TransactionHandle;
 import com.example.cashmate.group.ListGroupFragment;
+import com.example.cashmate.database.budget.BudgetHandle;
+import com.example.cashmate.database.User.UserHandle;
+import com.example.cashmate.database.User.User;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -30,24 +33,20 @@ import java.util.Calendar;
 
 public class PlusFragment extends Fragment {
 
-    // ===== VIEW =====
     private ImageButton btnBack, btnPrevDate, btnNextDate;
     private TextView tvGroup, tvNote, tvDate;
     private ImageView imgGroup;
     private EditText etAmount;
     private Button btnSave;
 
-    // ===== DATA =====
     private String noteText = "";
     private LocalDate selectedDate = LocalDate.now();
 
-    // ===== GROUP =====
     private Long selectedCategoryId = null;
     private String selectedGroupName = null;
     private String selectedGroupIcon = null;
     private String selectedCategoryType = null;
 
-    // ===== EDIT MODE =====
     private Long editingTransactionId = null;
 
     @Nullable
@@ -58,8 +57,6 @@ public class PlusFragment extends Fragment {
             @Nullable Bundle savedInstanceState
     ) {
         View view = inflater.inflate(R.layout.plus, container, false);
-
-        // ===== BIND =====
         btnBack = view.findViewById(R.id.btnBack);
         tvGroup = view.findViewById(R.id.tvGroup);
         tvNote = view.findViewById(R.id.tvNote);
@@ -73,19 +70,14 @@ public class PlusFragment extends Fragment {
         updateDateUI();
         updateNoteUI();
 
-        // ===== BACK =====
-        btnBack.setOnClickListener(v ->
-                requireActivity().getSupportFragmentManager().popBackStack()
-        );
+        btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
-        // ===== EDIT MODE (🔥 CỰC QUAN TRỌNG) =====
         if (getArguments() != null && getArguments().containsKey("idTransaction")) {
             editingTransactionId = getArguments().getLong("idTransaction");
             loadTransactionForEdit(editingTransactionId);
             btnSave.setText("Cập nhật");
         }
 
-        // ===== DATE =====
         btnPrevDate.setOnClickListener(v -> {
             if (selectedDate.isAfter(LocalDate.of(2000, 1, 1))) {
                 selectedDate = selectedDate.minusDays(1);
@@ -102,7 +94,6 @@ public class PlusFragment extends Fragment {
 
         tvDate.setOnClickListener(v -> openSpinnerDatePicker());
 
-        // ===== GROUP =====
         view.findViewById(R.id.layoutGroup).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -120,7 +111,6 @@ public class PlusFragment extends Fragment {
                     updateGroupUI();
                 });
 
-        // ===== NOTE =====
         view.findViewById(R.id.layoutNote).setOnClickListener(v -> {
             NoteFragment f = new NoteFragment();
             Bundle b = new Bundle();
@@ -141,15 +131,12 @@ public class PlusFragment extends Fragment {
                     updateNoteUI();
                 });
 
-        // ===== SAVE =====
         btnSave.setOnClickListener(v -> saveTransaction());
 
         return view;
     }
 
-    // ================= SAVE =================
     private void saveTransaction() {
-
         if (selectedCategoryId == null) {
             Toast.makeText(getContext(), "Chưa chọn nhóm", Toast.LENGTH_SHORT).show();
             return;
@@ -164,8 +151,13 @@ public class PlusFragment extends Fragment {
         String date = selectedDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String weekday = getThu(selectedDate.getDayOfWeek());
 
+        UserHandle userHandle = new UserHandle(requireContext());
+        User currentUser = userHandle.getCurrentUser();
+        Long idUserLong = 1L;
+        String idUserString = (currentUser != null) ? currentUser.getIdUser() : "unknown";
+
         Transaction t = new Transaction(
-                1L,
+                idUserLong,
                 selectedCategoryId,
                 amount,
                 noteText,
@@ -179,6 +171,17 @@ public class PlusFragment extends Fragment {
 
         if (editingTransactionId == null) {
             handle.insert(t);
+
+            // --- GỌI CẬP NHẬT NGÂN SÁCH THEO TÊN ---
+            try {
+                BudgetHandle budgetHandle = new BudgetHandle(requireContext());
+                // Truyền selectedGroupName vào để so sánh theo tên
+                budgetHandle.updateBudgetUsage(idUserString, selectedCategoryId.intValue(), selectedGroupName, amount, date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // ----------------------------------------
+
             Toast.makeText(getContext(), "Đã thêm giao dịch", Toast.LENGTH_SHORT).show();
         } else {
             handle.update(editingTransactionId, t);
@@ -188,11 +191,9 @@ public class PlusFragment extends Fragment {
         requireActivity().getSupportFragmentManager().popBackStack();
     }
 
-    // ================= LOAD EDIT =================
     private void loadTransactionForEdit(long id) {
         TransactionHandle handle = new TransactionHandle(requireContext());
         Cursor c = handle.getById(id);
-
         if (c != null && c.moveToFirst()) {
 
             etAmount.setText(String.valueOf(
@@ -201,11 +202,10 @@ public class PlusFragment extends Fragment {
 
             noteText = c.getString(c.getColumnIndexOrThrow("note"));
             updateNoteUI();
-
             selectedCategoryId = c.getLong(c.getColumnIndexOrThrow("idCategory"));
             selectedGroupName = c.getString(c.getColumnIndexOrThrow("nameCategory"));
             selectedGroupIcon = c.getString(c.getColumnIndexOrThrow("iconCategory"));
-            selectedCategoryType = c.getString(c.getColumnIndexOrThrow("typeTransaction"));
+            try { selectedCategoryType = c.getString(c.getColumnIndexOrThrow("typeCategory")); } catch (Exception e) {}
             updateGroupUI();
 
             selectedDate = LocalDate.parse(
@@ -214,11 +214,9 @@ public class PlusFragment extends Fragment {
             );
             updateDateUI();
         }
-
         if (c != null) c.close();
     }
 
-    // ================= DATE PICKER =================
     private void openSpinnerDatePicker() {
         DatePickerDialog dialog = new DatePickerDialog(
                 requireContext(),
@@ -243,11 +241,9 @@ public class PlusFragment extends Fragment {
 
         dialog.getDatePicker().setMinDate(min.getTimeInMillis());
         dialog.getDatePicker().setMaxDate(max.getTimeInMillis());
-
         dialog.show();
     }
 
-    // ================= UI =================
     private void updateDateUI() {
         tvDate.setText(
                 getThu(selectedDate.getDayOfWeek()) + ", " +

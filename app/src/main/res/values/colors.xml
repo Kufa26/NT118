@@ -8,6 +8,10 @@
     <color name="lightgray" >#D3D3D3</color>
     <color name="red" >#FF0000</color>
     <color name="background_color" >#FFFFFF</color>
+    <color name="background_color1" >#FFFFFF</color>
+    <color name="background_color2" >#FFFFFF</color>
     <color name="textcolor" >#000000</color>
+    <color name="textcolor1" >#757575</color>
+    <color name="textcolor2" >#212121</color>
     <color name="btn_color">#000000</color>
 </resources>

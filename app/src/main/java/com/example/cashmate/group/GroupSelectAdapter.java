@@ -76,7 +76,7 @@ public class GroupSelectAdapter
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgIcon = itemView.findViewById(R.id.imgIcon);
-            tvName = itemView.findViewById(R.id.tvName);
+            tvName = itemView.findViewById(R.id.tvGroupName);
         }
     }
 }

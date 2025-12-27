@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "login_signup.db";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 7;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -53,6 +53,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         "FOREIGN KEY(idUser) REFERENCES USER(id), " +
                         "FOREIGN KEY(idCategory) REFERENCES Category(idCategory))";
         db.execSQL(CREATE_TRANSACTION_TABLE);
+
+        String CREATE_BUDGET_TABLE = "CREATE TABLE IF NOT EXISTS Budget (" +
+                "idBudget INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "idUser TEXT, " +
+                "idCategory INTEGER, " +
+                "name TEXT, " +
+                "totalAmount REAL, " +
+                "spentAmount REAL DEFAULT 0, " +
+                "startDate TEXT, " +
+                "endDate TEXT, " +
+                "timeType TEXT, " +
+                "FOREIGN KEY(idUser) REFERENCES USER(id), " +
+                "FOREIGN KEY(idCategory) REFERENCES Category(idCategory))";
+        db.execSQL(CREATE_BUDGET_TABLE);
     }
 
     @Override
@@ -88,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS TransactionTable");
         db.execSQL("DROP TABLE IF EXISTS Category");
         db.execSQL("DROP TABLE IF EXISTS USER");
+        db.execSQL("DROP TABLE IF EXISTS Budget");
         onCreate(db);
     }
 }

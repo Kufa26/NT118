@@ -18,6 +18,7 @@ import com.example.cashmate.account.AccountFragment;
 import com.example.cashmate.account.Login;
 import com.example.cashmate.account.SignUp;
 import com.example.cashmate.budget.BudgetFragment;
+import com.example.cashmate.budget.BudgetStorage;
 import com.example.cashmate.database.User.UserHandle;
 import com.example.cashmate.Transaction.TransactionFragment;
 import com.example.cashmate.home.HomeFragment;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         userHandle = new UserHandle(this);
+        BudgetStorage.getInstance().init(this);
         syncFirebaseUserToLocal();
         boolean openMenu = getIntent().getBooleanExtra("open_menu", false);
         if (openMenu) {
