@@ -150,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:text="Nam" />
 
                     <RadioButton
@@ -158,6 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
+                        android:enabled="false"
                         android:text="Nữ" />
                 </LinearLayout>
 

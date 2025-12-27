@@ -73,6 +73,10 @@ public class Login extends AppCompatActivity {
 
                         String uid = auth.getCurrentUser().getUid();
                         userHandle.updatePassword(uid, password);
+                        getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+                                .edit()
+                                .putString("email", email)
+                                .apply();
 
                         Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
@@ -184,6 +188,37 @@ public class Login extends AppCompatActivity {
                 auth.signInWithCredential(firebaseCredential)
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
+                                String email = auth.getCurrentUser().getEmail();
+                                String uid = auth.getCurrentUser().getUid();
+
+                                // ===== LƯU SESSION =====
+                                getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+                                        .edit()
+                                        .putString("email", email)
+                                        .apply();
+
+                                // ===== INSERT SQLITE NẾU CHƯA CÓ =====
+                                if (!userHandle.isUserExist(email)) {
+                                    User user = new User(
+                                            uid,
+                                            null,       // fullName
+                                            email,
+                                            "google",   // password
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null
+                                    );
+                                    userHandle.insertUserFromFirebase(
+                                            uid,
+                                            null,           // fullName
+                                            email,
+                                            "google",       // password
+                                            null            // avatarUrl
+                                    );
+                                }
+
                                 Toast.makeText(
                                         Login.this,
                                         "Firebase login success: " + auth.getCurrentUser().getEmail(),

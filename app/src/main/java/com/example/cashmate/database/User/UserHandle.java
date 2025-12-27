@@ -34,30 +34,11 @@ public class UserHandle {
         values.put("country", user.getCountry());
         values.put("phoneNumber", user.getPhoneNumber());
         values.put("avatarUrl", user.getAvatarUrl());
-        values.put("isLoggedIn", 0);
 
         long result = db.insert("USER", null, values);
         return result != -1;
     }
 
-    // ===== LOGIN (EMAIL/PASS LOCAL) =====
-    public User handleLogin(String email, String password) {
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM USER WHERE email = ? AND password = ?",
-                new String[]{email, password}
-        );
-
-        try {
-            if (cursor.moveToFirst()) {
-                User user = mapCursorToUser(cursor);
-                setCurrentUser(user.getIdUser());
-                return user;
-            }
-            return null;
-        } finally {
-            cursor.close();
-        }
-    }
 
     // ===== UPDATE PASSWORD =====
     public void updatePassword(String uid, String newPass) {
@@ -107,7 +88,7 @@ public class UserHandle {
         values.put("password", password); // "google" hoặc rỗng
         values.put("dob", "");
         values.put("gender", "Unknown");
-        values.put("country", "Vietnam");
+        values.put("country", "Việt Nam");
         values.put("phoneNumber", "");
         values.put("avatarUrl", avatarUrl);
 
@@ -115,7 +96,6 @@ public class UserHandle {
         if (updated == 0) {
             // insert mới, mặc định chưa login
             values.put("id", uid);
-            values.put("isLoggedIn", 0);
             db.insert("USER", null, values);
         }
     }
@@ -134,40 +114,7 @@ public class UserHandle {
         }
     }
 
-    // ===== GET CURRENT USER =====
-    public User getCurrentUser() {
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM USER WHERE isLoggedIn = 1 LIMIT 1",
-                null
-        );
-        try {
-            if (cursor.moveToFirst()) return mapCursorToUser(cursor);
-            return null;
-        } finally {
-            cursor.close();
-        }
-    }
 
-    // ===== SET CURRENT USER (CHỈ GỌI SAU KHI LOGIN SUCCESS) =====
-    public boolean setCurrentUser(String uid) {
-        resetLoginState();
-        ContentValues values = new ContentValues();
-        values.put("isLoggedIn", 1);
-        int rows = db.update("USER", values, "id = ?", new String[]{uid});
-        return rows > 0;
-    }
-
-    // ===== LOGOUT LOCAL =====
-    public void logout() {
-        resetLoginState();
-    }
-
-    // ===== RESET LOGIN STATE =====
-    private void resetLoginState() {
-        ContentValues reset = new ContentValues();
-        reset.put("isLoggedIn", 0);
-        db.update("USER", reset, null, null);
-    }
 
     // ===== CURSOR → USER (an toàn: chỉ đọc 9 cột đầu, bỏ qua isLoggedIn) =====
     private User mapCursorToUser(Cursor cursor) {
@@ -183,4 +130,63 @@ public class UserHandle {
                 cursor.getString(8)  // avatarUrl
         );
     }
+
+    public User getUserByEmail(String email) {
+        User user = null;
+        Cursor c = db.rawQuery(
+                "SELECT * FROM USER WHERE email = ?",
+                new String[]{email}
+        );
+
+        if (c.moveToFirst()) {
+            user = new User(
+                    c.getString(c.getColumnIndexOrThrow("id")),
+                    c.getString(c.getColumnIndexOrThrow("fullName")),
+                    c.getString(c.getColumnIndexOrThrow("email")),
+                    c.getString(c.getColumnIndexOrThrow("password")),
+                    c.getString(c.getColumnIndexOrThrow("dob")),
+                    c.getString(c.getColumnIndexOrThrow("gender")),
+                    c.getString(c.getColumnIndexOrThrow("country")),
+                    c.getString(c.getColumnIndexOrThrow("phoneNumber")),
+                    c.getString(c.getColumnIndexOrThrow("avatarUrl"))
+            );
+        }
+        c.close();
+        return user;
+    }
+
+    public boolean isUserExist(String email) {
+        Cursor c = db.rawQuery(
+                "SELECT 1 FROM USER WHERE email = ? LIMIT 1",
+                new String[]{email}
+        );
+        boolean exists = c.moveToFirst();
+        c.close();
+        return exists;
+    }
+
+    public void updateUserInfo(
+            String email,
+            String fullName,
+            String dob,
+            String gender,
+            String country,
+            String phone
+    ) {
+        ContentValues values = new ContentValues();
+        values.put("fullName", fullName);
+        values.put("dob", dob);
+        values.put("gender", gender);
+        values.put("country", country);
+        values.put("phoneNumber", phone);
+
+        db.update(
+                "USER",
+                values,
+                "email = ?",
+                new String[]{email}
+        );
+    }
+
+
 }
