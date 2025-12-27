@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.cashmate.database.DatabaseHelper;
+import java.util.Calendar;
+
 
 public class TransactionHandle {
 
@@ -92,4 +94,129 @@ public class TransactionHandle {
                 new String[]{String.valueOf(idTransaction)}
         );
     }
+    public Cursor getByMonth(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        long start = getMonthStartMillis(month, year);
+        long end   = getMonthEndMillis(month, year);
+
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.createdAt >= ? AND t.createdAt < ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{
+                        String.valueOf(start),
+                        String.valueOf(end)
+                }
+        );
+    }
+    public double getTotalByMonth(int month, int year, String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        long start = getMonthStartMillis(month, year);
+        long end   = getMonthEndMillis(month, year);
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(amount) FROM TransactionTable " +
+                        "WHERE typeTransaction = ? " +
+                        "AND createdAt >= ? AND createdAt < ?",
+                new String[]{
+                        type,
+                        String.valueOf(start),
+                        String.valueOf(end)
+                }
+        );
+
+        double total = 0;
+        if (cursor.moveToFirst() && !cursor.isNull(0)) {
+            total = cursor.getDouble(0);
+        }
+
+        cursor.close();
+        return total;
+    }
+    public double getStartBalance(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        long start = getMonthStartMillis(month, year);
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "SUM(CASE WHEN typeTransaction = 'INCOME' THEN amount ELSE 0 END) - " +
+                        "SUM(CASE WHEN typeTransaction = 'EXPENSE' THEN amount ELSE 0 END) " +
+                        "FROM TransactionTable " +
+                        "WHERE createdAt < ?",
+                new String[]{String.valueOf(start)}
+        );
+
+        double balance = 0;
+        if (cursor.moveToFirst() && !cursor.isNull(0)) {
+            balance = cursor.getDouble(0);
+        }
+
+        cursor.close();
+        return balance;
+    }
+    private long getMonthStartMillis(int month, int year) {
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(year, month - 1, 1, 0, 0, 0);
+        cal.set(java.util.Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
+    private long getMonthEndMillis(int month, int year) {
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.set(year, month - 1, 1, 0, 0, 0);
+        cal.add(java.util.Calendar.MONTH, 1);
+        return cal.getTimeInMillis();
+    }
+
+    public Cursor getIncomeGroupByCategory(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        long start = getMonthStartMillis(month, year);
+        long end   = getMonthEndMillis(month, year);
+
+        return db.rawQuery(
+                "SELECT c.nameCategory, SUM(t.amount) AS total " +
+                        "FROM TransactionTable t " +
+                        "JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.typeTransaction = 'INCOME' " +
+                        "AND t.createdAt >= ? AND t.createdAt < ? " +
+                        "GROUP BY t.idCategory",
+                new String[]{ String.valueOf(start), String.valueOf(end) }
+        );
+    }
+
+    public Cursor getExpenseGroupByCategory(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        long start = getMonthStartMillis(month, year);
+        long end   = getMonthEndMillis(month, year);
+
+        return db.rawQuery(
+                "SELECT c.nameCategory, SUM(t.amount) AS total " +
+                        "FROM TransactionTable t " +
+                        "JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.typeTransaction = 'EXPENSE' " +
+                        "AND t.createdAt >= ? AND t.createdAt < ? " +
+                        "GROUP BY t.idCategory",
+                new String[]{ String.valueOf(start), String.valueOf(end) }
+        );
+    }
+    public Cursor getAllCursorByType(String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.typeTransaction = ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{ type }
+        );
+    }
+
+
 }

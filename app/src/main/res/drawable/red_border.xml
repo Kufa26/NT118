@@ -11,7 +11,7 @@
     <!-- Viền -->
     <stroke
         android:width="2dp"
-        android:color="#F08080" />
+        android:color="#FF0000" />
 
     <padding
         android:left="8dp"
