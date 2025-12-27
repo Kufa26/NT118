@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">CashMate</string>
+    <string name="text_have_budget">Bạn có ngân sách chưa?</string>
+    <string name="text_intro">Bắt đầu tiết kiệm bằng cách tạo \nngân sách và chúng tôi sẽ giúp bạn \nkiểm soát chi tiêu!</string>
+    <string name="btn_create_budget">Tạo mới ngân sách</string>
+    <string name="btn_save_budget">Lưu</string>
+    <string name="btn_total_budget">	Tổng cộng</string>
+    <string name="btn_select_group">	\nChọn nhóm </string>
+    <string name="eat_and_drink">\n Ăn uống</string>
+    <string name="insurance">\n Bảo hiểm</string>
+    <string name="other_costs">\n Các chi phí khác</string>
+    <string name="invest">\n Đầu tư</string>
+    <string name="move">\n Di chuyển</string>
+    <string name="car_maintenance">\n Bảo dưỡng xe</string>
+    <string name="home_repair_and_decoration">\n Sửa và trang trí nhà</string>
+    <string name="pets">\n Vật nuôi</string>
+    <string name="entertainment">\n Giải trí</string>
+    <string name="Work">\n Công việc</string>
+    <string name="revel">\n Vui-chơi</string>
+    <string name="education">\n Giáo dục</string>
+    <string name="bills_and_utilities">\n Hóa đơn và tiện ích</string>
+    <string name="electricity_bill">\n Hóa đơn điện</string>
+    <string name="fuel_bill">\n Hóa đơn xăng</string>
+    <string name="internet_bill">\n Hóa đơn internet</string>
+    <string name="water_bill">\n Hóa đơn nước</string>
+    <string name="phone_bill">\n Hóa đơn điện thoại</string>
+    <string name="atm_card">\n ATM</string>
+    <string name="wallet">\n Ví</string>
+    <string name="shopping">\n Mua sắm</string>
+    <string name="personal_belongings">\n Đồ dùng cá nhân</string>
+    <string name="tax">\n Thuế</string>
+    <string name="beautify">\n Làm đẹp</string>
+    <string name="garden">\n Vườn</string>
+    <string name="hellth">\n Sức khỏe</string>
+    <string name="medicine">\n Thuốc</string>
+    <string name="money_transferred">\n Tiền chuyển đi</string>
+    <string name="interest">\n Tiền lãi</string>
+    <string name="other_income">\n Thu nhập khác</string>
+    <string name="money_sent">\n Tiền chuyển đi</string>
+    <string name="salary">\n Lương</string>
+    <string name="money_received">\n Tền chuyển đền</string>
+    <string name="debt_repaymen">\n Trả nợ</string>
+    <string name="debt_collection">\n Thu nợ</string>
+    <string name="borrowing">\n Đi vay</string>
+    <string name="select_group">Chọn Nhóm</string>
+    <string name="main_group">Nhóm chính</string>
+    <string name="new_group">Nhóm mới</string>
+    <string name="back">Biểu tượng về</string>
+    <string name="add_budget">Thêm ngân sách</string>
+    <string name="budget">Ngân sách</string>
+    <string name="default_web_client_id">
+    496391753762-dio0lohsd0fj8vf0q4uj5f3fer84gpv3.apps.googleusercontent.com
+</string>
+
+</resources>

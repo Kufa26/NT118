@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_home" android:title="Tổng quan"
+        android:icon="@drawable/ic_home"/>
+    <item android:id="@+id/nav_transaction" android:title="Sổ giao dịch"
+        android:icon="@drawable/ic_walletsgd"/>
+    <item android:id="@+id/nav_placeholder" android:title=""
+        android:enabled="false" />
+    <item android:id="@+id/nav_budget" android:title="Ngân sách"
+        android:icon="@drawable/ic_budget"/>
+    <item android:id="@+id/nav_account" android:title="Tài khoản"
+        android:icon="@drawable/ic_user"/>
+</menu>
