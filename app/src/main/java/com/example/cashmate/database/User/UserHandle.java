@@ -188,5 +188,42 @@ public class UserHandle {
         );
     }
 
+    public User getCurrentUser() {
+        User user = null;
+
+        Cursor c = db.query(
+                "USER",
+                null,
+                "isLoggedIn = ?",
+                new String[]{"1"},
+                null,
+                null,
+                null,
+                "1"
+        );
+
+        if (c != null && c.moveToFirst()) {
+            user = new User(
+                    c.getString(c.getColumnIndexOrThrow("id")),
+                    c.getString(c.getColumnIndexOrThrow("fullName")),
+                    c.getString(c.getColumnIndexOrThrow("email")),
+                    c.getString(c.getColumnIndexOrThrow("password")),
+                    c.getString(c.getColumnIndexOrThrow("dob")),
+                    c.getString(c.getColumnIndexOrThrow("gender")),
+                    c.getString(c.getColumnIndexOrThrow("country")),
+                    c.getString(c.getColumnIndexOrThrow("phoneNumber")),
+                    c.getString(c.getColumnIndexOrThrow("avatarUrl"))
+            );
+
+            // 👇 set sau
+            user.setIsLoggedIn(
+                    c.getInt(c.getColumnIndexOrThrow("isLoggedIn"))
+            );
+        }
+
+        if (c != null) c.close();
+        return user;
+    }
+
 
 }

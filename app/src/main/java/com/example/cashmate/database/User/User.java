@@ -10,6 +10,7 @@ public class User {
     private String country;
     private String phoneNumber;
     private String avatarUrl;
+    private int isLoggedIn;
 
     public User(String idUser, String fullName, String email, String password,
                 String dob, String gender, String country, String phoneNumber, String avatarUrl) {
@@ -62,4 +63,13 @@ public class User {
 
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
+    public int getIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(int isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+
 }
