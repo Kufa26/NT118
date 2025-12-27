@@ -296,3 +296,4 @@ public class HomeFragment extends Fragment {
         return NumberFormat.getInstance(Locale.getDefault()).format(value) + " \u0111";
     }
 }
+

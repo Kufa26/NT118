@@ -66,12 +66,12 @@
                 android:text="+8,000,000.00"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#4CAF50"
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <!-- Transaction Item -->
         <LinearLayout
+            android:id="@+id/transactionRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

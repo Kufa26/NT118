@@ -184,4 +184,82 @@ public class TransactionHandle {
             return db.rawQuery(sql.toString(), new String[]{type});
         }
     }
+        // ================= FILTER BY TYPE =================
+    public Cursor getAllCursorByType(String typeTransaction) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.typeTransaction = ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{typeTransaction}
+        );
+    }
+
+    // ================= BY MONTH (LIST) =================
+    public Cursor getByMonth(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE substr(t.date,4,2) = ? AND substr(t.date,7,4) = ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{
+                        String.format("%02d", month),
+                        String.valueOf(year)
+                }
+        );
+    }
+
+    // ================= TOTAL BY MONTH =================
+    public double getTotalByMonth(int month, int year, String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT SUM(amount) AS total " +
+                        "FROM TransactionTable " +
+                        "WHERE typeTransaction = ? " +
+                        "AND substr(date,4,2) = ? " +
+                        "AND substr(date,7,4) = ?",
+                new String[]{
+                        type,
+                        String.format("%02d", month),
+                        String.valueOf(year)
+                }
+        );
+        try {
+            if (c.moveToFirst() && !c.isNull(c.getColumnIndexOrThrow("total"))) {
+                return c.getDouble(c.getColumnIndexOrThrow("total"));
+            }
+            return 0;
+        } finally {
+            c.close();
+        }
+    }
+
+    // ================= START BALANCE BEFORE MONTH =================
+    public double getStartBalance(int month, int year) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT SUM(CASE WHEN typeTransaction = 'INCOME' THEN amount ELSE -amount END) AS balance " +
+                        "FROM TransactionTable " +
+                        "WHERE CAST(substr(date,7,4) AS INTEGER) < ? " +
+                        "OR (CAST(substr(date,7,4) AS INTEGER) = ? AND CAST(substr(date,4,2) AS INTEGER) < ?)",
+                new String[]{
+                        String.valueOf(year),
+                        String.valueOf(year),
+                        String.valueOf(month)
+                }
+        );
+        try {
+            if (c.moveToFirst() && !c.isNull(c.getColumnIndexOrThrow("balance"))) {
+                return c.getDouble(c.getColumnIndexOrThrow("balance"));
+            }
+            return 0;
+        } finally {
+            c.close();
+        }
+    }
+
 }
