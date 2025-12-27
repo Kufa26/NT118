@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,11 +17,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cashmate.R;
 import com.example.cashmate.database.transaction.TransactionHandle;
 
+import java.util.Calendar;
+
 public class TransactionFragment extends Fragment {
 
     private RecyclerView rvTransactions;
     private TransactionAdapter adapter;
     private TransactionHandle transactionHandle;
+
+    // ===== UI =====
+    private TextView tvBalance;
+    private TextView tvCurrentMonth, tvCurrentYear;
+    private TextView tvStartBalance, tvEndBalance, tvTotal;
+    private TextView btnPreviousMonth, btnNextMonth;
+
+    // ===== THÁNG HIỆN TẠI =====
+    private int currentMonth;
+    private int currentYear;
 
     @Nullable
     @Override
@@ -31,18 +44,59 @@ public class TransactionFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.transaction, container, false);
 
-        // ===== RecyclerView =====
+        // ================= INIT VIEW =================
+        tvBalance = view.findViewById(R.id.tvBalance);
+
+        tvCurrentMonth = view.findViewById(R.id.tvCurrentMonth);
+        tvCurrentYear  = view.findViewById(R.id.tvCurrentYear);
+
+        tvStartBalance = view.findViewById(R.id.tvStartBalance);
+        tvEndBalance   = view.findViewById(R.id.tvEndBalance);
+        tvTotal        = view.findViewById(R.id.tvTotal);
+
+        btnPreviousMonth = view.findViewById(R.id.btnPreviousMonth);
+        btnNextMonth     = view.findViewById(R.id.btnNextMonth);
+
+        // ================= RECYCLERVIEW =================
         rvTransactions = view.findViewById(R.id.rvTransactions);
         rvTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
 
         transactionHandle = new TransactionHandle(getContext());
 
-        // ✅ DÙNG CURSOR
-        Cursor cursor = transactionHandle.getAllCursor();
-        adapter = new TransactionAdapter(cursor);
+        // ✅ Adapter rỗng – load theo tháng
+        adapter = new TransactionAdapter(null);
         rvTransactions.setAdapter(adapter);
 
-        // ===== Button xem báo cáo =====
+        // ================= INIT THÁNG HIỆN TẠI =================
+        Calendar calendar = Calendar.getInstance();
+        currentMonth = calendar.get(Calendar.MONTH) + 1; // MONTH bắt đầu từ 0
+        currentYear  = calendar.get(Calendar.YEAR);
+
+        updateMonthUI();
+        loadDataByMonth();
+
+        // ================= CLICK ĐỔI THÁNG =================
+        btnPreviousMonth.setOnClickListener(v -> {
+            currentMonth--;
+            if (currentMonth == 0) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            updateMonthUI();
+            loadDataByMonth();
+        });
+
+        btnNextMonth.setOnClickListener(v -> {
+            currentMonth++;
+            if (currentMonth == 13) {
+                currentMonth = 1;
+                currentYear++;
+            }
+            updateMonthUI();
+            loadDataByMonth();
+        });
+
+        // ================= BUTTON XEM BÁO CÁO =================
         Button btnViewReport = view.findViewById(R.id.btnViewReport);
         btnViewReport.setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
@@ -58,18 +112,45 @@ public class TransactionFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        // ✅ LOAD LẠI CURSOR SAU KHI THÊM / SỬA
-        Cursor newCursor = transactionHandle.getAllCursor();
-        adapter.swapCursor(newCursor);
+        // reload khi thêm / sửa giao dịch
+        loadDataByMonth();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // tránh leak
         if (adapter != null) {
             adapter.swapCursor(null);
         }
+    }
+
+    // ================= UPDATE UI THÁNG =================
+    private void updateMonthUI() {
+        tvCurrentMonth.setText("Tháng " + currentMonth);
+        tvCurrentYear.setText(String.valueOf(currentYear));
+    }
+
+    // ================= LOAD DATA THEO THÁNG =================
+    private void loadDataByMonth() {
+
+        // 1️⃣ RecyclerView
+        Cursor cursor = transactionHandle.getByMonth(currentMonth, currentYear);
+        adapter.swapCursor(cursor);
+
+        // 2️⃣ Tổng thu / chi
+        double income  = transactionHandle.getTotalByMonth(currentMonth, currentYear, "INCOME");
+        double expense = transactionHandle.getTotalByMonth(currentMonth, currentYear, "EXPENSE");
+
+        // 3️⃣ Số dư đầu & cuối
+        double startBalance = transactionHandle.getStartBalance(currentMonth, currentYear);
+        double endBalance   = startBalance + income - expense;
+
+        // 4️⃣ Gán UI
+        tvStartBalance.setText(String.format("%,.0f đ", startBalance));
+        tvEndBalance.setText(String.format("%,.0f đ", endBalance));
+        tvTotal.setText(String.format("%+.0f đ", income - expense));
+
+        // SỐ DƯ TRÊN CÙNG = SỐ DƯ CUỐI
+        tvBalance.setText(String.format("%,.0f đ", endBalance));
     }
 }

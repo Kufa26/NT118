@@ -48,11 +48,11 @@
             android:id="@+id/tvBalance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="0đ"
-            android:textColor="@color/black"
+            android:text="7,484,846đ"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:id="@+id/btnTotal"
@@ -203,9 +203,9 @@
                 android:id="@+id/tvEndBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.00 đ"
+                android:text="+7,950,000.00 đ"
                 android:textSize="14sp"
-                android:textColor="#212121"/>
+                android:textColor="#4CAF50"/>
         </LinearLayout>
 
         <View
@@ -232,10 +232,10 @@
                 android:id="@+id/tvTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.00 đ"
+                android:text="+7,950,000.00 đ"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#212121"/>
+                android:textColor="#4CAF50"/>
         </LinearLayout>
 
         <!-- View Report Button -->
@@ -245,10 +245,10 @@
             android:layout_height="wrap_content"
             android:text="Xem báo cáo cho giai đoạn này"
             android:textSize="14sp"
-            android:textColor="#212121"
+            android:textColor="#4CAF50"
             android:textAllCaps="false"
             android:backgroundTint="@android:color/transparent"
-            app:strokeColor="#212121"
+            app:strokeColor="#4CAF50"
             app:strokeWidth="1dp"
             app:cornerRadius="8dp"
             android:paddingVertical="12dp"

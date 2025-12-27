@@ -66,12 +66,12 @@
                 android:text="+8,000,000.00"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="#4CAF50"
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
         <!-- Transaction Item -->
         <LinearLayout
-            android:id="@+id/transactionRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -79,12 +79,19 @@
             android:background="@drawable/green_border"
             android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/ivCategoryIcon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_salary"
-                android:layout_gravity="center" />
+            <FrameLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/green_circle"
+                android:layout_marginEnd="12dp">
+
+                <ImageView
+                    android:id="@+id/ivCategoryIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_salary"
+                    android:layout_gravity="center" />
+            </FrameLayout>
 
             <!-- Transaction Details -->
             <LinearLayout
@@ -108,10 +115,9 @@
                     android:id="@+id/tvNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text=""
                     android:textSize="12sp"
                     android:textColor="#9E9E9E"
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:visibility="gone"/>
             </LinearLayout>
 

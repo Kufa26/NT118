@@ -59,7 +59,7 @@
                 android:id="@+id/tvBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.00 đ"
+                android:text="-57,280.00 đ"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="#000000"
@@ -88,6 +88,11 @@
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_dropdown"
+                    android:layout_marginStart="4dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -98,11 +103,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            app:tabMode="scrollable"
+            app:tabGravity="fill"
             app:tabIndicatorColor="#212121"
             app:tabIndicatorHeight="2dp"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="#212121"
-            app:tabTextColor="#9E9E9E" />
+            app:tabTextColor="#9E9E9E">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="07/2025" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="08/2025" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="THÁNG TRƯỚC" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="THÁNG NAY" />
+        </com.google.android.material.tabs.TabLayout>
 
         <!-- 🔹 Balance Info -->
         <LinearLayout
@@ -155,7 +182,7 @@
                     android:id="@+id/tvEndBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.00 ₫"
+                    android:text="7,950,000.00 ₫"
                     android:textColor="#212121"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -204,8 +231,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="0.00"
-                    android:textColor="#8B8682"
+                    android:text="+ 7,950,000.00"
+                    android:textColor="#4CAF50"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -224,7 +251,7 @@
                         android:id="@+id/tvIncomeAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.00"
+                        android:text="8,000,000.00"
                         android:textColor="#2196F3"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -253,7 +280,7 @@
                         android:id="@+id/tvExpenseAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.00"
+                        android:text="50,000.00"
                         android:textColor="#F44336"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -318,11 +345,10 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tvIncomeGroupAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="0.00"
+                            android:text="8,000,000.00"
                             android:textColor="#2196F3"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -369,11 +395,10 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tvExpenseGroupAmount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="0.00"
+                            android:text="50,000.00"
                             android:textColor="#F44336"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -387,6 +412,95 @@
                         app:tint="#9E9E9E" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- 🔹 Pie Charts -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <!-- Income Chart -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/pieChartIncome"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:progress="100"
+                        app:indicatorColor="#2196F3"
+                        app:trackColor="#E3F2FD"
+                        app:trackThickness="20dp" />
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_income"
+                        app:tint="#2196F3" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="100%"
+                    android:textColor="#212121"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Expense Chart -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:layout_height="120dp">
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/pieChartExpense"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:progress="100"
+                        app:indicatorColor="#F44336"
+                        app:trackColor="#FFEBEE"
+                        app:trackThickness="20dp" />
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_expense"
+                        app:tint="#F44336" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="100%"
+                    android:textColor="#212121"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <View

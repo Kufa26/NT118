@@ -105,25 +105,31 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             if (res != 0) h.ivIcon.setImageResource(res);
         }
 
-        // ================= MONEY =================
+        // ================= MONEY + BORDER =================
+        View root = h.itemView.findViewById(R.id.transactionRoot);
+
         if ("INCOME".equalsIgnoreCase(type)) {
 
-            // 🔵 TRONG Ô – ĐỔI MÀU
             h.tvAmount.setText(String.format("%,.0f", amount));
-            h.tvAmount.setTextColor(Color.parseColor("#2196F3"));
-
-            // ⚪ NGOÀI Ô – GIỮ MÀU XML
+            h.tvAmount.setTextColor(
+                    h.itemView.getContext().getResources().getColor(R.color.lightgreen)
+            );
             h.tvDateTotal.setText(String.format("+%,.0f", amount));
+
+            // 🟢 VIỀN THU
+            root.setBackgroundResource(R.drawable.green_border);
 
         } else { // EXPENSE
 
-            // 🔴 TRONG Ô – ĐỔI MÀU
+            // 🔴 MÀU TIỀN
             h.tvAmount.setText(String.format("%,.0f", amount));
             h.tvAmount.setTextColor(Color.RED);
-
-            // ⚪ NGOÀI Ô – GIỮ MÀU XML
             h.tvDateTotal.setText(String.format("-%,.0f", amount));
+
+            // 🔴 VIỀN CHI
+            root.setBackgroundResource(R.drawable.red_border);
         }
+
 
         // ================= LONG PRESS =================
         h.itemView.setOnLongClickListener(v -> {

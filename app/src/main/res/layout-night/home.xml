@@ -16,9 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:padding="16dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -46,8 +44,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:id="@+id/tv_total_balance"
-                            android:text="0 d"
+                            android:text="0 đ"
                             android:textStyle="bold"
                             android:textColor="#111318"
                             android:textSize="28sp"
@@ -55,7 +52,6 @@
                             android:layout_height="wrap_content"/>
 
                         <ImageView
-                            android:id="@+id/iv_eye_toggle"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginStart="6dp"
@@ -114,6 +110,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"/>
 
+                        <TextView
+                            android:text="Xem tất cả"
+                            android:textStyle="bold"
+                            android:textColor="#19A85B"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <View
@@ -145,11 +147,8 @@
                             android:layout_marginStart="12dp"/>
 
                         <TextView
-                            android:id="@+id/tv_total_balance2"
-                            android:text="0 d"
+                            android:text="0 đ"
                             android:textStyle="bold"
-                            android:textColor="#111318"
-                            android:textSize="15sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -210,20 +209,19 @@
                             android:gravity="center">
 
                             <TextView
-                                android:text="Tổng chi"
+
+                                android:text="Tổng đã chi"
                                 android:textColor="#9AA0AE"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                             <TextView
-                                android:id="@+id/tv_spent"
                                 android:text="0"
                                 android:textStyle="bold"
                                 android:textColor="#FF4D4F"
-                                android:textSize="13sp"
+                                android:textSize="18sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
-
                             <View
                                 android:id="@+id/underline_spent"
                                 android:layout_width="match_parent"
@@ -253,7 +251,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="0"
                                 android:textColor="#2EA7FF"
-                                android:textSize="13sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                             <View
@@ -268,28 +266,30 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="220dp"
+                        android:layout_height="160dp"
                         android:layout_marginTop="4dp"
                         android:background="#F7F8FA"
                         android:gravity="center">
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/chart_month"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="12dp" />
-
                         <TextView
                             android:id="@+id/tv_empty_report"
-                            android:text="Nhap giao dich de xem bao cao"
+                            android:text="Nhập giao dịch để xem báo cáo"
                             android:textColor="#B0B5C3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                     </FrameLayout>
 
+                    <TextView
+                        android:text="Báo cáo xu hướng  ›"
+                        android:textStyle="bold"
+                        android:textColor="#19A85B"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingTop="12dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
+            <!-- Card: Chi tiêu nhiều nhất -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -328,6 +328,7 @@
                             android:textColor="#19A85B"/>
                     </LinearLayout>
 
+                    <!-- Tab tuần / tháng -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -363,6 +364,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Card: Giao dịch gần đây -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
