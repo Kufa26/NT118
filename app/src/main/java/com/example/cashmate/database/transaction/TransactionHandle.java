@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Calendar;
 import java.util.TimeZone;
 
 public class TransactionHandle {
@@ -311,18 +312,32 @@ public class TransactionHandle {
 
     // ================= BY MONTH (LIST) =================
     public Cursor getByMonth(int month, int year) {
+        return getByMonth(month, year, null);
+    }
+
+    public Cursor getByMonth(int month, int year, String userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.rawQuery(
+        long start = monthStartMillis(month, year);
+        long end = monthEndMillis(month, year);
+
+        StringBuilder sql = new StringBuilder(
                 "SELECT t.*, c.nameCategory, c.iconCategory " +
                         "FROM TransactionTable t " +
                         "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
-                        "WHERE substr(t.date,4,2) = ? AND substr(t.date,7,4) = ? " +
-                        "ORDER BY t.createdAt DESC",
-                new String[]{
-                        String.format("%02d", month),
-                        String.valueOf(year)
-                }
+                        "WHERE t.createdAt BETWEEN ? AND ? "
         );
+        List<String> args = new ArrayList<>();
+        args.add(String.valueOf(start));
+        args.add(String.valueOf(end));
+
+        if (userId != null) {
+            sql.append("AND (t.idUser = ? OR t.idUser IS NULL OR t.idUser = '') ");
+            args.add(userId);
+        }
+
+        sql.append("ORDER BY t.createdAt DESC, t.idTransaction DESC");
+
+        return db.rawQuery(sql.toString(), args.toArray(new String[0]));
     }
 
     // ================= COUNT BY CATEGORY =================
@@ -357,19 +372,32 @@ public class TransactionHandle {
 
     // ================= TOTAL BY MONTH =================
     public double getTotalByMonth(int month, int year, String type) {
+        return getTotalByMonth(month, year, type, null);
+    }
+
+    public double getTotalByMonth(int month, int year, String type, String userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery(
+        long start = monthStartMillis(month, year);
+        long end = monthEndMillis(month, year);
+
+        StringBuilder sql = new StringBuilder(
                 "SELECT SUM(amount) AS total " +
                         "FROM TransactionTable " +
                         "WHERE typeTransaction = ? " +
-                        "AND substr(date,4,2) = ? " +
-                        "AND substr(date,7,4) = ?",
-                new String[]{
-                        type,
-                        String.format("%02d", month),
-                        String.valueOf(year)
-                }
+                        "AND createdAt BETWEEN ? AND ? "
         );
+
+        List<String> args = new ArrayList<>();
+        args.add(type);
+        args.add(String.valueOf(start));
+        args.add(String.valueOf(end));
+
+        if (userId != null) {
+            sql.append("AND (idUser = ? OR idUser IS NULL OR idUser = '') ");
+            args.add(userId);
+        }
+
+        Cursor c = db.rawQuery(sql.toString(), args.toArray(new String[0]));
         try {
             if (c.moveToFirst() && !c.isNull(c.getColumnIndexOrThrow("total"))) {
                 return c.getDouble(c.getColumnIndexOrThrow("total"));
@@ -382,18 +410,26 @@ public class TransactionHandle {
 
     // ================= START BALANCE BEFORE MONTH =================
     public double getStartBalance(int month, int year) {
+        return getStartBalance(month, year, null);
+    }
+
+    public double getStartBalance(int month, int year, String userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery(
+        long monthStart = monthStartMillis(month, year);
+
+        StringBuilder sql = new StringBuilder(
                 "SELECT SUM(CASE WHEN typeTransaction = 'INCOME' THEN amount ELSE -amount END) AS balance " +
-                        "FROM TransactionTable " +
-                        "WHERE CAST(substr(date,7,4) AS INTEGER) < ? " +
-                        "OR (CAST(substr(date,7,4) AS INTEGER) = ? AND CAST(substr(date,4,2) AS INTEGER) < ?)",
-                new String[]{
-                        String.valueOf(year),
-                        String.valueOf(year),
-                        String.valueOf(month)
-                }
+                        "FROM TransactionTable WHERE createdAt < ? "
         );
+        List<String> args = new ArrayList<>();
+        args.add(String.valueOf(monthStart));
+
+        if (userId != null) {
+            sql.append("AND (idUser = ? OR idUser IS NULL OR idUser = '') ");
+            args.add(userId);
+        }
+
+        Cursor c = db.rawQuery(sql.toString(), args.toArray(new String[0]));
         try {
             if (c.moveToFirst() && !c.isNull(c.getColumnIndexOrThrow("balance"))) {
                 return c.getDouble(c.getColumnIndexOrThrow("balance"));
@@ -402,6 +438,30 @@ public class TransactionHandle {
         } finally {
             c.close();
         }
+    }
+
+    private long monthStartMillis(int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
+    private long monthEndMillis(int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1);
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTimeInMillis();
     }
 
 }

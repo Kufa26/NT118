@@ -205,12 +205,18 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadTotals() {
-        TransactionHandle.Totals totals = transactionHandle.getTotalsForUser(getCurrentUserId());
-        double balance = totals.getBalance();
+        String userId = getCurrentUserId();
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+
+        double income = transactionHandle.getTotalByMonth(month, year, "INCOME", userId);
+        double expense = transactionHandle.getTotalByMonth(month, year, "EXPENSE", userId);
+        double balance = income - expense;
 
         formattedBalance = formatMoney(balance);
-        formattedIncome = formatMoney(totals.income);
-        formattedExpense = formatMoney(totals.expense);
+        formattedIncome = formatMoney(income);
+        formattedExpense = formatMoney(expense);
 
         applyBalanceVisibility();
         if (tvIncome != null) tvIncome.setText(formattedIncome);
@@ -278,7 +284,7 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, currentTab == Tab.SPENT ? "Tá»•ng chi" : "Tá»•ng thu");
+        BarDataSet dataSet = new BarDataSet(entries, currentTab == Tab.SPENT ? "Tổng chi" : "Tổng thu");
         dataSet.setColor(currentTab == Tab.SPENT ? 0xFFFF4D4F : 0xFF2EA7FF);
         dataSet.setValueTextSize(10f);
         dataSet.setValueFormatter(new ValueFormatter() {

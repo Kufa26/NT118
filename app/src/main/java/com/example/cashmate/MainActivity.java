@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottom_nav);
 
-        // Fragment máº·c Ä‘á»‹nh
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new HomeFragment())
@@ -150,12 +149,10 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // ================= UTIL =================
     private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    // ================= FIREBASE â†’ LOCAL USER =================
     private void syncFirebaseUserToLocal() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) return;
@@ -163,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
         UserHandle userHandle = new UserHandle(this);
         String uid = firebaseUser.getUid();
 
-        // Náº¿u local Ä‘Ã£ cÃ³ â†’ khÃ´ng insert
         if (userHandle.isUserExistsById(uid)) return;
 
         String fullName = firebaseUser.getDisplayName() != null

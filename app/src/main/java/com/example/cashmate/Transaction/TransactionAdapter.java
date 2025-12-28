@@ -20,10 +20,20 @@ import com.example.cashmate.plus.PlusFragment;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
 
+    public interface OnDataChanged {
+        void onDataChanged();
+    }
+
     private Cursor cursor;
+    private final OnDataChanged onDataChanged;
 
     public TransactionAdapter(Cursor cursor) {
+        this(cursor, null);
+    }
+
+    public TransactionAdapter(Cursor cursor, OnDataChanged onDataChanged) {
         this.cursor = cursor;
+        this.onDataChanged = onDataChanged;
     }
 
     // ================= CURSOR =================
@@ -48,44 +58,24 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
-
         if (cursor == null || !cursor.moveToPosition(position)) return;
 
-        // ================= DATA =================
-        long idTransaction =
-                cursor.getLong(cursor.getColumnIndexOrThrow("idTransaction"));
+        long idTransaction = cursor.getLong(cursor.getColumnIndexOrThrow("idTransaction"));
+        double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
+        String note = cursor.getString(cursor.getColumnIndexOrThrow("note"));
+        String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+        String weekday = cursor.getString(cursor.getColumnIndexOrThrow("weekday"));
+        String type = cursor.getString(cursor.getColumnIndexOrThrow("typeTransaction"));
+        String nameCategory = cursor.getString(cursor.getColumnIndexOrThrow("nameCategory"));
+        String icon = cursor.getString(cursor.getColumnIndexOrThrow("iconCategory"));
 
-        double amount =
-                cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
-
-        String note =
-                cursor.getString(cursor.getColumnIndexOrThrow("note"));
-
-        String date =
-                cursor.getString(cursor.getColumnIndexOrThrow("date"));
-
-        String weekday =
-                cursor.getString(cursor.getColumnIndexOrThrow("weekday"));
-
-        String type =
-                cursor.getString(cursor.getColumnIndexOrThrow("typeTransaction"));
-
-        String nameCategory =
-                cursor.getString(cursor.getColumnIndexOrThrow("nameCategory"));
-
-        String icon =
-                cursor.getString(cursor.getColumnIndexOrThrow("iconCategory"));
-
-        // ================= DATE =================
         String[] p = date.split("[-/]");
         h.tvDate.setText(p[0]);
         h.tvFullDate.setText("tháng " + p[1] + " " + p[2]);
         h.tvDateLabel.setText(weekday);
 
-        // ================= CATEGORY =================
         h.tvCategoryName.setText(nameCategory != null ? nameCategory : "");
 
-        // ================= NOTE =================
         if (note != null && !note.trim().isEmpty()) {
             h.tvNote.setText(note);
             h.tvNote.setVisibility(View.VISIBLE);
@@ -93,58 +83,36 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             h.tvNote.setVisibility(View.GONE);
         }
 
-        // ================= ICON =================
         if (icon != null) {
             int res = h.itemView.getContext()
                     .getResources()
-                    .getIdentifier(
-                            icon,
-                            "drawable",
-                            h.itemView.getContext().getPackageName()
-                    );
+                    .getIdentifier(icon, "drawable", h.itemView.getContext().getPackageName());
             if (res != 0) h.ivIcon.setImageResource(res);
         }
 
-        // ================= MONEY + BORDER =================
         View root = h.itemView.findViewById(R.id.transactionRoot);
 
         if ("INCOME".equalsIgnoreCase(type)) {
-
             h.tvAmount.setText(String.format("%,.0f", amount));
-            h.tvAmount.setTextColor(
-                    h.itemView.getContext().getResources().getColor(R.color.lightgreen)
-            );
+            h.tvAmount.setTextColor(h.itemView.getContext().getResources().getColor(R.color.lightgreen));
             h.tvDateTotal.setText(String.format("+%,.0f", amount));
-
-            // 🟢 VIỀN THU
             root.setBackgroundResource(R.drawable.green_border);
-
-        } else { // EXPENSE
-
-            // 🔴 MÀU TIỀN
+        } else {
             h.tvAmount.setText(String.format("%,.0f", amount));
             h.tvAmount.setTextColor(Color.RED);
             h.tvDateTotal.setText(String.format("-%,.0f", amount));
-
-            // 🔴 VIỀN CHI
             root.setBackgroundResource(R.drawable.red_border);
         }
 
-
-        // ================= LONG PRESS =================
         h.itemView.setOnLongClickListener(v -> {
-
-            String[] options = {"Sửa", "Xoá"};
+            String[] options = {"Sửa", "Xóa"};
 
             new AlertDialog.Builder(v.getContext())
-                    .setTitle("Tuỳ chọn")
+                    .setTitle("Tùy chọn")
                     .setItems(options, (dialog, which) -> {
-
-                        TransactionHandle handle =
-                                new TransactionHandle(v.getContext());
+                        TransactionHandle handle = new TransactionHandle(v.getContext());
 
                         if (which == 0) {
-                            // ===== SỬA =====
                             Bundle b = new Bundle();
                             b.putLong("idTransaction", idTransaction);
 
@@ -157,17 +125,19 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                                     .replace(R.id.fragment_container, f)
                                     .addToBackStack(null)
                                     .commit();
-
                         } else {
-                            // ===== XOÁ =====
                             new AlertDialog.Builder(v.getContext())
-                                    .setTitle("Xác nhận xoá")
-                                    .setMessage("Bạn có chắc muốn xoá giao dịch này?")
-                                    .setPositiveButton("Xoá", (d, w) -> {
+                                    .setTitle("Xác nhận xóa")
+                                    .setMessage("Bạn có chắc muốn xóa giao dịch này?")
+                                    .setPositiveButton("Xóa", (d, w) -> {
                                         handle.delete(idTransaction);
-                                        swapCursor(handle.getAllCursor());
+                                        if (onDataChanged != null) {
+                                            onDataChanged.onDataChanged();
+                                        } else {
+                                            swapCursor(handle.getAllCursor());
+                                        }
                                     })
-                                    .setNegativeButton("Huỷ", null)
+                                    .setNegativeButton("Hủy", null)
                                     .show();
                         }
                     })
@@ -177,9 +147,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         });
     }
 
-    // ================= VIEW HOLDER =================
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView tvDate, tvDateLabel, tvFullDate, tvDateTotal;
         TextView tvCategoryName, tvAmount, tvNote;
         ImageView ivIcon;
@@ -190,12 +158,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             tvDateLabel = v.findViewById(R.id.tvDateLabel);
             tvFullDate = v.findViewById(R.id.tvFullDate);
             tvDateTotal = v.findViewById(R.id.tvDateTotal);
-
             tvCategoryName = v.findViewById(R.id.tvCategoryName);
             tvAmount = v.findViewById(R.id.tvAmount);
             tvNote = v.findViewById(R.id.tvNote);
-
             ivIcon = v.findViewById(R.id.ivCategoryIcon);
         }
     }
 }
+
