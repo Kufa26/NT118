@@ -85,13 +85,18 @@ public class CategoryHandle {
         }
     }
 
-    // ================= INSERT DEFAULT CATEGORY (RUN ONCE) =================
+    // ================= INSERT DEFAULT CATEGORY (FIXED) =================
     public void insertDefaultCategoriesIfEmpty() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Nếu đã có category → không insert nữa
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM Category", null);
-        if (c.moveToFirst() && c.getInt(0) > 0) {
+        // 🔥 KHÔNG DÙNG COUNT(*)
+        // 🔥 KIỂM TRA THEO NHÓM MẶC ĐỊNH CỤ THỂ
+        Cursor c = db.rawQuery(
+                "SELECT 1 FROM Category WHERE nameCategory = ? LIMIT 1",
+                new String[]{"Ăn uống"}
+        );
+
+        if (c.moveToFirst()) {
             c.close();
             db.close();
             return;
@@ -131,7 +136,7 @@ public class CategoryHandle {
         db.close();
     }
 
-    // ================= HELPER INSERT =================
+    // ================= HELPER =================
     private void insert(SQLiteDatabase db, String name, String type, String icon) {
         ContentValues v = new ContentValues();
         v.put("nameCategory", name);
