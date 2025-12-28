@@ -1,5 +1,6 @@
 package com.example.cashmate.account;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,16 +33,16 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== NHÓM (Wallet_group) =====
+        // ===== NHÓM =====
         view.findViewById(R.id.Wallet_group).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new GroupFragment())
-                        .addToBackStack(null) // ⭐ để back quay lại
+                        .addToBackStack(null)
                         .commit()
         );
 
-        // ===== Cài đặt =====
+        // ===== CÀI ĐẶT =====
         view.findViewById(R.id.setting).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -50,11 +51,20 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== Giới thiệu =====
+        // ===== GIỚI THIỆU =====
         view.findViewById(R.id.introduce).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, new IntroduceFragment())
+                        .addToBackStack(null)
+                        .commit()
+        );
+
+        // ===== CÂU HỎI THƯỜNG GẶP (FAQ) =====
+        view.findViewById(R.id.support).setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new FAQFragment())
                         .addToBackStack(null)
                         .commit()
         );

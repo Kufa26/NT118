@@ -58,15 +58,30 @@ public class CategoryHandle {
         return list;
     }
 
-    // ===== DELETE =====
+    // ===== DELETE (CASCADE DELETE TRANSACTIONS) =====
     public boolean deleteCategory(long idCategory) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        int rows = db.delete(
-                "Category",
-                "idCategory = ?",
-                new String[]{String.valueOf(idCategory)}
-        );
-        db.close();
-        return rows > 0;
+        db.beginTransaction();
+        try {
+            // 1️⃣ XÓA TẤT CẢ GIAO DỊCH THUỘC NHÓM NÀY
+            db.delete(
+                    "TransactionTable",
+                    "idCategory = ?",
+                    new String[]{String.valueOf(idCategory)}
+            );
+
+            // 2️⃣ XÓA NHÓM
+            int rows = db.delete(
+                    "Category",
+                    "idCategory = ?",
+                    new String[]{String.valueOf(idCategory)}
+            );
+
+            db.setTransactionSuccessful();
+            return rows > 0;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
     }
 }

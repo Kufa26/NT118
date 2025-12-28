@@ -16,12 +16,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cashmate.R;
 import com.example.cashmate.group.chooseGroup.Group;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-// Import database
 import com.example.cashmate.database.budget.Budget;
 import com.example.cashmate.database.budget.BudgetHandle;
 import com.example.cashmate.database.User.UserHandle;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,173 +33,182 @@ public class Add_Budget extends Fragment {
 
     private String tempSelectedDate = "";
     private int currentIconRes = R.drawable.ic_food;
-    private int selectedCategoryId = 0; // Mặc định 0
+    private int selectedCategoryId = 0;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM", new Locale("vi", "VN"));
-    private SimpleDateFormat sdfFull = new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
+    private final SimpleDateFormat sdf =
+            new SimpleDateFormat("dd/MM", new Locale("vi", "VN"));
+    private final SimpleDateFormat sdfFull =
+            new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getParentFragmentManager().setFragmentResultListener("select_group", this, (requestKey, bundle) -> {
-            String name = bundle.getString("groupName");
-            int iconRes = bundle.getInt("groupIcon");
-            long idLong = bundle.getLong("idCategory", 0);
+        getParentFragmentManager().setFragmentResultListener(
+                "select_group",
+                this,
+                (requestKey, bundle) -> {
+                    String name = bundle.getString("groupName");
+                    int iconRes = bundle.getInt("groupIcon");
+                    long idLong = bundle.getLong("idCategory", 0);
 
-            this.selectedCategoryId = (int) idLong;
+                    selectedCategoryId = (int) idLong;
+                    currentIconRes = iconRes;
 
-            if (tvWallet != null) tvWallet.setText(name);
-            if (imgGroupIcon != null) {
-                imgGroupIcon.setImageResource(iconRes);
-            }
-            this.currentIconRes = iconRes;
-        });
+                    if (tvWallet != null) tvWallet.setText(name);
+                    if (imgGroupIcon != null) imgGroupIcon.setImageResource(iconRes);
+                }
+        );
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         View view = inflater.inflate(R.layout.create_a_budget, container, false);
 
         tvWallet = view.findViewById(R.id.tvWallet);
         imgGroupIcon = view.findViewById(R.id.imgGroupIcon);
         tvDate = view.findViewById(R.id.tvDate);
-        View layoutSelectDate = view.findViewById(R.id.layoutSelectDate);
         etAmount = view.findViewById(R.id.tvGroup);
         Button btnSaveBudget = view.findViewById(R.id.btnSaveBudget);
+        View layoutSelectDate = view.findViewById(R.id.layoutSelectDate);
+        View btnBack = view.findViewById(R.id.btnBack);
 
         tvDate.setText("Tháng này (" + getMonthRange() + ")");
 
-        btnSaveBudget.setOnClickListener(v -> {
-            String amountStr = etAmount.getText().toString().trim();
-            long amount = 0;
-
-            if (!amountStr.isEmpty()) {
-                try {
-                    amount = Long.parseLong(amountStr);
-                } catch (NumberFormatException e) { return; }
-            } else {
-                Toast.makeText(getContext(), "Vui lòng nhập số tiền", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String groupName = tvWallet.getText().toString();
-
-            // --- ĐÃ SỬA: Kiểm tra tên thay vì ID để tránh lỗi ---
-            if (groupName.isEmpty() || groupName.equals("Chọn nhóm") || groupName.equals("Chưa chọn nhóm")) {
-                Toast.makeText(getContext(), "Vui lòng chọn nhóm chi tiêu", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // Tính toán thời gian
-            String currentDateText = tvDate.getText().toString();
-            String timeType = "MONTH";
-            String startDateStr = "";
-            String endDateStr = "";
-
-            if (currentDateText.toLowerCase().contains("tuần")) {
-                timeType = "WEEK";
-                startDateStr = getWeekStartFull();
-                endDateStr = getWeekEndFull();
-            } else if (currentDateText.toLowerCase().contains("tháng")) {
-                timeType = "MONTH";
-                startDateStr = getMonthStartFull();
-                endDateStr = getMonthEndFull();
-            } else {
-                timeType = "MONTH";
-                startDateStr = getMonthStartFull();
-                endDateStr = getMonthEndFull();
-            }
-
-            UserHandle userHandle = new UserHandle(requireContext());
-            String currentUserId = (userHandle.getCurrentUser() != null) ? userHandle.getCurrentUser().getIdUser() : "unknown";
-
-            // Lưu vào DB
-            Budget newBudget = new Budget(
-                    currentUserId,
-                    selectedCategoryId,
-                    groupName,
-                    amount,
-                    0,
-                    startDateStr,
-                    endDateStr,
-                    timeType
-            );
-
-            BudgetHandle dbHandle = new BudgetHandle(getContext());
-            dbHandle.insertBudget(newBudget);
-
-            // Cập nhật list hiển thị
-            BudgetStorage.getInstance().addItem(new BudgetItem(groupName, amount, 0, currentIconRes, timeType));
-
-            if (getActivity() != null) {
-                getParentFragmentManager().popBackStack();
-            }
-        });
-
+        btnSaveBudget.setOnClickListener(v -> saveBudget());
         layoutSelectDate.setOnClickListener(v -> showTimePickerDialog());
 
-        tvWallet.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new Group())
-                    .addToBackStack(null)
-                    .commit();
-        });
+        tvWallet.setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new Group())
+                        .addToBackStack(null)
+                        .commit()
+        );
 
-        View btnBack = view.findViewById(R.id.btnBack);
-        if (btnBack != null) btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v ->
+                    getParentFragmentManager().popBackStack()
+            );
+        }
 
         return view;
     }
 
-    // ... (Giữ nguyên các hàm showTimePickerDialog và tính ngày tháng bên dưới) ...
-    private void showTimePickerDialog() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
-        View dialogView = getLayoutInflater().inflate(R.layout.layout_time_picker, null);
-        bottomSheetDialog.setContentView(dialogView);
+    private void saveBudget() {
+        String amountStr = etAmount.getText().toString().trim();
+        if (amountStr.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập số tiền", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        TextView tvWeek = dialogView.findViewById(R.id.tvThisWeek);
-        TextView tvMonth = dialogView.findViewById(R.id.tvThisMonth);
-        TextView tvQuarter = dialogView.findViewById(R.id.tvThisQuarter);
-        TextView tvYear = dialogView.findViewById(R.id.tvThisYear);
-        View btnSave = dialogView.findViewById(R.id.btnSave);
-        View btnCancel = dialogView.findViewById(R.id.btnCancel);
+        long amount;
+        try {
+            amount = Long.parseLong(amountStr);
+        } catch (NumberFormatException e) {
+            return;
+        }
+
+        String groupName = tvWallet.getText().toString();
+        if (groupName.isEmpty()
+                || groupName.equals("Chọn nhóm")
+                || groupName.equals("Chưa chọn nhóm")) {
+            Toast.makeText(getContext(), "Vui lòng chọn nhóm chi tiêu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String timeType = "MONTH";
+        String startDate;
+        String endDate;
+
+        String dateText = tvDate.getText().toString().toLowerCase();
+        if (dateText.contains("tuần")) {
+            timeType = "WEEK";
+            startDate = getWeekStartFull();
+            endDate = getWeekEndFull();
+        } else {
+            startDate = getMonthStartFull();
+            endDate = getMonthEndFull();
+        }
+
+        UserHandle userHandle = new UserHandle(requireContext());
+        String userId = userHandle.getCurrentUser() != null
+                ? userHandle.getCurrentUser().getIdUser()
+                : "unknown";
+
+        Budget budget = new Budget(
+                userId,
+                selectedCategoryId,
+                groupName,
+                amount,
+                0,
+                startDate,
+                endDate,
+                timeType
+        );
+
+        BudgetHandle db = new BudgetHandle(getContext());
+        db.insertBudget(budget);
+
+        BudgetStorage.getInstance().addItem(
+                new BudgetItem(groupName, amount, 0, currentIconRes, timeType)
+        );
+
+        getParentFragmentManager().popBackStack();
+    }
+
+    private void showTimePickerDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View view = getLayoutInflater().inflate(R.layout.layout_time_picker, null);
+        dialog.setContentView(view);
+
+        TextView tvWeek = view.findViewById(R.id.tvThisWeek);
+        TextView tvMonth = view.findViewById(R.id.tvThisMonth);
+        TextView tvQuarter = view.findViewById(R.id.tvThisQuarter);
+        TextView tvYear = view.findViewById(R.id.tvThisYear);
+
+        View btnSave = view.findViewById(R.id.btnSave);
+        View btnCancel = view.findViewById(R.id.btnCancel);
 
         tvWeek.setOnClickListener(v -> {
             tempSelectedDate = "Tuần này (" + getWeekRange() + ")";
-            highlightSelection(dialogView, tvWeek);
+            highlightSelection(view, tvWeek);
         });
 
         tvMonth.setOnClickListener(v -> {
             tempSelectedDate = "Tháng này (" + getMonthRange() + ")";
-            highlightSelection(dialogView, tvMonth);
+            highlightSelection(view, tvMonth);
         });
 
         tvQuarter.setOnClickListener(v -> {
             tempSelectedDate = "Quý này (" + getQuarterRange() + ")";
-            highlightSelection(dialogView, tvQuarter);
+            highlightSelection(view, tvQuarter);
         });
 
         tvYear.setOnClickListener(v -> {
             tempSelectedDate = "Năm nay (" + getYearRange() + ")";
-            highlightSelection(dialogView, tvYear);
+            highlightSelection(view, tvYear);
         });
 
         btnSave.setOnClickListener(v -> {
             if (!tempSelectedDate.isEmpty()) {
                 tvDate.setText(tempSelectedDate);
             }
-            bottomSheetDialog.dismiss();
+            dialog.dismiss();
         });
 
-        btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
-        bottomSheetDialog.show();
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private void highlightSelection(View parent, TextView selected) {
-        int defaultColor = android.graphics.Color.BLACK;
-        int selectedColor = android.graphics.Color.parseColor("#2E7D32");
+        int normal = android.graphics.Color.BLACK;
+        int active = android.graphics.Color.parseColor("#2E7D32");
 
         TextView[] views = {
                 parent.findViewById(R.id.tvThisWeek),
@@ -209,10 +216,12 @@ public class Add_Budget extends Fragment {
                 parent.findViewById(R.id.tvThisQuarter),
                 parent.findViewById(R.id.tvThisYear)
         };
-        for (TextView view : views) {
-            if (view != null) view.setTextColor(defaultColor);
+
+        for (TextView tv : views) {
+            if (tv != null) tv.setTextColor(normal);
         }
-        if (selected != null) selected.setTextColor(selectedColor);
+
+        if (selected != null) selected.setTextColor(active);
     }
 
     private String getWeekRange() {
@@ -235,20 +244,21 @@ public class Add_Budget extends Fragment {
 
     private String getQuarterRange() {
         Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH);
-        int quarter = (month / 3);
-        Calendar startCal = (Calendar) cal.clone();
-        startCal.set(Calendar.MONTH, quarter * 3);
-        startCal.set(Calendar.DAY_OF_MONTH, 1);
-        Calendar endCal = (Calendar) cal.clone();
-        endCal.set(Calendar.MONTH, (quarter * 3) + 2);
-        endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return sdf.format(startCal.getTime()) + " - " + sdf.format(endCal.getTime());
+        int q = cal.get(Calendar.MONTH) / 3;
+
+        Calendar start = (Calendar) cal.clone();
+        start.set(Calendar.MONTH, q * 3);
+        start.set(Calendar.DAY_OF_MONTH, 1);
+
+        Calendar end = (Calendar) cal.clone();
+        end.set(Calendar.MONTH, q * 3 + 2);
+        end.set(Calendar.DAY_OF_MONTH, end.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        return sdf.format(start.getTime()) + " - " + sdf.format(end.getTime());
     }
 
     private String getYearRange() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
         return "01/01/" + year + " - 31/12/" + year;
     }
 

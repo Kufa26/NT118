@@ -115,6 +115,7 @@ public class TransactionHandle {
         );
     }
 
+    // ================= TOTALS =================
     public static class Totals {
         public double income;
         public double expense;
@@ -159,7 +160,7 @@ public class TransactionHandle {
         return totals;
     }
 
-    // ================= MONTHLY TOTALS (group by month/year) =================
+    // ================= MONTHLY TOTALS =================
     public Cursor getMonthlyTotals(String userId, String type, int limitMonths) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -184,7 +185,8 @@ public class TransactionHandle {
             return db.rawQuery(sql.toString(), new String[]{type});
         }
     }
-        // ================= FILTER BY TYPE =================
+
+    // ================= FILTER BY TYPE =================
     public Cursor getAllCursorByType(String typeTransaction) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -238,7 +240,7 @@ public class TransactionHandle {
         }
     }
 
-    // ================= START BALANCE BEFORE MONTH =================
+    // ================= START BALANCE =================
     public double getStartBalance(int month, int year) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(
@@ -262,4 +264,34 @@ public class TransactionHandle {
         }
     }
 
+    // =================================================
+    // ========== PHẦN MỚI PHỤC VỤ XÓA NHÓM ============
+    // =================================================
+
+    // Lấy danh sách giao dịch theo Category
+    public Cursor getByCategory(long idCategory) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.idCategory = ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{String.valueOf(idCategory)}
+        );
+    }
+
+    // Đếm số giao dịch theo Category
+    public int countByCategory(long idCategory) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT COUNT(*) FROM TransactionTable WHERE idCategory = ?",
+                new String[]{String.valueOf(idCategory)}
+        );
+        try {
+            return c.moveToFirst() ? c.getInt(0) : 0;
+        } finally {
+            c.close();
+        }
+    }
 }

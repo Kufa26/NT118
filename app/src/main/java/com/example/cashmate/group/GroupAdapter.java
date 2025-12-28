@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cashmate.R;
 import com.example.cashmate.database.Category.Category;
 import com.example.cashmate.database.Category.CategoryHandle;
+import com.example.cashmate.database.transaction.TransactionHandle;
 
 import java.util.List;
 
@@ -57,7 +59,54 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         });
     }
 
+    /**
+     * Dialog xóa nhóm:
+     * - Nếu không có giao dịch → hỏi xóa thường
+     * - Nếu có giao dịch → hiện dialog liệt kê giao dịch sẽ bị xóa
+     */
     private void showDeleteDialog(Category category, int position) {
+        TransactionHandle tHandle = new TransactionHandle(context);
+        int count = tHandle.countByCategory(category.getIdCategory());
+
+        // ===== KHÔNG CÓ GIAO DỊCH =====
+        if (count == 0) {
+            confirmDelete(category, position);
+            return;
+        }
+
+        // ===== CÓ GIAO DỊCH → DIALOG CUSTOM =====
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_delete_group, null);
+
+        TextView tvCount = view.findViewById(R.id.tvCount);
+        RecyclerView rv = view.findViewById(R.id.rvTransaction);
+
+        tvCount.setText(count + " giao dịch sẽ bị xóa");
+
+        rv.setLayoutManager(new LinearLayoutManager(context));
+        rv.setAdapter(
+                new TransactionPreviewAdapter(
+                        tHandle.getByCategory(category.getIdCategory())
+                )
+        );
+
+        new AlertDialog.Builder(context)
+                .setView(view)
+                .setNegativeButton("Hủy", null)
+                .setPositiveButton("Xóa nhóm", (d, w) -> {
+                    CategoryHandle handle = new CategoryHandle(context);
+                    if (handle.deleteCategory(category.getIdCategory())) {
+                        list.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                })
+                .show();
+    }
+
+    /**
+     * Dialog xóa nhóm đơn giản (không có giao dịch)
+     */
+    private void confirmDelete(Category category, int position) {
         new AlertDialog.Builder(context)
                 .setTitle("Xóa nhóm")
                 .setMessage("Bạn có chắc chắn muốn xóa nhóm này?")
