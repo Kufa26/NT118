@@ -13,16 +13,16 @@ import com.example.cashmate.R;
 
 import java.util.ArrayList;
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder> {
+public class GroupAdapterBudget extends RecyclerView.Adapter<GroupAdapterBudget.GroupHolder> {
 
-    private ArrayList<GroupItem> list;
+    private ArrayList<GroupItemBudget> list;
     private OnGroupClickListener listener;
 
     public interface OnGroupClickListener {
-        void onClick(GroupItem item);
+        void onClick(GroupItemBudget item);
     }
 
-    public GroupAdapter(ArrayList<GroupItem> list, OnGroupClickListener listener) {
+    public GroupAdapterBudget(ArrayList<GroupItemBudget> list, OnGroupClickListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -35,7 +35,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
     }
     @Override
     public void onBindViewHolder(@NonNull GroupHolder holder, int i) {
-        GroupItem item = list.get(i);
+        GroupItemBudget item = list.get(i);
         holder.title.setText(item.getName());
         holder.icon.setImageResource(item.getIcon());
         holder.itemView.setOnClickListener(v -> listener.onClick(item));

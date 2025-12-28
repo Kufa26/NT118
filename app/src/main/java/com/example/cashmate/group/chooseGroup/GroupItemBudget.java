@@ -1,9 +1,9 @@
 package com.example.cashmate.group.chooseGroup;
 
-public class GroupItem {
+public class GroupItemBudget {
     private String name;
     private int icon;
-    public GroupItem(String name, int icon) {
+    public GroupItemBudget(String name, int icon) {
         this.name = name;
         this.icon = icon;
     }

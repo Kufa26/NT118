@@ -18,7 +18,7 @@ public class CategoryHandle {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // ===== INSERT =====
+    // ================= INSERT =================
     public long insertCategory(Category category) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -32,7 +32,7 @@ public class CategoryHandle {
         return id;
     }
 
-    // ===== GET BY TYPE =====
+    // ================= GET BY TYPE =================
     public List<Category> getCategoriesByType(String type) {
         List<Category> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -58,19 +58,19 @@ public class CategoryHandle {
         return list;
     }
 
-    // ===== DELETE (CASCADE DELETE TRANSACTIONS) =====
+    // ================= DELETE (CASCADE TRANSACTION) =================
     public boolean deleteCategory(long idCategory) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            // 1️⃣ XÓA TẤT CẢ GIAO DỊCH THUỘC NHÓM NÀY
+            // Xóa giao dịch thuộc nhóm
             db.delete(
                     "TransactionTable",
                     "idCategory = ?",
                     new String[]{String.valueOf(idCategory)}
             );
 
-            // 2️⃣ XÓA NHÓM
+            // Xóa nhóm
             int rows = db.delete(
                     "Category",
                     "idCategory = ?",
@@ -83,5 +83,60 @@ public class CategoryHandle {
             db.endTransaction();
             db.close();
         }
+    }
+
+    // ================= INSERT DEFAULT CATEGORY (RUN ONCE) =================
+    public void insertDefaultCategoriesIfEmpty() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        // Nếu đã có category → không insert nữa
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM Category", null);
+        if (c.moveToFirst() && c.getInt(0) > 0) {
+            c.close();
+            db.close();
+            return;
+        }
+        c.close();
+
+        // ===== EXPENSE =====
+        insert(db, "Ăn uống", "EXPENSE", "ic_food");
+        insert(db, "Bảo hiểm", "EXPENSE", "ic_insurance");
+        insert(db, "Đầu tư", "EXPENSE", "ic_bills");
+        insert(db, "Di chuyển", "EXPENSE", "ic_move");
+        insert(db, "Bảo dưỡng xe", "EXPENSE", "ic_maintenance");
+        insert(db, "Vật nuôi", "EXPENSE", "ic_pets");
+        insert(db, "Sửa & trang trí nhà", "EXPENSE", "ic_tool");
+        insert(db, "Giải trí", "EXPENSE", "ic_entertainment");
+        insert(db, "Công việc", "EXPENSE", "ic_work");
+        insert(db, "Vui chơi", "EXPENSE", "ic_sports");
+        insert(db, "Giáo dục", "EXPENSE", "ic_education");
+        insert(db, "Hóa đơn tiện ích", "EXPENSE", "ic_bills");
+        insert(db, "Hóa đơn điện", "EXPENSE", "ic_electric");
+        insert(db, "Hóa đơn xăng", "EXPENSE", "ic_fuel");
+        insert(db, "Hóa đơn Internet", "EXPENSE", "ic_internet");
+        insert(db, "Hóa đơn nước", "EXPENSE", "ic_water");
+        insert(db, "Hóa đơn điện thoại", "EXPENSE", "ic_phone");
+        insert(db, "Mua sắm", "EXPENSE", "ic_shopping");
+        insert(db, "Đồ dùng cá nhân", "EXPENSE", "ic_personal_items");
+        insert(db, "Thuế", "EXPENSE", "ic_tax");
+        insert(db, "Làm đẹp", "EXPENSE", "ic_jewelry");
+        insert(db, "Vườn", "EXPENSE", "ic_garden");
+        insert(db, "Sức khỏe", "EXPENSE", "ic_health");
+        insert(db, "Trả nợ", "EXPENSE", "ic_debt_repayment");
+
+        // ===== INCOME =====
+        insert(db, "Lương", "INCOME", "ic_salary");
+        insert(db, "Thu nợ", "INCOME", "ic_debt_collection");
+
+        db.close();
+    }
+
+    // ================= HELPER INSERT =================
+    private void insert(SQLiteDatabase db, String name, String type, String icon) {
+        ContentValues v = new ContentValues();
+        v.put("nameCategory", name);
+        v.put("typeCategory", type);
+        v.put("iconCategory", icon);
+        db.insert("Category", null, v);
     }
 }

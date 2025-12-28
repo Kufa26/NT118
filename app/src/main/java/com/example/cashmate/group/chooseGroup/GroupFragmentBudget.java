@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cashmate.R;
 
-public class GroupFragment extends Fragment {
+public class GroupFragmentBudget extends Fragment {
 
-    public GroupFragment() {
+    public GroupFragmentBudget() {
         // Required empty public constructor
     }
 

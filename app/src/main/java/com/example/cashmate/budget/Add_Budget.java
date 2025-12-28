@@ -15,8 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cashmate.R;
-import com.example.cashmate.group.chooseGroup.Group;
-import com.example.cashmate.database.budget.Budget;
+import com.example.cashmate.group.chooseGroup.GroupBudget;
 import com.example.cashmate.database.budget.BudgetHandle;
 import com.example.cashmate.database.User.UserHandle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -85,7 +84,7 @@ public class Add_Budget extends Fragment {
         tvWallet.setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new Group())
+                        .replace(R.id.fragment_container, new GroupBudget())
                         .addToBackStack(null)
                         .commit()
         );
@@ -140,7 +139,7 @@ public class Add_Budget extends Fragment {
                 ? userHandle.getCurrentUser().getIdUser()
                 : "unknown";
 
-        Budget budget = new Budget(
+        com.example.cashmate.database.budget.Budget budget = new com.example.cashmate.database.budget.Budget(
                 userId,
                 selectedCategoryId,
                 groupName,

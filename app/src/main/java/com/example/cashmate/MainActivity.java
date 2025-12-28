@@ -1,7 +1,5 @@
 package com.example.cashmate;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +17,7 @@ import com.example.cashmate.account.Login;
 import com.example.cashmate.account.SignUp;
 import com.example.cashmate.budget.BudgetFragment;
 import com.example.cashmate.budget.BudgetStorage;
+import com.example.cashmate.database.Category.CategoryHandle;
 import com.example.cashmate.database.User.UserHandle;
 import com.example.cashmate.Transaction.TransactionFragment;
 import com.example.cashmate.home.HomeFragment;
@@ -41,9 +40,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        // ================= LOAD CATEGORY DEFAULT (RUN 1 TIME) =================
+        CategoryHandle categoryHandle = new CategoryHandle(this);
+        categoryHandle.insertDefaultCategoriesIfEmpty();
+
+        // ================= INIT LOCAL STORAGE =================
         userHandle = new UserHandle(this);
         BudgetStorage.getInstance().init(this);
+
+        // ================= SYNC FIREBASE USER =================
         syncFirebaseUserToLocal();
+
         boolean openMenu = getIntent().getBooleanExtra("open_menu", false);
         if (openMenu) {
             showMenuLayout();
@@ -52,12 +60,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ================= AUTH / INTRO LAYOUT =================
     private void showMainLayout() {
         setContentView(R.layout.activity_main);
+
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         TabLayout tabLayout = findViewById(R.id.tabIndicator);
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
+
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setCustomView(
                         LayoutInflater.from(this)
@@ -66,18 +78,19 @@ public class MainActivity extends AppCompatActivity {
         ).attach();
 
         Button btnSignup = findViewById(R.id.sign_up);
-        btnSignup.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, SignUp.class));
-        });
+        btnSignup.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, SignUp.class))
+        );
 
         Button btnLogin = findViewById(R.id.login);
-        btnLogin.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, Login.class));
-        });
+        btnLogin.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, Login.class))
+        );
     }
 
+    // ================= MAIN MENU LAYOUT =================
     private void showMenuLayout() {
-        setContentView(R.layout.menu); // ⚠️ PHẢI LÀ menu.xml
+        setContentView(R.layout.menu);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
 
@@ -105,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // FAB → PlusFragment (KHÔNG BottomSheet)
+        // FAB → PlusFragment
         FloatingActionButton fab = findViewById(R.id.btnAddTransaction);
         fab.setOnClickListener(v ->
                 getSupportFragmentManager()
@@ -116,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    // ================= BOTTOM SHEET =================
+    // ================= BOTTOM SHEET (OPTIONAL) =================
     private void showAddTransactionSheet() {
         View view = getLayoutInflater().inflate(R.layout.plus, null);
         BottomSheetDialog dialog = new BottomSheetDialog(this);
@@ -124,28 +137,26 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnSave = view.findViewById(R.id.btnSave);
         if (btnSave != null) {
-            btnSave.setOnClickListener(v -> {
-                // TODO: xử lý lưu transaction ở đây nếu muốn
-                dialog.dismiss();
-            });
+            btnSave.setOnClickListener(v -> dialog.dismiss());
         }
 
         dialog.show();
     }
 
+    // ================= UTIL =================
     private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    // ================= FIREBASE → LOCAL USER =================
     private void syncFirebaseUserToLocal() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) return;
 
         UserHandle userHandle = new UserHandle(this);
-
         String uid = firebaseUser.getUid();
 
-        // Nếu local đã có → thôi
+        // Nếu local đã có → không insert
         if (userHandle.isUserExistsById(uid)) return;
 
         String fullName = firebaseUser.getDisplayName() != null
@@ -158,11 +169,10 @@ public class MainActivity extends AppCompatActivity {
                 ? firebaseUser.getPhotoUrl().toString()
                 : "";
 
-        // Phân biệt provider
         String password = "google";
         for (UserInfo info : firebaseUser.getProviderData()) {
             if ("password".equals(info.getProviderId())) {
-                password = ""; // hoặc mật khẩu nếu bạn đang giữ trong session
+                password = "";
             }
         }
 
@@ -174,6 +184,4 @@ public class MainActivity extends AppCompatActivity {
                 avatarUrl
         );
     }
-
-
 }

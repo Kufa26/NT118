@@ -9,7 +9,7 @@ import com.example.cashmate.R;
 import com.example.cashmate.group.chooseIcon.ChooseIcon;
 
 
-public class AddGroup extends AppCompatActivity {
+public class AddGroupBudget extends AppCompatActivity {
 
     private ImageView imgGroupIcon;
     private ImageView btnBack;
