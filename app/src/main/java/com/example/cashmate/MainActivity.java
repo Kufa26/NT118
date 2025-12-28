@@ -35,6 +35,7 @@ import com.google.firebase.auth.UserInfo;
 public class MainActivity extends AppCompatActivity {
 
     UserHandle userHandle;
+    private com.google.android.material.bottomnavigation.BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
     private void showMenuLayout() {
         setContentView(R.layout.menu);
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav = findViewById(R.id.bottom_nav);
 
-        // Fragment mặc định
+        // Fragment máº·c Ä‘á»‹nh
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new HomeFragment())
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // FAB → PlusFragment
+        // FAB â†’ PlusFragment
         FloatingActionButton fab = findViewById(R.id.btnAddTransaction);
         fab.setOnClickListener(v ->
                 getSupportFragmentManager()
@@ -129,6 +130,12 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    // ================= NAV HELPER =================
+    public void selectBottomTab(int menuItemId) {
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(menuItemId);
+        }
+    }
     // ================= BOTTOM SHEET (OPTIONAL) =================
     private void showAddTransactionSheet() {
         View view = getLayoutInflater().inflate(R.layout.plus, null);
@@ -148,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    // ================= FIREBASE → LOCAL USER =================
+    // ================= FIREBASE â†’ LOCAL USER =================
     private void syncFirebaseUserToLocal() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) return;
@@ -156,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         UserHandle userHandle = new UserHandle(this);
         String uid = firebaseUser.getUid();
 
-        // Nếu local đã có → không insert
+        // Náº¿u local Ä‘Ã£ cÃ³ â†’ khÃ´ng insert
         if (userHandle.isUserExistsById(uid)) return;
 
         String fullName = firebaseUser.getDisplayName() != null

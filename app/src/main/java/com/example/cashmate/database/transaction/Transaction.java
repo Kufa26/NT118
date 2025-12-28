@@ -3,7 +3,7 @@ package com.example.cashmate.database.transaction;
 public class Transaction {
 
     private Long idTransaction;
-    private Long idUser;
+    private String idUser;
     private Long idCategory;
     private Double amount;
     private String note;
@@ -17,7 +17,7 @@ public class Transaction {
 
     // ================= CONSTRUCTOR (QUERY) =================
     public Transaction(Long idTransaction,
-                       Long idUser,
+                       String idUser,
                        Long idCategory,
                        Double amount,
                        String note,
@@ -38,7 +38,7 @@ public class Transaction {
     }
 
     // ================= CONSTRUCTOR (INSERT) =================
-    public Transaction(Long idUser,
+    public Transaction(String idUser,
                        Long idCategory,
                        Double amount,
                        String note,
@@ -63,7 +63,7 @@ public class Transaction {
         return idTransaction;
     }
 
-    public Long getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 

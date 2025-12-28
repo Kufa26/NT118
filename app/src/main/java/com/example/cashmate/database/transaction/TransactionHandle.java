@@ -7,6 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.cashmate.database.DatabaseHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class TransactionHandle {
 
     private final DatabaseHelper dbHelper;
@@ -115,7 +123,6 @@ public class TransactionHandle {
         );
     }
 
-    // ================= TOTALS =================
     public static class Totals {
         public double income;
         public double expense;
@@ -125,13 +132,25 @@ public class TransactionHandle {
         }
     }
 
+    public static class TopExpense {
+        public final String nameCategory;
+        public final String iconCategory;
+        public final double total;
+
+        public TopExpense(String nameCategory, String iconCategory, double total) {
+            this.nameCategory = nameCategory;
+            this.iconCategory = iconCategory;
+            this.total = total;
+        }
+    }
+
     public Totals getTotalsForUser(String userId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String where = "";
         String[] args = null;
         if (userId != null) {
-            where = " WHERE idUser = ?";
+            where = " WHERE (idUser = ? OR idUser IS NULL OR idUser = '')";
             args = new String[]{userId};
         }
 
@@ -160,7 +179,49 @@ public class TransactionHandle {
         return totals;
     }
 
-    // ================= MONTHLY TOTALS =================
+    // ================= DATA FIX: SYNC createdAt WITH date FIELD =================
+    public void normalizeCreatedAtFromDate() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT idTransaction, date, createdAt FROM TransactionTable WHERE date IS NOT NULL",
+                null
+        );
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        sdf.setLenient(false);
+        // Use local zone so start-of-day matches app expectations
+        sdf.setTimeZone(TimeZone.getDefault());
+
+        try {
+            while (c.moveToNext()) {
+                long id = c.getLong(c.getColumnIndexOrThrow("idTransaction"));
+                String dateStr = c.getString(c.getColumnIndexOrThrow("date"));
+                Long currentCreated = c.isNull(c.getColumnIndexOrThrow("createdAt"))
+                        ? null
+                        : c.getLong(c.getColumnIndexOrThrow("createdAt"));
+
+                try {
+                    Date parsed = sdf.parse(dateStr);
+                    long targetCreated = parsed.getTime();
+                    if (currentCreated == null || currentCreated != targetCreated) {
+                        ContentValues v = new ContentValues();
+                        v.put("createdAt", targetCreated);
+                        db.update(
+                                "TransactionTable",
+                                v,
+                                "idTransaction = ?",
+                                new String[]{String.valueOf(id)}
+                        );
+                    }
+                } catch (ParseException ignored) {
+                    // skip rows with invalid date format
+                }
+            }
+        } finally {
+            c.close();
+        }
+    }
+
+    // ================= MONTHLY TOTALS (group by month/year) =================
     public Cursor getMonthlyTotals(String userId, String type, int limitMonths) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -186,7 +247,56 @@ public class TransactionHandle {
         }
     }
 
-    // ================= FILTER BY TYPE =================
+    // ================= TOP EXPENSES BY CATEGORY =================
+    public List<TopExpense> getTopExpenses(String userId, long startMillis, long endMillis, int limit) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // Clamp limit to avoid invalid or empty LIMIT clause
+        int limitSafe = Math.max(1, limit);
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT c.nameCategory, c.iconCategory, SUM(t.amount) AS total " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE UPPER(TRIM(IFNULL(t.typeTransaction,''))) = 'EXPENSE' " +
+                        "AND t.createdAt BETWEEN ? AND ? "
+        );
+
+        List<String> args = new ArrayList<>();
+        args.add(String.valueOf(startMillis));
+        args.add(String.valueOf(endMillis));
+
+        if (userId != null) {
+            sql.append("AND (t.idUser = ? OR t.idUser IS NULL OR t.idUser = '') ");
+            args.add(userId);
+        }
+
+        sql.append("GROUP BY c.nameCategory, c.iconCategory ");
+        sql.append("ORDER BY total DESC ");
+        sql.append("LIMIT ").append(limitSafe);
+
+        Cursor c = db.rawQuery(sql.toString(), args.toArray(new String[0]));
+
+        List<TopExpense> result = new ArrayList<>();
+        try {
+            if (c.moveToFirst()) {
+                do {
+                    String name = c.isNull(c.getColumnIndexOrThrow("nameCategory"))
+                            ? null
+                            : c.getString(c.getColumnIndexOrThrow("nameCategory"));
+                    String icon = c.isNull(c.getColumnIndexOrThrow("iconCategory"))
+                            ? null
+                            : c.getString(c.getColumnIndexOrThrow("iconCategory"));
+                    double total = c.getDouble(c.getColumnIndexOrThrow("total"));
+                    result.add(new TopExpense(name, icon, total));
+                } while (c.moveToNext());
+            }
+        } finally {
+            c.close();
+        }
+
+        return result;
+    }
+        // ================= FILTER BY TYPE =================
     public Cursor getAllCursorByType(String typeTransaction) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -215,6 +325,36 @@ public class TransactionHandle {
         );
     }
 
+    // ================= COUNT BY CATEGORY =================
+    public int countByCategory(Long categoryId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery(
+                "SELECT COUNT(*) AS cnt FROM TransactionTable WHERE idCategory = ?",
+                new String[]{String.valueOf(categoryId)}
+        );
+        try {
+            if (c.moveToFirst()) {
+                return c.getInt(c.getColumnIndexOrThrow("cnt"));
+            }
+            return 0;
+        } finally {
+            c.close();
+        }
+    }
+
+    // ================= LIST BY CATEGORY =================
+    public Cursor getByCategory(Long categoryId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        return db.rawQuery(
+                "SELECT t.*, c.nameCategory, c.iconCategory " +
+                        "FROM TransactionTable t " +
+                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
+                        "WHERE t.idCategory = ? " +
+                        "ORDER BY t.createdAt DESC",
+                new String[]{String.valueOf(categoryId)}
+        );
+    }
+
     // ================= TOTAL BY MONTH =================
     public double getTotalByMonth(int month, int year, String type) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -240,7 +380,7 @@ public class TransactionHandle {
         }
     }
 
-    // ================= START BALANCE =================
+    // ================= START BALANCE BEFORE MONTH =================
     public double getStartBalance(int month, int year) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(
@@ -264,34 +404,4 @@ public class TransactionHandle {
         }
     }
 
-    // =================================================
-    // ========== PHẦN MỚI PHỤC VỤ XÓA NHÓM ============
-    // =================================================
-
-    // Lấy danh sách giao dịch theo Category
-    public Cursor getByCategory(long idCategory) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.rawQuery(
-                "SELECT t.*, c.nameCategory, c.iconCategory " +
-                        "FROM TransactionTable t " +
-                        "LEFT JOIN Category c ON t.idCategory = c.idCategory " +
-                        "WHERE t.idCategory = ? " +
-                        "ORDER BY t.createdAt DESC",
-                new String[]{String.valueOf(idCategory)}
-        );
-    }
-
-    // Đếm số giao dịch theo Category
-    public int countByCategory(long idCategory) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT COUNT(*) FROM TransactionTable WHERE idCategory = ?",
-                new String[]{String.valueOf(idCategory)}
-        );
-        try {
-            return c.moveToFirst() ? c.getInt(0) : 0;
-        } finally {
-            c.close();
-        }
-    }
 }

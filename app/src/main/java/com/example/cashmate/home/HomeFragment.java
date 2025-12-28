@@ -22,6 +22,7 @@ import com.example.cashmate.Transaction.TransactionFragment;
 import com.example.cashmate.database.User.User;
 import com.example.cashmate.database.User.UserHandle;
 import com.example.cashmate.database.transaction.TransactionHandle;
+import com.example.cashmate.database.transaction.TransactionHandle.TopExpense;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
 
@@ -51,6 +53,8 @@ public class HomeFragment extends Fragment {
     private TextView tvIncome;
     private ImageView ivEyeToggle;
     private RecyclerView rvRecent;
+    private RecyclerView rvTopSpend;
+    private TopSpendAdapter topSpendAdapter;
     private TransactionAdapter recentAdapter;
     private BarChart chartMonth;
     private TextView tvEmptyReport;
@@ -64,6 +68,7 @@ public class HomeFragment extends Fragment {
     private enum Range { WEEK, MONTH }
     private enum Tab { SPENT, INCOME }
     private Tab currentTab = Tab.INCOME;
+    private Range currentRange = Range.WEEK;
 
     @Nullable
     @Override
@@ -80,7 +85,6 @@ public class HomeFragment extends Fragment {
 
         tabWeek = view.findViewById(R.id.tab_week);
         tabMonth = view.findViewById(R.id.tab_month);
-        selectRange(Range.WEEK);
         tabWeek.setOnClickListener(v -> selectRange(Range.WEEK));
         tabMonth.setOnClickListener(v -> selectRange(Range.MONTH));
 
@@ -92,13 +96,21 @@ public class HomeFragment extends Fragment {
                 .commit());
 
         TextView recent = view.findViewById(R.id.btn_recent_all);
-        recent.setOnClickListener(v -> requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new TransactionFragment())
-                .addToBackStack(null)
-                .commit());
+        recent.setOnClickListener(v -> {
+            if (requireActivity() instanceof com.example.cashmate.MainActivity) {
+                ((com.example.cashmate.MainActivity) requireActivity())
+                        .selectBottomTab(R.id.nav_transaction);
+            } else {
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new TransactionFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         transactionHandle = new TransactionHandle(requireContext());
+        transactionHandle.normalizeCreatedAtFromDate();
         userHandle = new UserHandle(requireContext());
 
         tvBalance = view.findViewById(R.id.tv_total_balance);
@@ -106,6 +118,7 @@ public class HomeFragment extends Fragment {
         tvSpent = view.findViewById(R.id.tv_spent);
         tvIncome = view.findViewById(R.id.tv_income);
         rvRecent = view.findViewById(R.id.rv_recent);
+        rvTopSpend = view.findViewById(R.id.rv_top_spend);
         chartMonth = view.findViewById(R.id.chart_month);
         tvEmptyReport = view.findViewById(R.id.tv_empty_report);
 
@@ -115,8 +128,18 @@ public class HomeFragment extends Fragment {
             rvRecent.setAdapter(recentAdapter);
         }
 
+        if (rvTopSpend != null) {
+            rvTopSpend.setLayoutManager(new LinearLayoutManager(getContext()));
+            topSpendAdapter = new TopSpendAdapter();
+            rvTopSpend.setAdapter(topSpendAdapter);
+        }
+
+        // ensure range UI state is set after adapter init
+        selectRange(currentRange);
+
         loadTotals();
         loadRecent();
+        loadTopSpendData();
         setupChart();
         loadChartData();
 
@@ -136,6 +159,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
         loadTotals();
         loadRecent();
+        loadTopSpendData();
         loadChartData();
     }
 
@@ -155,6 +179,7 @@ public class HomeFragment extends Fragment {
 
     private void selectRange(Range r) {
         if (getContext() == null) return;
+        currentRange = r;
         int colorSelected = ContextCompat.getColor(getContext(), android.R.color.black);
         int colorUnselected = 0xFF9AA0AE;
         int bgSelected = R.drawable.seg_tab_bg_selected;
@@ -176,6 +201,7 @@ public class HomeFragment extends Fragment {
             tabWeek.setTextColor(colorUnselected);
             tabWeek.setTypeface(null, Typeface.NORMAL);
         }
+        loadTopSpendData();
     }
 
     private void loadTotals() {
@@ -252,7 +278,7 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        BarDataSet dataSet = new BarDataSet(entries, currentTab == Tab.SPENT ? "Tổng chi" : "Tổng thu");
+        BarDataSet dataSet = new BarDataSet(entries, currentTab == Tab.SPENT ? "Tá»•ng chi" : "Tá»•ng thu");
         dataSet.setColor(currentTab == Tab.SPENT ? 0xFFFF4D4F : 0xFF2EA7FF);
         dataSet.setValueTextSize(10f);
         dataSet.setValueFormatter(new ValueFormatter() {
@@ -278,6 +304,104 @@ public class HomeFragment extends Fragment {
         chartMonth.invalidate();
     }
 
+    private void loadTopSpendData() {
+        if (topSpendAdapter == null) return;
+
+        Calendar nowCal = Calendar.getInstance();
+        Calendar startCal = getRangeStartCalendar(currentRange, nowCal);
+        Calendar endCal = getRangeEndCalendar(currentRange, nowCal);
+        String userId = getCurrentUserId();
+        long startMillis = startOfDayMillis(startCal);
+        long endMillis = endOfDayMillis(endCal);
+
+        List<TopExpense> raw = transactionHandle.getTopExpenses(
+                userId,
+                startMillis,
+                endMillis,
+                5
+        );
+
+        if (raw.isEmpty() && userId != null) {
+            raw = transactionHandle.getTopExpenses(
+                    null,
+                    startMillis,
+                    endMillis,
+                    5
+            );
+        }
+
+        double totalExpense = 0;
+        for (TopExpense t : raw) {
+            totalExpense += t.total;
+        }
+
+        List<TopSpendAdapter.TopSpendItem> mapped = new ArrayList<>();
+        for (TopExpense t : raw) {
+            double percent = totalExpense > 0 ? (t.total / totalExpense) * 100 : 0;
+            mapped.add(new TopSpendAdapter.TopSpendItem(
+                    t.nameCategory,
+                    t.iconCategory,
+                    t.total,
+                    percent
+            ));
+        }
+
+        topSpendAdapter.setItems(mapped);
+    }
+
+    private Calendar getRangeStartCalendar(Range range, Calendar nowCal) {
+        Calendar cal = (Calendar) nowCal.clone();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        if (range == Range.WEEK) {
+            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        } else {
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+        }
+        return cal;
+    }
+
+    private Calendar getRangeEndCalendar(Range range, Calendar nowCal) {
+        Calendar cal = (Calendar) nowCal.clone();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        if (range == Range.WEEK) {
+            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+            cal.add(Calendar.DAY_OF_WEEK, 6);
+        } else {
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        }
+        return cal;
+    }
+
+    private int toYmdInt(Calendar cal) {
+        int y = cal.get(Calendar.YEAR);
+        int m = cal.get(Calendar.MONTH) + 1;
+        int d = cal.get(Calendar.DAY_OF_MONTH);
+        return y * 10000 + m * 100 + d;
+    }
+
+    private long startOfDayMillis(Calendar cal) {
+        Calendar c = (Calendar) cal.clone();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    private long endOfDayMillis(Calendar cal) {
+        Calendar c = (Calendar) cal.clone();
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        c.set(Calendar.MILLISECOND, 999);
+        return c.getTimeInMillis();
+    }
+
     private void applyBalanceVisibility() {
         String hidden = "\u2022\u2022\u2022";
         if (tvBalance != null) tvBalance.setText(isBalanceVisible ? formattedBalance : hidden);
@@ -296,4 +420,3 @@ public class HomeFragment extends Fragment {
         return NumberFormat.getInstance(Locale.getDefault()).format(value) + " \u0111";
     }
 }
-

@@ -153,18 +153,22 @@ public class PlusFragment extends Fragment {
 
         UserHandle userHandle = new UserHandle(requireContext());
         User currentUser = userHandle.getCurrentUser();
-        Long idUserLong = 1L;
-        String idUserString = (currentUser != null) ? currentUser.getIdUser() : "unknown";
+        String idUserString = (currentUser != null) ? currentUser.getIdUser() : null;
+
+        long createdAt = selectedDate
+                .atStartOfDay(java.time.ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli();
 
         Transaction t = new Transaction(
-                idUserLong,
+                idUserString,
                 selectedCategoryId,
                 amount,
                 noteText,
                 date,
                 weekday,
                 selectedCategoryType,
-                System.currentTimeMillis()
+                createdAt
         );
 
         TransactionHandle handle = new TransactionHandle(requireContext());
