@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cashmate.R;
-import com.example.cashmate.group.chooseGroup.GroupBudget;
+import com.example.cashmate.group.ListGroupFragment;
 import com.example.cashmate.database.budget.BudgetHandle;
 import com.example.cashmate.database.User.UserHandle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -47,15 +47,16 @@ public class Add_Budget extends Fragment {
                 "select_group",
                 this,
                 (requestKey, bundle) -> {
-                    String name = bundle.getString("groupName");
-                    int iconRes = bundle.getInt("groupIcon");
+                    // Nhận kết quả từ ListGroupFragment (dùng chung nhóm với phần Tài khoản)
+                    String name = bundle.getString("name");
+                    String iconName = bundle.getString("icon");
                     long idLong = bundle.getLong("idCategory", 0);
 
                     selectedCategoryId = (int) idLong;
-                    currentIconRes = iconRes;
+                    currentIconRes = resolveIconRes(iconName);
 
                     if (tvWallet != null) tvWallet.setText(name);
-                    if (imgGroupIcon != null) imgGroupIcon.setImageResource(iconRes);
+                    if (imgGroupIcon != null) imgGroupIcon.setImageResource(currentIconRes);
                 }
         );
     }
@@ -84,7 +85,7 @@ public class Add_Budget extends Fragment {
         tvWallet.setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new GroupBudget())
+                        .replace(R.id.fragment_container, new ListGroupFragment())
                         .addToBackStack(null)
                         .commit()
         );
@@ -158,6 +159,12 @@ public class Add_Budget extends Fragment {
         );
 
         getParentFragmentManager().popBackStack();
+    }
+
+    private int resolveIconRes(String iconName) {
+        if (iconName == null || iconName.isEmpty()) return R.drawable.ic_food;
+        int resId = getResources().getIdentifier(iconName, "drawable", requireContext().getPackageName());
+        return resId != 0 ? resId : R.drawable.ic_food;
     }
 
     private void showTimePickerDialog() {
