@@ -82,13 +82,17 @@ public class Add_Budget extends Fragment {
         btnSaveBudget.setOnClickListener(v -> saveBudget());
         layoutSelectDate.setOnClickListener(v -> showTimePickerDialog());
 
-        tvWallet.setOnClickListener(v ->
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new ListGroupFragment())
-                        .addToBackStack(null)
-                        .commit()
-        );
+        tvWallet.setOnClickListener(v -> {
+            ListGroupFragment fragment = new ListGroupFragment();
+            Bundle args = new Bundle();
+            args.putBoolean("expenseOnly", true);
+            fragment.setArguments(args);
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         if (btnBack != null) {
             btnBack.setOnClickListener(v ->

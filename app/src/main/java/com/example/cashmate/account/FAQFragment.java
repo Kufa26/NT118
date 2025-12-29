@@ -17,7 +17,7 @@ import com.example.cashmate.R;
 public class FAQFragment extends Fragment {
 
     private final String[] questions = {
-            "Làm sao để đăng ký tài khoản Money Lover?",
+            "Làm sao để đăng ký tài khoản CashMate?",
             "Quên mật khẩu thì khôi phục như thế nào?",
             "Có đăng nhập được bằng Google / Facebook không?",
             "Đổi email đăng nhập ở đâu?",

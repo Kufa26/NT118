@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class BudgetFragment extends Fragment {
-
     private String currentTab = "MONTH";
 
     @Nullable
@@ -70,24 +69,14 @@ public class BudgetFragment extends Fragment {
 
     private void setupDetailView(View view) {
         View tabMonth = view.findViewById(R.id.tabMonth);
-        View tabWeek = view.findViewById(R.id.tabWeek);
         TextView tvTabMonth = view.findViewById(R.id.tvTabMonth);
-        TextView tvTabWeek = view.findViewById(R.id.tvTabWeek);
         View lineMonth = view.findViewById(R.id.lineMonth);
-        View lineWeek = view.findViewById(R.id.lineWeek);
         Button btnCreateMore = view.findViewById(R.id.btnCreate);
 
         if (tabMonth != null) {
             tabMonth.setOnClickListener(v -> {
                 currentTab = "MONTH";
-                updateTabUI(tvTabMonth, lineMonth, tvTabWeek, lineWeek);
-                loadDataForTab(view);
-            });
-        }
-        if (tabWeek != null) {
-            tabWeek.setOnClickListener(v -> {
-                currentTab = "WEEK";
-                updateTabUI(tvTabWeek, lineWeek, tvTabMonth, lineMonth);
+                updateTabUI(tvTabMonth, lineMonth, null, null);
                 loadDataForTab(view);
             });
         }
@@ -95,11 +84,7 @@ public class BudgetFragment extends Fragment {
             btnCreateMore.setOnClickListener(v -> openAddBudgetScreen());
         }
 
-        if (currentTab.equals("MONTH")) {
-            updateTabUI(tvTabMonth, lineMonth, tvTabWeek, lineWeek);
-            } else {
-            updateTabUI(tvTabWeek, lineWeek, tvTabMonth, lineMonth);
-        }
+        updateTabUI(tvTabMonth, lineMonth, null, null);
         loadDataForTab(view);
     }
 

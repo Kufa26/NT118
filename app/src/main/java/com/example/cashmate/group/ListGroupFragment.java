@@ -25,6 +25,7 @@ public class ListGroupFragment extends Fragment {
     private RecyclerView rcvGroups;
     private TextView tabIncome, tabExpense;
     private ImageButton btnBack;
+    private boolean expenseOnly = false;
 
     @Nullable
     @Override
@@ -40,6 +41,8 @@ public class ListGroupFragment extends Fragment {
         tabIncome = view.findViewById(R.id.tabIncome);
         tabExpense = view.findViewById(R.id.tabExpense);
         rcvGroups = view.findViewById(R.id.rcvGroups);
+        Bundle args = getArguments();
+        expenseOnly = args != null && args.getBoolean("expenseOnly", false);
 
         // ===== BACK BUTTON (🔥 FIX CHÍNH Ở ĐÂY) =====
         btnBack.setOnClickListener(v ->
@@ -52,19 +55,27 @@ public class ListGroupFragment extends Fragment {
         rcvGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // ===== DEFAULT TAB =====
-        setActiveTab(false);          // false = INCOME
-        loadGroups("INCOME");
-
-        // ===== TAB CLICK =====
-        tabIncome.setOnClickListener(v -> {
-            setActiveTab(false);
-            loadGroups("INCOME");
-        });
-
-        tabExpense.setOnClickListener(v -> {
-            setActiveTab(true);
+        if (expenseOnly) {
+            setActiveTab(true); // EXPENSE
             loadGroups("EXPENSE");
-        });
+            tabIncome.setEnabled(false);
+            tabIncome.setAlpha(0.4f);
+            tabIncome.setOnClickListener(null);
+        } else {
+            setActiveTab(false);          // false = INCOME
+            loadGroups("INCOME");
+
+            // ===== TAB CLICK =====
+            tabIncome.setOnClickListener(v -> {
+                setActiveTab(false);
+                loadGroups("INCOME");
+            });
+
+            tabExpense.setOnClickListener(v -> {
+                setActiveTab(true);
+                loadGroups("EXPENSE");
+            });
+        }
 
         return view;
     }

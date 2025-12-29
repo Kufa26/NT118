@@ -153,7 +153,7 @@ public class PlusFragment extends Fragment {
 
         UserHandle userHandle = new UserHandle(requireContext());
         User currentUser = userHandle.getCurrentUser();
-        String idUserString = (currentUser != null) ? currentUser.getIdUser() : null;
+        String idUserString = (currentUser != null) ? currentUser.getIdUser() : "unknown";
 
         long createdAt = selectedDate
                 .atStartOfDay(java.time.ZoneId.systemDefault())

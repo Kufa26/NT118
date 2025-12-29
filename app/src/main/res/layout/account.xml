@@ -176,7 +176,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Ví của tôi"
+                        android:text="Ví của tôi (Coming soon)"
                         android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
@@ -261,7 +261,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Sổ nợ"
+                        android:text="Sổ nợ (Coming soon)"
                         android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 
@@ -297,7 +297,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Công cụ"
+                        android:text="Công cụ (Coming soon)"
                         android:textColor="@color/textcolor"
                         android:textSize="16sp" />
 

@@ -69,7 +69,7 @@ public class BudgetHandle {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT icon FROM Category WHERE idCategory = ?", new String[]{String.valueOf(idCategory)});
+            cursor = db.rawQuery("SELECT iconCategory FROM Category WHERE idCategory = ?", new String[]{String.valueOf(idCategory)});
             if (cursor.moveToFirst()) {
                 icon = cursor.getString(0);
             }
@@ -80,6 +80,27 @@ public class BudgetHandle {
             db.close();
         }
         return icon;
+    }
+
+    public String getTypeForCategory(int idCategory) {
+        String type = null;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT typeCategory FROM Category WHERE idCategory = ?",
+                    new String[]{String.valueOf(idCategory)}
+            );
+            if (cursor.moveToFirst()) {
+                type = cursor.getString(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+        return type;
     }
 
     public void updateBudgetUsage(String idUser, int idCategory, String categoryName, double amount, String transactionDateStr) {
