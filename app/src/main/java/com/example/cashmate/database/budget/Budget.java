@@ -11,7 +11,6 @@ public class Budget {
     private String endDate;
     private String timeType;
 
-    // Constructor lấy từ DB
     public Budget(int idBudget, String idUser, int idCategory, String name,
                   double totalAmount, double spentAmount,
                   String startDate, String endDate, String timeType) {
@@ -26,7 +25,6 @@ public class Budget {
         this.timeType = timeType;
     }
 
-    // Constructor tạo mới (Dùng trong Add_Budget)
     public Budget(String idUser, int idCategory, String name,
                   double totalAmount, double spentAmount,
                   String startDate, String endDate, String timeType) {

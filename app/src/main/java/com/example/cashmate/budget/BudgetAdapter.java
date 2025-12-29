@@ -39,21 +39,15 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BudgetItem item = items.get(position);
 
-        // 1. Tên và Icon
         holder.tvName.setText(item.getName());
         holder.imgIcon.setImageResource(item.getIconRes());
 
-        // 2. Tổng ngân sách (Hiển thị góc trên phải)
         holder.tvAmount.setText(df.format(item.getTotalAmount()));
-
-        // 3. --- QUAN TRỌNG: HIỂN THỊ SỐ TIỀN CÒN LẠI ---
         long remaining = item.getTotalAmount() - item.getSpentAmount();
         if (remaining < 0) remaining = 0;
 
         holder.tvRemaining.setText("Còn lại " + df.format(remaining));
-        // -----------------------------------------------
 
-        // 4. Thanh tiến độ (Màu xanh thể hiện phần ĐÃ CHI)
         int progress = 0;
         if (item.getTotalAmount() > 0) {
             progress = (int) (((double) item.getSpentAmount() / item.getTotalAmount()) * 100);
@@ -62,7 +56,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.ViewHolder
 
         holder.progressBar.setProgress(progress);
 
-        // Đổi màu thanh progress nếu gần hết tiền (Optional)
         if (progress >= 90) {
             holder.progressBar.setProgressTintList(android.content.res.ColorStateList.valueOf(Color.RED));
         } else {

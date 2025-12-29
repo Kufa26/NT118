@@ -206,6 +206,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="2"
+                android:visibility="invisible"
                 android:text="Dark Mode"
                 android:textColor="@color/textcolor"
                 android:textSize="20sp">
@@ -214,6 +215,7 @@
 
             <Switch
                 android:id="@+id/mode_switch"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:thumbTint="@color/switch_track_tint"

@@ -31,7 +31,6 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_budget, container, false);
-        // Ưu tiên hiển thị layout detail, nếu rỗng thì setupEmptyView sẽ xử lý sau hoặc chuyển layout
         if (BudgetStorage.getInstance().getList().isEmpty()) {
             view = inflater.inflate(R.layout.budget, container, false);
             setupEmptyView(view);
@@ -41,27 +40,21 @@ public class BudgetFragment extends Fragment {
         return view;
     }
 
-    // --- QUAN TRỌNG: TẢI LẠI DỮ LIỆU KHI QUAY VỀ TỪ MÀN HÌNH THÊM GIAO DỊCH ---
     @Override
     public void onResume() {
         super.onResume();
 
-        // Luôn check lại DB xem có gì thay đổi không
         boolean hasData = !BudgetStorage.getInstance().getList().isEmpty();
         View view = getView();
 
         if (view != null) {
-            // Nếu đang ở màn hình detail (có RecyclerView)
             if (view.findViewById(R.id.recyclerView) != null) {
                 if (hasData) {
-                    // Gọi hàm load lại để cập nhật số tiền
                     loadDataForTab(view);
                 } else {
-                    // Nếu hết data (đã xóa hết) -> Refresh lại fragment về màn hình trống
                     getParentFragmentManager().beginTransaction().detach(this).attach(this).commit();
                 }
             }
-            // Nếu đang ở màn hình empty mà giờ lại có data -> Refresh để hiện màn hình detail
             else if (hasData) {
                 getParentFragmentManager().beginTransaction().detach(this).attach(this).commit();
             }
@@ -120,7 +113,6 @@ public class BudgetFragment extends Fragment {
 
         if (recyclerView == null) return;
 
-        // Lấy dữ liệu MỚI NHẤT từ Storage (Storage sẽ gọi DB)
         List<BudgetItem> allItems = BudgetStorage.getInstance().getList();
         List<BudgetItem> filteredList = new ArrayList<>();
 
@@ -138,12 +130,8 @@ public class BudgetFragment extends Fragment {
             }
         }
 
-        // Tính tiền CÒN LẠI để hiển thị lên vòng tròn
         long remaining = totalBudget - totalSpent;
         if (remaining < 0) remaining = 0;
-
-        // Cập nhật UI
-        // ... (Code cũ) ...
 
         // Cập nhật UI
         if (tvRemainingAmount != null) {
@@ -152,18 +140,13 @@ public class BudgetFragment extends Fragment {
 
             // --- SỬA MÀU SẮC ---
             if (totalBudget == 0) {
-                // Nếu chưa có ngân sách -> Màu đen hoặc xám
                 tvRemainingAmount.setTextColor(Color.parseColor("#757575"));
             } else if (remaining == 0) {
-                // Nếu có ngân sách mà hết tiền -> Màu đỏ
                 tvRemainingAmount.setTextColor(Color.RED);
             } else {
-                // Còn tiền -> Màu xanh
                 tvRemainingAmount.setTextColor(Color.parseColor("#2E7D32"));
             }
         }
-
-        // ... (Code cũ) ...
 
         if (tvTotalBudget != null) tvTotalBudget.setText(formatShortAmount(totalBudget));
         if (tvSpent != null) tvSpent.setText(formatShortAmount(totalSpent));
@@ -179,8 +162,6 @@ public class BudgetFragment extends Fragment {
                 tvDaysLeft.setText("-");
             }
         }
-
-        // Chạy Animation: Hiển thị mức độ tiền CÒN LẠI (Remaining) trên tổng (Total)
         BudgetAnimator.run(view, (int)remaining, (int)totalBudget);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

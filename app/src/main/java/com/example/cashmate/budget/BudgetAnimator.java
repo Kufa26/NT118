@@ -62,10 +62,8 @@ public class BudgetAnimator extends View {
         if (getWidth() > padding * 2 && getHeight() > padding * 2) {
             rectF.set(padding, padding, getWidth() - padding, getHeight() - padding);
 
-            // Vẽ nền xám
             canvas.drawArc(rectF, 135, 270, false, backgroundPaint);
 
-            // Vẽ màu xanh (Chỉ vẽ khi góc > 0)
             if (sweepAngle > 0) {
                 canvas.drawArc(rectF, 135, sweepAngle, false, progressPaint);
             }
@@ -80,14 +78,11 @@ public class BudgetAnimator extends View {
     }
 
     public void startAnimation(int remaining, int total) {
-        // --- SỬA LỖI TẠI ĐÂY ---
-        // Nếu tổng ngân sách = 0 (Chưa tạo ngân sách), reset về 0 và vẽ lại ngay
         if (total <= 0) {
             sweepAngle = 0;
-            invalidate(); // Vẽ lại màn hình (lúc này chỉ còn nền xám)
+            invalidate();
             return;
         }
-        // -----------------------
 
         float percentage = (float) remaining / total;
         if (percentage > 1) percentage = 1;
@@ -95,8 +90,7 @@ public class BudgetAnimator extends View {
 
         float targetAngle = 270 * percentage;
 
-        ValueAnimator animator = ValueAnimator.ofFloat(sweepAngle, targetAngle); // Chạy từ góc cũ đến góc mới cho mượt
-        // Nếu muốn chạy từ 0 mỗi lần chuyển tab thì dùng: ValueAnimator.ofFloat(0, targetAngle);
+        ValueAnimator animator = ValueAnimator.ofFloat(sweepAngle, targetAngle);
 
         animator.setDuration(1000);
         animator.setInterpolator(new DecelerateInterpolator());

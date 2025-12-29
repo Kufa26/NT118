@@ -98,7 +98,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Nếu m muốn giữ data, đừng DROP. Nhưng để đơn giản và tránh lỗi schema:
         db.execSQL("DROP TABLE IF EXISTS TransactionTable");
         db.execSQL("DROP TABLE IF EXISTS Category");
         db.execSQL("DROP TABLE IF EXISTS USER");

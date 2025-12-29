@@ -36,7 +36,6 @@ public class DetailBudgetFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1. Ánh xạ các View
         tvAmount = view.findViewById(R.id.tvAmount);
         tvTotalBudget = view.findViewById(R.id.tvTotalBudget);
         tvSpent = view.findViewById(R.id.tvSpent);
@@ -44,7 +43,6 @@ public class DetailBudgetFragment extends Fragment {
         btnCreate = view.findViewById(R.id.btnCreate);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        // 2. Nhận dữ liệu
         long targetAmount = 0;
         String groupName = "Chưa chọn nhóm";
 
@@ -53,42 +51,29 @@ public class DetailBudgetFragment extends Fragment {
             groupName = getArguments().getString("group_name", "Chưa chọn nhóm");
         }
 
-        // 3. Chạy hiệu ứng
         BudgetAnimator.run(view, (int) targetAmount, (int) targetAmount);
 
-        // 4. Cập nhật TextView tổng ngân sách
         if (tvTotalBudget != null) {
             tvTotalBudget.setText(formatShortAmount(targetAmount));
         }
 
-        // 5. Thiết lập RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 6. Đổ dữ liệu vào danh sách
         List<BudgetItem> items = new ArrayList<>();
-
-        // --- SỬA LỖI 1: Thêm tham số "MONTH" vào Constructor BudgetItem ---
-        // Vì constructor mới yêu cầu 5 tham số: tên, tổng tiền, đã chi, icon, loại thời gian
         items.add(new BudgetItem(groupName, targetAmount, 0, R.drawable.ic_food, "MONTH"));
 
-        // --- SỬA LỖI 2: Thêm tham số listener vào Constructor BudgetAdapter ---
-        // Adapter mới yêu cầu tham số thứ 2 là sự kiện click. Ở đây ta có thể truyền null hoặc xử lý đơn giản.
         adapter = new BudgetAdapter(items, item -> {
-            // Xử lý sự kiện xóa nếu cần (để trống nếu không muốn xóa ở màn hình này)
             Toast.makeText(getContext(), "Bạn đang xem chi tiết: " + item.getName(), Toast.LENGTH_SHORT).show();
         });
 
         recyclerView.setAdapter(adapter);
 
-        // Xử lý sự kiện nút bấm nếu cần
         if (btnCreate != null) {
             btnCreate.setOnClickListener(v -> {
-                // Code xử lý khi nhấn nút Tạo Ngân Sách
             });
         }
     }
 
-    // Hàm phụ để định dạng tiền tệ ngắn gọn
     private String formatShortAmount(long amount) {
         if (amount >= 1000000) {
             return (amount / 1000000) + " M";

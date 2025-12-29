@@ -58,12 +58,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             return true;
         });
     }
-
-    /**
-     * Dialog xóa nhóm:
-     * - Nếu không có giao dịch → hỏi xóa thường
-     * - Nếu có giao dịch → hiện dialog liệt kê giao dịch sẽ bị xóa
-     */
     private void showDeleteDialog(Category category, int position) {
         TransactionHandle tHandle = new TransactionHandle(context);
         int count = tHandle.countByCategory(category.getIdCategory());
@@ -74,9 +68,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
             return;
         }
 
-        // ===== CÓ GIAO DỊCH → DIALOG CUSTOM =====
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.dialog_delete_group, null);
+        // ===== CÓ GIAO DỊCH =====
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_delete_group, null);
 
         TextView tvCount = view.findViewById(R.id.tvCount);
         RecyclerView rv = view.findViewById(R.id.rvTransaction);
@@ -103,9 +96,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
                 .show();
     }
 
-    /**
-     * Dialog xóa nhóm đơn giản (không có giao dịch)
-     */
     private void confirmDelete(Category category, int position) {
         new AlertDialog.Builder(context)
                 .setTitle("Xóa nhóm")

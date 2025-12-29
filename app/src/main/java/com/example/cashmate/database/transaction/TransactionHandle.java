@@ -188,9 +188,7 @@ public class TransactionHandle {
                 null
         );
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        sdf.setLenient(false);
-        // Use local zone so start-of-day matches app expectations
-        sdf.setTimeZone(TimeZone.getDefault());
+        sdf.setLenient(false);sdf.setTimeZone(TimeZone.getDefault());
 
         try {
             while (c.moveToNext()) {

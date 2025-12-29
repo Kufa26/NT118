@@ -32,18 +32,18 @@ public class TransactionListFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
 
-        // 🔹 GET TYPE
+        // GET TYPE
         if (getArguments() != null) {
             typeTransaction = getArguments().getString("typeTransaction");
         }
-        // 🔹 BACK BUTTON
+        // BACK BUTTON
         view.findViewById(R.id.btnBack).setOnClickListener(v ->
                 requireActivity()
                         .getSupportFragmentManager()
                         .popBackStack()
         );
 
-        // 🔹 INIT
+        // INIT
         transactionHandle = new TransactionHandle(requireContext());
         recyclerView = view.findViewById(R.id.recyclerView);
 

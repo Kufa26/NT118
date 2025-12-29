@@ -134,7 +134,6 @@ public class HomeFragment extends Fragment {
             rvTopSpend.setAdapter(topSpendAdapter);
         }
 
-        // ensure range UI state is set after adapter init
         selectRange(currentRange);
 
         loadTotals();

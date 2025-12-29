@@ -8,7 +8,6 @@ public class Transaction {
     private Double amount;
     private String note;
 
-    // date hiển thị (vd: dd-MM-yyyy hoặc dd/MM/yyyy)
     private String date;
 
     private String weekday;          // Thứ Hai, Thứ Ba, ...

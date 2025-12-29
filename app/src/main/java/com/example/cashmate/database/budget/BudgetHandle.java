@@ -38,7 +38,6 @@ public class BudgetHandle {
         return id;
     }
 
-    // --- QUAY VỀ LOGIC CHUẨN (KHÔNG JOIN) ĐỂ TRÁNH CRASH ---
     public List<Budget> getBudgetsByUser(String idUser) {
         List<Budget> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -64,19 +63,17 @@ public class BudgetHandle {
         return list;
     }
 
-    // --- HÀM MỚI: LẤY ICON AN TOÀN ---
+    // --- LẤY ICON AN TOÀN ---
     public String getIconForCategory(int idCategory) {
         String icon = "ic_food"; // Mặc định
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
         try {
-            // Cố gắng lấy icon từ bảng Category
             cursor = db.rawQuery("SELECT icon FROM Category WHERE idCategory = ?", new String[]{String.valueOf(idCategory)});
             if (cursor.moveToFirst()) {
                 icon = cursor.getString(0);
             }
         } catch (Exception e) {
-            // Nếu lỗi (sai tên bảng/cột) -> Vẫn trả về icon mặc định chứ KHÔNG CRASH
             e.printStackTrace();
         } finally {
             if (cursor != null) cursor.close();
@@ -97,7 +94,6 @@ public class BudgetHandle {
                 Date endDate = sdf.parse(budget.getEndDate());
 
                 if (transDate != null && !transDate.before(startDate) && !transDate.after(endDate)) {
-                    // Logic so sánh theo ID hoặc Tên
                     boolean isIdMatch = (budget.getIdCategory() == idCategory && idCategory != 0);
                     boolean isNameMatch = (categoryName != null && budget.getName().equalsIgnoreCase(categoryName));
 

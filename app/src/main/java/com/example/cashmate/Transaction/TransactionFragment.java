@@ -53,7 +53,6 @@ public class TransactionFragment extends Fragment {
         rvTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
 
         transactionHandle = new TransactionHandle(getContext());
-        // ensure legacy rows have createdAt aligned with date so monthly sums are correct
         transactionHandle.normalizeCreatedAtFromDate();
         userHandle = new UserHandle(getContext());
 
