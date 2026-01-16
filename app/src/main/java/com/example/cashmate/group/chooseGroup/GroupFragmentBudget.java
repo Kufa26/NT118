@@ -14,7 +14,6 @@ import com.example.cashmate.R;
 public class GroupFragmentBudget extends Fragment {
 
     public GroupFragmentBudget() {
-        // Required empty public constructor
     }
 
     @Nullable

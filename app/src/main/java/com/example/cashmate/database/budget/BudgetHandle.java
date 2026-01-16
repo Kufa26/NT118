@@ -63,7 +63,7 @@ public class BudgetHandle {
         return list;
     }
 
-    // --- LẤY ICON AN TOÀN ---
+    // LẤY ICON AN TOÀN
     public String getIconForCategory(int idCategory) {
         String icon = "ic_food"; // Mặc định
         SQLiteDatabase db = dbHelper.getReadableDatabase();

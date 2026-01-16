@@ -8,7 +8,7 @@
     android:background="#F0F0F0"
     android:fitsSystemWindows="true">
 
-    <!-- Toolbar (GIỐNG PROFILE) -->
+    <!-- Toolbar  -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_add_group"
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Divider (GIỐNG PROFILE) -->
+    <!-- Divider -->
     <View
         android:id="@+id/toolbar_divider"
         android:layout_width="match_parent"
@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Icon + Name (GIỐNG ITEM PROFILE) -->
+        <!-- Icon + Name  -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,7 +123,7 @@
         </RadioGroup>
     </LinearLayout>
 
-    <!-- SAVE (GIỐNG ĐỔI MẬT KHẨU) -->
+    <!-- SAVE -->
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"

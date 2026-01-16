@@ -55,13 +55,13 @@ public class SettingFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         userHandle = new UserHandle(requireContext());
 
-        // ===== BACK =====
+        // BACK
         ImageButton btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        // ===== SIGN OUT =====
+        // SIGN OUT
         Button btnSignout = view.findViewById(R.id.btnSignout);
         btnSignout.setOnClickListener(v -> {
 
@@ -93,7 +93,7 @@ public class SettingFragment extends Fragment {
             startActivity(intent);
         });
 
-        // ===== DARK MODE =====
+        // DARK MODE
         mode_switch = view.findViewById(R.id.mode_switch);
         modeStatus = view.findViewById(R.id.dark_mode);
 
@@ -111,7 +111,7 @@ public class SettingFragment extends Fragment {
                 }
         );
 
-        // ===== DELETE ACCOUNT =====
+        // DELETE ACCOUNT
         LinearLayout btnDelAcc = view.findViewById(R.id.btndelAcc);
         btnDelAcc.setOnClickListener(v -> showDeleteAccountDialog());
 
@@ -140,7 +140,7 @@ public class SettingFragment extends Fragment {
 
         final boolean[] isVerifiedForDelete = {false};
 
-        // ===== SEND VERIFY EMAIL =====
+        // SEND VERIFY EMAIL
         tvVerify.setOnClickListener(v -> {
             FirebaseUser user = mAuth.getCurrentUser();
             if (user == null) return;
@@ -148,33 +148,21 @@ public class SettingFragment extends Fragment {
             user.sendEmailVerification()
                     .addOnSuccessListener(unused -> {
                         isVerifiedForDelete[0] = true;
-                        Toast.makeText(
-                                requireContext(),
-                                "Đã gửi email xác thực yêu cầu xóa tài khoản",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        Toast.makeText(requireContext(),"Đã gửi email xác thực yêu cầu xóa tài khoản",Toast.LENGTH_LONG).show();
                     });
         });
 
-        // ===== CLICK DELETE =====
+        // CLICK DELETE
         btnDelete.setOnClickListener(v -> {
 
             if (!isVerifiedForDelete[0]) {
-                Toast.makeText(
-                        requireContext(),
-                        "Vui lòng xác thực email trước khi xóa tài khoản",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(requireContext(),"Vui lòng xác thực email trước khi xóa tài khoản",Toast.LENGTH_SHORT).show();
                 return;
             }
 
             String password = edtPassword.getText().toString().trim();
             if (password.isEmpty()) {
-                Toast.makeText(
-                        requireContext(),
-                        "Vui lòng nhập mật khẩu",
-                        Toast.LENGTH_SHORT
-                ).show();
+                Toast.makeText(requireContext(),"Vui lòng nhập mật khẩu",Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -184,7 +172,7 @@ public class SettingFragment extends Fragment {
         dialog.show();
     }
 
-    // ===== CONFIRM DIALOG =====
+    // CONFIRM DIALOG
     private void showConfirmDeleteDialog(String password, Dialog parentDialog) {
 
         new AlertDialog.Builder(requireContext())
@@ -203,7 +191,7 @@ public class SettingFragment extends Fragment {
                 .show();
     }
 
-    // ===== DELETE FIREBASE + LOCAL =====
+    // DELETE FIREBASE + LOCAL
     private void deleteAccount(String password) {
 
         FirebaseUser user = mAuth.getCurrentUser();

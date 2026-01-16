@@ -48,8 +48,7 @@ public class TopSpendAdapter extends RecyclerView.Adapter<TopSpendAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_top_spend, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_top_spend, parent, false);
         return new ViewHolder(v);
     }
 

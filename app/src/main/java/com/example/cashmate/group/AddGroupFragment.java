@@ -27,7 +27,7 @@ public class AddGroupFragment extends Fragment {
     private RadioButton rbExpense, rbIncome;
     private Button btnSave;
 
-    // ✅ icon mặc định
+    // icon mặc định
     private String selectedIcon = "ic_food";
 
     @Nullable
@@ -50,7 +50,7 @@ public class AddGroupFragment extends Fragment {
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        // ===== CHỌN ICON =====
+        // CHỌN ICON
         imgGroupIcon.setOnClickListener(v ->
                 requireActivity()
                         .getSupportFragmentManager()
@@ -60,7 +60,7 @@ public class AddGroupFragment extends Fragment {
                         .commit()
         );
 
-        // ===== NHẬN ICON =====
+        // NHẬN ICON
         requireActivity()
                 .getSupportFragmentManager()
                 .setFragmentResultListener(

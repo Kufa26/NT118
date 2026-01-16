@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- ================= DATE HEADER ================= -->
+        <!--  DATE HEADER  -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
-        <!-- ================= TRANSACTION ITEM ================= -->
+        <!--  TRANSACTION ITEM  -->
         <LinearLayout
             android:id="@+id/transactionRoot"
             android:layout_width="match_parent"
@@ -130,7 +130,6 @@
                 android:textColor="#E53935"
                 android:layout_marginStart="12dp"/>
 
-            <!-- OPTIONAL STATUS -->
             <ImageView
                 android:id="@+id/ivStatusBadge"
                 android:layout_width="18dp"

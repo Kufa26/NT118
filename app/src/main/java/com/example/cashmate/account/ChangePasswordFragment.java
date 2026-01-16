@@ -113,7 +113,7 @@ public class ChangePasswordFragment extends Fragment {
                 return;
             }
 
-            // 🔥 Update Firebase
+            // Update Firebase
             user.updatePassword(newPass)
                     .addOnSuccessListener(unused2 -> {
                         updateLocalPassword(newPass);

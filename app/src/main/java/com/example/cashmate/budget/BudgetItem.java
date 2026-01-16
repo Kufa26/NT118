@@ -25,7 +25,7 @@ public class BudgetItem {
         this.timeType = timeType;
     }
 
-    // --- GETTERS ---
+    // GETTERS
     public int getId() { return id; }
     public String getName() { return name; }
     public long getTotalAmount() { return totalAmount; }

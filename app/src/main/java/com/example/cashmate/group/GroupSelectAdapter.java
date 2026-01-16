@@ -58,7 +58,6 @@ public class GroupSelectAdapter
                 iconRes != 0 ? iconRes : R.drawable.ic_food
         );
 
-        // ✅ CLICK → CHỌN GROUP
         holder.itemView.setOnClickListener(v ->
                 listener.onClick(category)
         );

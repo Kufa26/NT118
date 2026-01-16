@@ -92,7 +92,7 @@
         </LinearLayout>
 
 
-        <!-- 🔹 Tab Layout -->
+        <!-- Tab Layout -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
             app:tabSelectedTextColor="#212121"
             app:tabTextColor="#9E9E9E" />
 
-        <!-- 🔹 Balance Info -->
+        <!-- Balance Info -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 🔹 Net Income Card -->
+        <!-- Net Income Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -269,7 +269,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- 🔹 Báo cáo theo nhóm -->
+        <!-- Báo cáo theo nhóm -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

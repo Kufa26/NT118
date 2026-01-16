@@ -8,7 +8,7 @@
     android:background="#F0F0F0"
     android:fitsSystemWindows="true">
 
-    <!-- TOOLBAR (GIỐNG PROFILE / GROUP) -->
+    <!-- TOOLBAR -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_choose_icon"
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:textColor="@android:color/black"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- DIVIDER (GIỐNG PROFILE) -->
+    <!-- DIVIDER -->
     <View
         android:id="@+id/toolbar_divider"
         android:layout_width="match_parent"

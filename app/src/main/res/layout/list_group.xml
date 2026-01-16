@@ -90,7 +90,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- LIST GROUP (KHÔNG CÓ NHÓM MỚI) -->
+        <!-- LIST GROUP -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvGroups"
             android:layout_width="match_parent"

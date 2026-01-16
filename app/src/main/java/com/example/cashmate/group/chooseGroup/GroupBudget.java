@@ -30,7 +30,6 @@ public class GroupBudget extends Fragment {
                         .popBackStack()
         );
 
-        // ✅ SỬA Ở ĐÂY
         View btnAddGroup = view.findViewById(R.id.btnAddGroup);
         btnAddGroup.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), AddGroupBudget.class);
@@ -44,15 +43,15 @@ public class GroupBudget extends Fragment {
 
         loadGroups();
         GroupAdapterBudget adapter = new GroupAdapterBudget(list, item -> {
-            // 1. Tạo Bundle để đóng gói dữ liệu
+            // Tạo Bundle để đóng gói dữ liệu
             Bundle result = new Bundle();
             result.putString("groupName", item.getName());
             result.putInt("groupIcon", item.getIcon());
 
-            // 2. Gửi kết quả về thông qua FragmentManager với một mã định danh (requestKey) là "select_group"
+            // Gửi kết quả về qua FragmentManager
             getParentFragmentManager().setFragmentResult("select_group", result);
 
-            // 3. Quay lại màn hình Add_Budget
+            // Quay lại màn hình Add_Budget
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 

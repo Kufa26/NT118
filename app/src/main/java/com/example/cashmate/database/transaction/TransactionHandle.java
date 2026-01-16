@@ -24,7 +24,7 @@ public class TransactionHandle {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // ================= INSERT =================
+    // INSERT
     public long insert(Transaction t) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -43,7 +43,7 @@ public class TransactionHandle {
         return id;
     }
 
-    // ================= UPDATE =================
+    // UPDATE
     public boolean update(long idTransaction, Transaction t) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -66,7 +66,7 @@ public class TransactionHandle {
         return rows > 0;
     }
 
-    // ================= DELETE =================
+    // DELETE
     public boolean delete(long idTransaction) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int rows = db.delete(
@@ -78,7 +78,7 @@ public class TransactionHandle {
         return rows > 0;
     }
 
-    // ================= GET ALL (JOIN CATEGORY) =================
+    // GET ALL (JOIN CATEGORY)
     public Cursor getAllCursor() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -90,7 +90,7 @@ public class TransactionHandle {
         );
     }
 
-    // ================= GET BY ID (EDIT) =================
+    //  GET BY ID
     public Cursor getById(long idTransaction) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -102,7 +102,7 @@ public class TransactionHandle {
         );
     }
 
-    // ================= RECENT (LIMIT) =================
+    // RECENT
     public Cursor getRecentCursor(String userId, int limit) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String where = "";
@@ -180,7 +180,6 @@ public class TransactionHandle {
         return totals;
     }
 
-    // ================= DATA FIX: SYNC createdAt WITH date FIELD =================
     public void normalizeCreatedAtFromDate() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.rawQuery(
@@ -211,16 +210,14 @@ public class TransactionHandle {
                                 new String[]{String.valueOf(id)}
                         );
                     }
-                } catch (ParseException ignored) {
-                    // skip rows with invalid date format
-                }
+                } catch (ParseException ignored) {}
             }
         } finally {
             c.close();
         }
     }
 
-    // ================= MONTHLY TOTALS (group by month/year) =================
+    // MONTHLY TOTALS
     public Cursor getMonthlyTotals(String userId, String type, int limitMonths) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -246,10 +243,9 @@ public class TransactionHandle {
         }
     }
 
-    // ================= TOP EXPENSES BY CATEGORY =================
+    // TOP EXPENSES BY CATEGORY
     public List<TopExpense> getTopExpenses(String userId, long startMillis, long endMillis, int limit) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // Clamp limit to avoid invalid or empty LIMIT clause
         int limitSafe = Math.max(1, limit);
 
         StringBuilder sql = new StringBuilder(
@@ -295,7 +291,7 @@ public class TransactionHandle {
 
         return result;
     }
-        // ================= FILTER BY TYPE =================
+        // FILTER BY TYPE
     public Cursor getAllCursorByType(String typeTransaction) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -308,7 +304,7 @@ public class TransactionHandle {
         );
     }
 
-    // ================= BY MONTH (LIST) =================
+    // BY MONTH
     public Cursor getByMonth(int month, int year) {
         return getByMonth(month, year, null);
     }
@@ -338,7 +334,7 @@ public class TransactionHandle {
         return db.rawQuery(sql.toString(), args.toArray(new String[0]));
     }
 
-    // ================= COUNT BY CATEGORY =================
+    // COUNT BY CATEGORY
     public int countByCategory(Long categoryId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery(
@@ -355,7 +351,7 @@ public class TransactionHandle {
         }
     }
 
-    // ================= LIST BY CATEGORY =================
+    // LIST BY CATEGORY
     public Cursor getByCategory(Long categoryId) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         return db.rawQuery(
@@ -368,7 +364,7 @@ public class TransactionHandle {
         );
     }
 
-    // ================= TOTAL BY MONTH =================
+    // TOTAL BY MONTH
     public double getTotalByMonth(int month, int year, String type) {
         return getTotalByMonth(month, year, type, null);
     }
@@ -406,7 +402,7 @@ public class TransactionHandle {
         }
     }
 
-    // ================= START BALANCE BEFORE MONTH =================
+    // START BALANCE BEFORE MONTH
     public double getStartBalance(int month, int year) {
         return getStartBalance(month, year, null);
     }

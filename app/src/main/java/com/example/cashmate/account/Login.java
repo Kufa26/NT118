@@ -137,22 +137,10 @@ public class Login extends AppCompatActivity {
     }
 
     private void startGoogleSignIn() {
-        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false) // test cho dễ
-                .setServerClientId(getString(R.string.default_web_client_id))
-                .build();
+        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder().setFilterByAuthorizedAccounts(false).setServerClientId(getString(R.string.default_web_client_id)).build();
+        GetCredentialRequest request = new GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build();
 
-        GetCredentialRequest request = new GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build();
-
-        // minSdk 26 => KHÔNG dùng getMainExecutor() (API 28)
-        credentialManager.getCredentialAsync(
-                this,
-                request,
-                null,
-                ContextCompat.getMainExecutor(this),
-                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+        credentialManager.getCredentialAsync(this,request,null,ContextCompat.getMainExecutor(this),new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
                     @Override
                     public void onResult(GetCredentialResponse response) {
                         handleGoogleResult(response);
@@ -160,9 +148,7 @@ public class Login extends AppCompatActivity {
 
                     @Override
                     public void onError(GetCredentialException e) {
-                        Toast.makeText(Login.this,
-                                "Google login failed: " + e.getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this,"Google login failed: " + e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -175,13 +161,11 @@ public class Login extends AppCompatActivity {
             CustomCredential custom = (CustomCredential) credential;
 
             if (TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(custom.getType())) {
-                GoogleIdTokenCredential googleCred =
-                        GoogleIdTokenCredential.createFrom(custom.getData());
+                GoogleIdTokenCredential googleCred = GoogleIdTokenCredential.createFrom(custom.getData());
 
                 String idToken = googleCred.getIdToken();
-                //Toast.makeText(this, "Lấy ID Token thành công", Toast.LENGTH_SHORT).show();
 
-                // ===== FIREBASE SIGN IN =====
+                // FIREBASE SIGN IN
                 AuthCredential firebaseCredential =
                         GoogleAuthProvider.getCredential(idToken, null);
 
@@ -191,13 +175,10 @@ public class Login extends AppCompatActivity {
                                 String email = auth.getCurrentUser().getEmail();
                                 String uid = auth.getCurrentUser().getUid();
 
-                                // ===== LƯU SESSION =====
-                                getSharedPreferences("USER_SESSION", MODE_PRIVATE)
-                                        .edit()
-                                        .putString("email", email)
-                                        .apply();
+                                // LƯU SESSION
+                                getSharedPreferences("USER_SESSION", MODE_PRIVATE).edit().putString("email", email).apply();
 
-                                // ===== INSERT SQLITE NẾU CHƯA CÓ =====
+                                // INSERT SQLITE NẾU CHƯA CÓ
                                 if (!userHandle.isUserExist(email)) {
                                     User user = new User(
                                             uid,
@@ -219,11 +200,7 @@ public class Login extends AppCompatActivity {
                                     );
                                 }
 
-                                Toast.makeText(
-                                        Login.this,
-                                        "Firebase login success: " + auth.getCurrentUser().getEmail(),
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                Toast.makeText(Login.this,"Firebase login success: " + auth.getCurrentUser().getEmail(),Toast.LENGTH_SHORT).show();
 
                                 Intent intent = new Intent(Login.this, MainActivity.class);
                                 intent.putExtra("open_menu", true);
@@ -231,18 +208,13 @@ public class Login extends AppCompatActivity {
                                 finish();
 
                             } else {
-                                Toast.makeText(
-                                        Login.this,
-                                        "Firebase login failed: " + task.getException(),
-                                        Toast.LENGTH_LONG
-                                ).show();
+                                Toast.makeText(Login.this,"Firebase login failed: " + task.getException(),Toast.LENGTH_LONG).show();
                             }
                         });
 
                 return;
             }
         }
-
         Toast.makeText(this, "Không nhận được Google ID Token", Toast.LENGTH_SHORT).show();
     }
 
@@ -254,17 +226,11 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-        FirebaseAuth.getInstance()
-                .sendPasswordResetEmail(email)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(Login.this,
-                            "Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra email.",
-                            Toast.LENGTH_LONG).show();
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnSuccessListener(unused -> {
+                    Toast.makeText(Login.this,"Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra email.",Toast.LENGTH_LONG).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(Login.this,
-                            "Email không tồn tại hoặc không hợp lệ",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this,"Email không tồn tại hoặc không hợp lệ",Toast.LENGTH_SHORT).show();
                 });
     }
 

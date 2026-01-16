@@ -69,7 +69,7 @@ public class FAQFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.activity_faq, container, false);
 
-        // ===== BACK TOOLBAR =====
+        // BACK TOOLBAR
         View btnBack = view.findViewById(R.id.btnBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v ->

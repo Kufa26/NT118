@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/material_dynamic_neutral90">
 
-    <!-- ================= TOOLBAR ================= -->
+    <!--  TOOLBAR  -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_slgroup"
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:textStyle="bold"/>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- ================= CONTENT ================= -->
+    <!--  CONTENT  -->
     <LinearLayout
         android:id="@+id/contentWrapper"
         android:layout_width="0dp"
@@ -55,7 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- LIST GROUP (CHỈ KHOẢN CHI) -->
+        <!-- LIST GROUP  -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvGroups"
             android:layout_width="match_parent"

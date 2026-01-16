@@ -14,7 +14,7 @@ public class Transaction {
     private String typeTransaction;  // INCOME / EXPENSE
     private Long createdAt;           // dùng sort, thống kê
 
-    // ================= CONSTRUCTOR (QUERY) =================
+    // CONSTRUCTOR
     public Transaction(Long idTransaction,
                        String idUser,
                        Long idCategory,
@@ -36,7 +36,7 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    // ================= CONSTRUCTOR (INSERT) =================
+    // CONSTRUCTOR (INSERT)
     public Transaction(String idUser,
                        Long idCategory,
                        Double amount,
@@ -56,7 +56,7 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    // ================= GETTERS =================
+    // GETTERS
 
     public Long getIdTransaction() {
         return idTransaction;
@@ -94,7 +94,7 @@ public class Transaction {
         return createdAt;
     }
 
-    // ================= SETTERS (OPTIONAL) =================
+    // SETTERS
 
     public void setAmount(Double amount) {
         this.amount = amount;

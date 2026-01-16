@@ -24,7 +24,7 @@ public class AccountFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.account, container, false);
 
-        // ===== Thông tin cá nhân =====
+        // Thông tin cá nhân
         view.findViewById(R.id.profile).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -33,7 +33,7 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== NHÓM =====
+        // NHÓM
         view.findViewById(R.id.Wallet_group).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -42,7 +42,7 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== CÀI ĐẶT =====
+        // CÀI ĐẶT
         view.findViewById(R.id.setting).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -51,7 +51,7 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== GIỚI THIỆU =====
+        // GIỚI THIỆU
         view.findViewById(R.id.introduce).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
@@ -60,7 +60,7 @@ public class AccountFragment extends Fragment {
                         .commit()
         );
 
-        // ===== CÂU HỎI THƯỜNG GẶP (FAQ) =====
+        // CÂU HỎI THƯỜNG GẶP (FAQ)
         view.findViewById(R.id.support).setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()

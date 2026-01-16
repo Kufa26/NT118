@@ -62,13 +62,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         TransactionHandle tHandle = new TransactionHandle(context);
         int count = tHandle.countByCategory(category.getIdCategory());
 
-        // ===== KHÔNG CÓ GIAO DỊCH =====
+        // KHÔNG CÓ GIAO DỊCH
         if (count == 0) {
             confirmDelete(category, position);
             return;
         }
 
-        // ===== CÓ GIAO DỊCH =====
+        // CÓ GIAO DỊCH
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_delete_group, null);
 
         TextView tvCount = view.findViewById(R.id.tvCount);

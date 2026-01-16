@@ -41,7 +41,7 @@ public class TransactionPreviewAdapter
     public void onBindViewHolder(@NonNull ViewHolder h, int position) {
         if (!cursor.moveToPosition(position)) return;
 
-        // ===== DATA =====
+        // DATA
         double amount = cursor.getDouble(cursor.getColumnIndexOrThrow("amount"));
         String date = cursor.getString(cursor.getColumnIndexOrThrow("date")); // dd/MM/yyyy
         String name = cursor.getString(cursor.getColumnIndexOrThrow("nameCategory"));
@@ -49,7 +49,7 @@ public class TransactionPreviewAdapter
         String type = cursor.getString(cursor.getColumnIndexOrThrow("typeTransaction"));
         String icon = cursor.getString(cursor.getColumnIndexOrThrow("iconCategory"));
 
-        // ===== CATEGORY + NOTE =====
+        //CATEGORY + NOTE
         h.tvCategoryName.setText(name);
 
         if (note != null && !note.isEmpty()) {
@@ -59,14 +59,14 @@ public class TransactionPreviewAdapter
             h.tvNote.setVisibility(View.GONE);
         }
 
-        // ===== DATE HEADER =====
+        // DATE HEADER
         // dd/MM/yyyy
         String[] parts = date.split("/");
         h.tvDate.setText(parts[0]); // ngày
         h.tvFullDate.setText("tháng " + parts[1] + " " + parts[2]);
         h.tvDateLabel.setText(getWeekdayLabel(date));
 
-        // ===== ICON =====
+        // ICON
         int iconRes = h.itemView.getContext().getResources()
                 .getIdentifier(icon, "drawable", h.itemView.getContext().getPackageName());
 
@@ -74,11 +74,11 @@ public class TransactionPreviewAdapter
                 iconRes != 0 ? iconRes : R.drawable.ic_food
         );
 
-        // ===== AMOUNT + KHUNG THEO LOẠI =====
+        //AMOUNT + KHUNG THEO LOẠI
         String money = moneyFormat.format(amount);
 
         if ("INCOME".equalsIgnoreCase(type)) {
-            // THU → XANH DƯƠNG
+            // THU THÌ XANH DƯƠNG
             h.tvAmount.setText("+" + money);
             h.tvAmount.setTextColor(Color.parseColor("#1E88E5"));
             h.tvDateTotal.setText("+" + money);
@@ -87,7 +87,7 @@ public class TransactionPreviewAdapter
                     R.drawable.border_income_blue
             );
         } else {
-            // CHI → ĐỎ
+            // CHI THÌ ĐỎ
             h.tvAmount.setText("-" + money);
             h.tvAmount.setTextColor(Color.parseColor("#E53935"));
             h.tvDateTotal.setText("-" + money);
@@ -103,7 +103,7 @@ public class TransactionPreviewAdapter
         return cursor.getCount();
     }
 
-    // ================= TÍNH THỨ TỪ NGÀY =================
+    // TÍNH THỨ TỪ NGÀY
     private String getWeekdayLabel(String dateStr) {
         try {
             SimpleDateFormat sdf =
@@ -128,7 +128,7 @@ public class TransactionPreviewAdapter
         }
     }
 
-    // ================= VIEW HOLDER =================
+    //  VIEW HOLDER
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         // Date header

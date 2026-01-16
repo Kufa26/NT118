@@ -5,7 +5,7 @@
     <!-- Màu nền bên trong -->
     <solid android:color="#FFFFFF" />
 
-    <!-- Độ bo góc (tùy chọn) -->
+    <!-- Độ bo góc -->
     <corners android:radius="8dp" />
 
     <!-- Viền -->

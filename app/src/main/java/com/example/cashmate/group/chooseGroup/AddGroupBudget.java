@@ -20,14 +20,14 @@ public class AddGroupBudget extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_group);
 
-        // ===== bind view =====
+        // bind view
         imgGroupIcon = findViewById(R.id.imgGroupIcon);
         btnBack = findViewById(R.id.btnBack);
 
-        // ===== click mũi tên → quay về =====
+        // click mũi tên để quay về
         btnBack.setOnClickListener(v -> finish());
 
-        // ===== click icon → mở choose_icon.xml =====
+        // click icon để mở choose_icon.xml
         imgGroupIcon.setOnClickListener(v -> {
             ChooseIcon fragment = new ChooseIcon(icon -> {
                 selectedIcon = icon;

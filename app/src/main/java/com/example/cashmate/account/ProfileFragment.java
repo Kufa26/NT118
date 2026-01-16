@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
         rbMale = view.findViewById(R.id.rbMale);
         rbFemale = view.findViewById(R.id.rbFemale);
 
-        // ===== BACK =====
+        // BACK
         ImageButton btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v ->
                 requireActivity()
@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment {
         loadUserInfo();
     }
 
-    // ===== LOAD USER INFO =====
+    // LOAD USER INFO
     private void loadUserInfo() {
         String email = requireContext()
                 .getSharedPreferences("USER_SESSION", 0)
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
         rbFemale.setClickable(false);
     }
 
-    // ===== DIALOG SỬA THÔNG TIN (GIỐNG DELETE ACCOUNT) =====
+    // DIALOG SỬA THÔNG TIN
     private void showEditInfoDialog() {
 
         Dialog dialog = new Dialog(requireContext());
@@ -152,9 +152,7 @@ public class ProfileFragment extends Fragment {
         RadioButton rbFemaleDialog = dialog.findViewById(R.id.rbFemale);
         Button btnSave = dialog.findViewById(R.id.btnSaveProfile);
 
-        String email = requireContext()
-                .getSharedPreferences("USER_SESSION", 0)
-                .getString("email", null);
+        String email = requireContext().getSharedPreferences("USER_SESSION", 0).getString("email", null);
 
         if (email != null) {
             User user = userHandle.getUserByEmail(email);

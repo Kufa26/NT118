@@ -36,7 +36,7 @@ public class ListGroupFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.list_group, container, false);
 
-        // ===== BIND VIEW =====
+        // BIND VIEW
         btnBack = view.findViewById(R.id.btnBack);
         tabIncome = view.findViewById(R.id.tabIncome);
         tabExpense = view.findViewById(R.id.tabExpense);
@@ -44,17 +44,16 @@ public class ListGroupFragment extends Fragment {
         Bundle args = getArguments();
         expenseOnly = args != null && args.getBoolean("expenseOnly", false);
 
-        // ===== BACK BUTTON (🔥 FIX CHÍNH Ở ĐÂY) =====
         btnBack.setOnClickListener(v ->
                 requireActivity()
                         .getSupportFragmentManager()
                         .popBackStack()
         );
 
-        // ===== RECYCLER VIEW =====
+        // RECYCLER VIEW
         rcvGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // ===== DEFAULT TAB =====
+        // DEFAULT TAB
         if (expenseOnly) {
             setActiveTab(true); // EXPENSE
             loadGroups("EXPENSE");
@@ -65,7 +64,7 @@ public class ListGroupFragment extends Fragment {
             setActiveTab(false);          // false = INCOME
             loadGroups("INCOME");
 
-            // ===== TAB CLICK =====
+            // TAB CLICK
             tabIncome.setOnClickListener(v -> {
                 setActiveTab(false);
                 loadGroups("INCOME");
@@ -80,7 +79,7 @@ public class ListGroupFragment extends Fragment {
         return view;
     }
 
-    // ================= LOAD GROUP =================
+    // LOAD GROUP
     private void loadGroups(String type) {
         CategoryHandle handle = new CategoryHandle(requireContext());
         List<Category> list = handle.getCategoriesByType(type);
@@ -95,18 +94,16 @@ public class ListGroupFragment extends Fragment {
                     result.putString("type", category.getTypeCategory());
 
                     // gửi dữ liệu về PlusFragment
-                    getParentFragmentManager()
-                            .setFragmentResult("select_group", result);
+                    getParentFragmentManager().setFragmentResult("select_group", result);
 
                     // quay lại PlusFragment
-                    getParentFragmentManager()
-                            .popBackStack();
+                    getParentFragmentManager().popBackStack();
                 });
 
         rcvGroups.setAdapter(adapter);
     }
 
-    // ================= TAB UI =================
+    // TAB UI
     private void setActiveTab(boolean isExpense) {
         if (isExpense) {
             tabExpense.setBackgroundResource(R.drawable.tab_active);

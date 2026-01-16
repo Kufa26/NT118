@@ -176,7 +176,7 @@ public class PlusFragment extends Fragment {
         if (editingTransactionId == null) {
             handle.insert(t);
 
-            // --- GỌI CẬP NHẬT NGÂN SÁCH THEO TÊN ---
+            // GỌI CẬP NHẬT NGÂN SÁCH THEO TÊN
             try {
                 BudgetHandle budgetHandle = new BudgetHandle(requireContext());
                 // Truyền selectedGroupName vào để so sánh theo tên
@@ -184,7 +184,6 @@ public class PlusFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // ----------------------------------------
 
             Toast.makeText(getContext(), "Đã thêm giao dịch", Toast.LENGTH_SHORT).show();
         } else {

@@ -89,23 +89,14 @@ public class HomeFragment extends Fragment {
         tabMonth.setOnClickListener(v -> selectRange(Range.MONTH));
 
         TextView transdetails = view.findViewById(R.id.report);
-        transdetails.setOnClickListener(v -> requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new TransactionDetailsFragment())
-                .addToBackStack(null)
-                .commit());
+        transdetails.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransactionDetailsFragment()).addToBackStack(null).commit());
 
         TextView recent = view.findViewById(R.id.btn_recent_all);
         recent.setOnClickListener(v -> {
             if (requireActivity() instanceof com.example.cashmate.MainActivity) {
-                ((com.example.cashmate.MainActivity) requireActivity())
-                        .selectBottomTab(R.id.nav_transaction);
+                ((com.example.cashmate.MainActivity) requireActivity()).selectBottomTab(R.id.nav_transaction);
             } else {
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new TransactionFragment())
-                        .addToBackStack(null)
-                        .commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TransactionFragment()).addToBackStack(null).commit();
             }
         });
 

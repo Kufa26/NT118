@@ -34,13 +34,13 @@ public class GroupFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.select_group, container, false);
 
-        // ===== BACK =====
+        // BACK
         ImageButton btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v ->
                 requireActivity().getSupportFragmentManager().popBackStack()
         );
 
-        // ===== ADD GROUP =====
+        // ADD GROUP
         LinearLayout btnAddGroup = view.findViewById(R.id.btnAddGroup);
         btnAddGroup.setOnClickListener(v ->
                 requireActivity()
@@ -51,19 +51,19 @@ public class GroupFragment extends Fragment {
                         .commit()
         );
 
-        // ===== TAB =====
+        // TAB
         tabExpense = view.findViewById(R.id.tabExpense);
         tabIncome = view.findViewById(R.id.tabIncome);
 
-        // ===== LIST =====
+        // LIST
         rcvGroups = view.findViewById(R.id.rcvGroups);
         rcvGroups.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 🔥 MẶC ĐỊNH: KHOẢN THU
+        // KHOẢN THU
         setActiveTab(false);
         loadGroups("INCOME");
 
-        // ===== CLICK TAB =====
+        // CLICK TAB
         tabExpense.setOnClickListener(v -> {
             setActiveTab(true);
             loadGroups("EXPENSE");
@@ -77,14 +77,14 @@ public class GroupFragment extends Fragment {
         return view;
     }
 
-    // ===== LOAD DATA =====
+    // LOAD DATA
     private void loadGroups(String type) {
         CategoryHandle handle = new CategoryHandle(getContext());
         List<Category> list = handle.getCategoriesByType(type);
         rcvGroups.setAdapter(new GroupAdapter(getContext(), list));
     }
 
-    // ===== UI TAB STATE =====
+    // UI TAB STATE
     private void setActiveTab(boolean isExpense) {
         if (isExpense) {
             tabExpense.setBackgroundResource(R.drawable.tab_active);

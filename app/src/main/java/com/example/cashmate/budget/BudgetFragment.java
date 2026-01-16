@@ -88,7 +88,7 @@ public class BudgetFragment extends Fragment {
         loadDataForTab(view);
     }
 
-    // --- HÀM LOAD DỮ LIỆU VÀ TÍNH TOÁN ---
+    // HÀM LOAD DỮ LIỆU VÀ TÍNH TOÁN
     private void loadDataForTab(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         TextView tvRemainingAmount = view.findViewById(R.id.tvAmount);
@@ -123,7 +123,7 @@ public class BudgetFragment extends Fragment {
             DecimalFormat df = new DecimalFormat("#,###");
             tvRemainingAmount.setText(df.format(remaining));
 
-            // --- SỬA MÀU SẮC ---
+            // SỬA MÀU SẮC
             if (totalBudget == 0) {
                 tvRemainingAmount.setTextColor(Color.parseColor("#757575"));
             } else if (remaining == 0) {

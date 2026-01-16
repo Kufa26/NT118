@@ -133,7 +133,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="12dp"/>
 
-            <!-- Status Badge (Optional) -->
+            <!-- Status Badge -->
             <ImageView
                 android:id="@+id/ivStatusBadge"
                 android:layout_width="20dp"

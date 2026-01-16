@@ -70,20 +70,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
-
-                <ImageButton
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_search2"
-                    android:contentDescription="search"/>
-
-                <ImageButton
-                    style="?attr/borderlessButtonStyle"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    app:srcCompat="@drawable/ic_bell"
-                    android:contentDescription="bell"/>
             </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -401,7 +387,6 @@
                         android:layout_marginTop="12dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

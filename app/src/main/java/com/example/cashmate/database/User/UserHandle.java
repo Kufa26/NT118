@@ -16,13 +16,13 @@ public class UserHandle {
         db = helper.getWritableDatabase();
     }
 
-    // ===== DELETE USER BY EMAIL =====
+    // DELETE USER BY EMAIL
     public boolean deleteUserByEmail(String email) {
         int rows = db.delete("USER", "email = ?", new String[]{email});
         return rows > 0;
     }
 
-    // ===== SIGN UP =====
+    // SIGN UP
     public boolean handleSignUp(User user) {
         ContentValues values = new ContentValues();
         values.put("id", user.getIdUser());
@@ -40,7 +40,7 @@ public class UserHandle {
     }
 
 
-    // ===== UPDATE PASSWORD =====
+    // UPDATE PASSWORD
     public void updatePassword(String uid, String newPass) {
         ContentValues values = new ContentValues();
         values.put("password", newPass);
@@ -48,7 +48,7 @@ public class UserHandle {
         db.update("USER", values, "id = ?", new String[]{uid});
     }
 
-    // ===== CHECK EMAIL =====
+    // CHECK EMAIL
     public boolean handleCheckEmailExists(String email) {
         Cursor cursor = db.rawQuery(
                 "SELECT id FROM USER WHERE email = ?",
@@ -73,7 +73,7 @@ public class UserHandle {
         }
     }
 
-    // ===== INSERT/SYNC USER FROM FIREBASE=====
+    // INSERT/SYNC USER FROM FIREBASE
     public void insertUserFromFirebase(
             String uid,
             String fullName,
@@ -85,7 +85,7 @@ public class UserHandle {
         ContentValues values = new ContentValues();
         values.put("fullName", fullName);
         values.put("email", email);
-        values.put("password", password); // "google" hoặc rỗng
+        values.put("password", password); // google hoặc rỗng
         values.put("dob", "");
         values.put("gender", "Unknown");
         values.put("country", "Việt Nam");
@@ -100,7 +100,7 @@ public class UserHandle {
         }
     }
 
-    // ===== GET USER BY ID =====
+    // GET USER BY ID
     public User getUserById(String uid) {
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM USER WHERE id = ?",
@@ -116,7 +116,7 @@ public class UserHandle {
 
 
 
-    // ===== CURSOR → USER (an toàn: chỉ đọc 9 cột đầu, bỏ qua isLoggedIn) =====
+    // CURSOR USER
     private User mapCursorToUser(Cursor cursor) {
         return new User(
                 cursor.getString(0), // id

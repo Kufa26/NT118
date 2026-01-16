@@ -65,10 +65,10 @@ public class SignUp extends AppCompatActivity {
             isShowPassword = !isShowPassword;
         });
 
-        // ===== GỬI EMAIL XÁC THỰC =====
+        // GỬI EMAIL XÁC THỰC
         txVerify.setOnClickListener(v -> sendVerifyEmail());
 
-        // ===== ĐĂNG KÝ =====
+        // ĐĂNG KÝ
         btnSignup.setOnClickListener(v -> registerIfVerified());
 
         TextView tvLogin = findViewById(R.id.tv_login);
@@ -94,7 +94,7 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    // ================= SEND VERIFY EMAIL =================
+    // SEND VERIFY EMAIL
     private void sendVerifyEmail() {
         String email = edtEmail.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
@@ -143,7 +143,7 @@ public class SignUp extends AppCompatActivity {
                 );
     }
 
-    // ================= REGISTER IF VERIFIED =================
+    // REGISTER IF VERIFIED
     private void registerIfVerified() {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -158,7 +158,7 @@ public class SignUp extends AppCompatActivity {
                 return;
             }
 
-            // ✅ LƯU LOCAL VỚI UID + PASSWORD
+            // LƯU LOCAL VỚI UID + PASSWORD
             User localUser = new User(
                     user.getUid(),
                     "User",

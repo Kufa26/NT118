@@ -42,15 +42,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        // ================= LOAD CATEGORY DEFAULT (RUN 1 TIME) =================
+        // LOAD CATEGORY DEFAULT
         CategoryHandle categoryHandle = new CategoryHandle(this);
         categoryHandle.insertDefaultCategoriesIfEmpty();
 
-        // ================= INIT LOCAL STORAGE =================
+        // INIT LOCAL STORAGE
         userHandle = new UserHandle(this);
         BudgetStorage.getInstance().init(this);
 
-        // ================= SYNC FIREBASE USER =================
+        // SYNC FIREBASE USER
         syncFirebaseUserToLocal();
 
         boolean openMenu = getIntent().getBooleanExtra("open_menu", false);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ================= AUTH / INTRO LAYOUT =================
+    // AUTH / INTRO LAYOUT
     private void showMainLayout() {
         setContentView(R.layout.activity_main);
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    // ================= MAIN MENU LAYOUT =================
+    // MAIN MENU LAYOUT
     private void showMenuLayout() {
         setContentView(R.layout.menu);
 
@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // FAB â†’ PlusFragment
         FloatingActionButton fab = findViewById(R.id.btnAddTransaction);
         fab.setOnClickListener(v ->
                 getSupportFragmentManager()
@@ -129,13 +128,13 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    // ================= NAV HELPER =================
+    // NAV HELPER
     public void selectBottomTab(int menuItemId) {
         if (bottomNav != null) {
             bottomNav.setSelectedItemId(menuItemId);
         }
     }
-    // ================= BOTTOM SHEET (OPTIONAL) =================
+    // BOTTOM SHEET
     private void showAddTransactionSheet() {
         View view = getLayoutInflater().inflate(R.layout.plus, null);
         BottomSheetDialog dialog = new BottomSheetDialog(this);

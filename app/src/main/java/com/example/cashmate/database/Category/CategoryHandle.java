@@ -18,7 +18,7 @@ public class CategoryHandle {
         dbHelper = new DatabaseHelper(context);
     }
 
-    // ================= INSERT =================
+    // INSERT
     public long insertCategory(Category category) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -32,7 +32,7 @@ public class CategoryHandle {
         return id;
     }
 
-    // ================= GET BY TYPE =================
+    // GET BY TYPE
     public List<Category> getCategoriesByType(String type) {
         List<Category> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -58,7 +58,7 @@ public class CategoryHandle {
         return list;
     }
 
-    // ================= DELETE (CASCADE TRANSACTION) =================
+    // DELETE (CASCADE TRANSACTION)
     public boolean deleteCategory(long idCategory) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
@@ -85,11 +85,11 @@ public class CategoryHandle {
         }
     }
 
-    // ================= INSERT DEFAULT CATEGORY (RUN ONCE) =================
+    // INSERT DEFAULT CATEGORY
     public void insertDefaultCategoriesIfEmpty() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Nếu đã có category → không insert nữa
+        // Nếu đã có category thì không insert nữa
         Cursor c = db.rawQuery("SELECT COUNT(*) FROM Category", null);
         if (c.moveToFirst() && c.getInt(0) > 0) {
             c.close();
@@ -98,7 +98,7 @@ public class CategoryHandle {
         }
         c.close();
 
-        // ===== EXPENSE =====
+        // EXPENSE
         insert(db, "Ăn uống", "EXPENSE", "ic_food");
         insert(db, "Bảo hiểm", "EXPENSE", "ic_insurance");
         insert(db, "Đầu tư", "EXPENSE", "ic_bills");
@@ -124,14 +124,14 @@ public class CategoryHandle {
         insert(db, "Sức khỏe", "EXPENSE", "ic_health");
         insert(db, "Trả nợ", "EXPENSE", "ic_debt_repayment");
 
-        // ===== INCOME =====
+        // INCOME
         insert(db, "Lương", "INCOME", "ic_salary");
         insert(db, "Thu nợ", "INCOME", "ic_debt_collection");
 
         db.close();
     }
 
-    // ================= HELPER INSERT =================
+    // HELPER INSERT
     private void insert(SQLiteDatabase db, String name, String type, String icon) {
         ContentValues v = new ContentValues();
         v.put("nameCategory", name);
